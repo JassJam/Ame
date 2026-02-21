@@ -20,6 +20,8 @@ function ame_csharp_utils:add_library(name, group, kind, path, output_path, call
             mode = "Release"
         end
 
+        ame_utils:add_default_defines()
+
         if callback ~= nil then
             callback()
         end

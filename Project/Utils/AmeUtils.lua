@@ -19,6 +19,33 @@ function _ame_add_headers_if_not_empty(path)
     __ame_add_headerfiles_if_not_empty(file_utils:path_from_root(path .. "/**.h"))
 end
 
+function ame_utils:add_default_defines()
+    if is_mode("debug") then
+        add_defines("AME_DEBUG")
+
+        set_symbols("debug", "edit")
+    elseif is_mode("check") then 
+        add_defines("AME_DEBUG")
+        add_defines("AME_DEBUG_SANITIZE")
+
+        set_symbols("debug")
+    elseif is_mode("releasedbg") then
+        add_defines("AME_RELEASE")
+
+        set_symbols("debug")
+    elseif is_mode("release") then
+        add_defines("AME_DIST")
+        
+        set_symbols("hidden")
+    end
+
+    if is_plat("windows") then
+        add_defines("AME_PLATFORM_WINDOWS")
+    elseif is_plat("linux") then
+        add_defines("AME_PLATFORM_LINUX")
+    end
+end
+
 function ame_utils:add_library(name, group, kind, path, callback)
     target(name)
         set_kind(kind)
@@ -43,6 +70,8 @@ function ame_utils:add_library(name, group, kind, path, callback)
         end
 
         add_filegroups("", {rootdir = "../" .. path .. "/"})
+
+        self:add_default_defines()
 
         if callback ~= nil then
             callback()

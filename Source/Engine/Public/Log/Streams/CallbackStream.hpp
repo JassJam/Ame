@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <Log/Stream.hpp>
 
 namespace Ame::Log

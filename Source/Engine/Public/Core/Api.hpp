@@ -24,7 +24,6 @@
 
 #endif
 
-// if msvc use AME_CDECL as __cdecl
 #if defined(_MSC_VER)
 #define AME_CDECL __cdecl
 #else

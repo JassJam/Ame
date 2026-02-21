@@ -107,8 +107,8 @@ namespace Ame::Rhi
 
     //
 
-    Opt<DeviceWrapper> DeviceWrapper::CreateImpl(const DeviceCreateDesc&       createDesc,
-                                                 const DeviceCreateDescVulkan& createDescDev)
+    Opt<DeviceWrapper> DeviceWrapper::CreateImpl([[maybe_unused]] const DeviceCreateDesc& createDesc,
+                                                 [[maybe_unused]] const DeviceCreateDescVulkan& createDescDev)
     {
 #ifdef VULKAN_SUPPORTED
         return GenericDeviceCreator<DeviceCreateTraitsVk>::Create(createDesc, createDescDev);

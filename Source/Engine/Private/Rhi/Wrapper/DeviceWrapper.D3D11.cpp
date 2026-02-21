@@ -67,8 +67,8 @@ namespace Ame::Rhi
 
     //
 
-    Opt<DeviceWrapper> DeviceWrapper::CreateImpl(const DeviceCreateDesc&      createDesc,
-                                                 const DeviceCreateDescD3D11& createDescD3D11)
+    Opt<DeviceWrapper> DeviceWrapper::CreateImpl([[maybe_unused]] const DeviceCreateDesc& createDesc,
+                                                 [[maybe_unused]] const DeviceCreateDescD3D11& createDescD3D11)
     {
 #ifdef D3D11_SUPPORTED
         return GenericDeviceCreator<DeviceCreateTraitsD3D11>::Create(createDesc, createDescD3D11);

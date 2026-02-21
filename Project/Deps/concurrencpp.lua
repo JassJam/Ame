@@ -26,6 +26,8 @@ package("ame.concurrencpp")
     on_install("macosx", "windows", function (package)
         -- fix missing std::string include
         io.replace("include/concurrencpp/threads/thread.h", "#include <string_view>", "#include <string>\n#include <string_view>", {plain = true})
+        -- fix missing chrono include on newer MSVC toolsets (19.50+)
+        io.replace("include/concurrencpp/results/impl/shared_result_state.h", "#include <atomic>\n#include <semaphore>", "#include <atomic>\n#include <semaphore>\n#include <chrono>", {plain = true})
 
         assert(package:has_tool("cxx", "clang", "cl"), "compiler not supported!")
         local configs = {}

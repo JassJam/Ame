@@ -4,11 +4,15 @@ local public_inherit = {public = true, inherit = true}
 
 ame_utils:add_library("AmeEngine", "Ame", "shared", "Source/Engine", function()
     add_defines("AME_ENGINE_EXPORT")
+    if is_plat("windows") then
+        -- diligentcore package from xmake-repo misses comdlg32, required by Diligent-Win32Platform
+        add_syslinks("comdlg32")
+    end
     
     local packages = {
-        "boost",
+        "boost-common",
         "cereal",
-        "ame.diligent_core",
+        "diligentcore",
         "ame.kangaru",
         "spdlog",
         "fmt",
@@ -93,5 +97,5 @@ ame_utils:add_binary("AmeEditor", "Ame/Editor", "Source/Editor/EditorApplication
     add_deps("DotNet")
 
     ame_utils:install_assets()
-    set_runargs("-p", "Shared/Assets/Projects/EmptyProject/EmptyProject.ame")
+    set_runargs("-p", "Shared/Assets/Projects/EmptyProject", "-n", "Test")
 end)

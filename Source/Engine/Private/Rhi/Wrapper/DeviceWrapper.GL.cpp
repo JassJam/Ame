@@ -46,8 +46,8 @@ namespace Ame::Rhi
 
     //
 
-    Opt<DeviceWrapper> DeviceWrapper::CreateImpl(const DeviceCreateDesc&   createDesc,
-                                                 const DeviceCreateDescGL& createDescDev)
+    Opt<DeviceWrapper> DeviceWrapper::CreateImpl([[maybe_unused]] const DeviceCreateDesc&   createDesc,
+                                                 [[maybe_unused]] const DeviceCreateDescGL& createDescDev)
     {
         Opt<DeviceWrapper> deviceWrapper;
 

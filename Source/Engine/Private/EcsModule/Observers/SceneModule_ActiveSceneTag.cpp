@@ -36,11 +36,11 @@ namespace Ame::Ecs
 
         if (iter.event() == flecs::OnAdd)
         {
-            filter.each([](auto entity) { entity.add<ActiveSceneEntityTag>(); });
+            filter.each([](auto entity) { entity.template add<ActiveSceneEntityTag>(); });
         }
         else
         {
-            filter.each([](auto entity) { entity.remove<ActiveSceneEntityTag>(); });
+            filter.each([](auto entity) { entity.template remove<ActiveSceneEntityTag>(); });
         }
     }
 

@@ -59,7 +59,7 @@ void main(in cs_input csIn)
 	float depth = DepthView.Load(int3(tex_coord, 0));
 	uint udepth = asuint(depth);
 	
-    // initialize group shared memory
+	// initialize group shared memory
 	if (csIn.gi == 0)
 	{
 		_uMinDepth = 0xffffffff;
@@ -78,7 +78,7 @@ void main(in cs_input csIn)
 	InterlockedMax(_uMaxDepth, udepth);
 
 	GroupMemoryBarrierWithGroupSync();
-    
+	
 	float max_depth_f = asfloat(_uMaxDepth);
 	float min_depth_f = asfloat(_uMinDepth);
 
@@ -94,46 +94,46 @@ void main(in cs_input csIn)
 		Light light = AllLightInstances[li];
 		switch (light_get_type(light))
 		{
-        /*case LIGHT_TYPE_POINT:
-		{
-            Transform transform = Transforms[light.transform_id];
-            float3 light_position = transform_get_position(transform);
-
-            Sphere sphere = { light_position, light.Radius };
-			if (Geometry_SphereContainsFrustum(sphere, _Frustum) == CONTAINMENT_TYPE_CONTAINS)
+			/*case LIGHT_TYPE_POINT:
 			{
-			    append_light_transparent(li);
-				if (Geometry_SphereContainsPlane(sphere, min_plane) != CONTAINMENT_TYPE_CONTAINS)
-				{
-					append_light_opaque(li);
-				}
-			}
-			break;
-		}*/
-		/*case LIGHT_TYPE_SPOT:
-		{
-            Transform transform = Transforms[light.transform_id];
-            float3 light_position = transform_get_position(transform);
-            float3 light_forward = transform_get_forward(transform);
+				Transform transform = Transforms[light.transform_id];
+				float3 light_position = transform_get_position(transform);
 
-            float radius = tan(light.Angle * 0.5f) * light.Range;
-            Cone cone = Geometry_ComputeCone(light_position, radius);
-			if (Geometry_ConeContainsFrustum(cone, _Frustum) == CONTAINMENT_TYPE_CONTAINS)
-			{
-			    append_light_transparent(li);
-				if (Geometry_ConeContainsPlane(cone, min_plane) != CONTAINMENT_TYPE_CONTAINS)
+				Sphere sphere = { light_position, light.Radius };
+				if (Geometry_SphereContainsFrustum(sphere, _Frustum) == CONTAINMENT_TYPE_CONTAINS)
 				{
-					append_light_opaque(li);
-				}
-			}
-			break;
-		}*/
-			case LIGHT_TYPE_DIRECTIONAL:
-        {
 					append_light_transparent(li);
-					append_light_opaque(li);
-					break;
+					if (Geometry_SphereContainsPlane(sphere, min_plane) != CONTAINMENT_TYPE_CONTAINS)
+					{
+						append_light_opaque(li);
+					}
 				}
+				break;
+			}*/
+			/*case LIGHT_TYPE_SPOT:
+			{
+				Transform transform = Transforms[light.transform_id];
+				float3 light_position = transform_get_position(transform);
+				float3 light_forward = transform_get_forward(transform);
+
+				float radius = tan(light.Angle * 0.5f) * light.Range;
+				Cone cone = Geometry_ComputeCone(light_position, radius);
+				if (Geometry_ConeContainsFrustum(cone, _Frustum) == CONTAINMENT_TYPE_CONTAINS)
+				{
+					append_light_transparent(li);
+					if (Geometry_ConeContainsPlane(cone, min_plane) != CONTAINMENT_TYPE_CONTAINS)
+					{
+						append_light_opaque(li);
+					}
+				}
+				break;
+			}*/
+			case LIGHT_TYPE_DIRECTIONAL:
+			{
+				append_light_transparent(li);
+				append_light_opaque(li);
+				break;
+			}
 		}
 	}
 

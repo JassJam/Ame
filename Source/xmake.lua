@@ -1,0 +1,5 @@
+includes("Core")
+includes("Scripting")
+includes("Editor")
+includes("Examples")
+includes("Tools")

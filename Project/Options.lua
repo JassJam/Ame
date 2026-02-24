@@ -1,4 +1,3 @@
-
 -- set the type of graphics backend to use
 option("gfx-backend-vulkan", {
     showmenu = true,
@@ -29,15 +28,4 @@ option("no-imgui", {
 })
 if has_config("no-imgui") then
     add_defines("AME_NO_IMGUI")
-end
-
--- disable exceptions by defining AME_NO_EXCEPTIONS
-option("no-exceptions", {
-    showmenu = true,
-    default = false,
-    description = "Disable C++ exceptions"
-})
-if has_config("no-exceptions") then
-    add_defines("AME_NO_EXCEPTIONS")
-    set_exceptions("no-cpp")
 end

@@ -1,0 +1,5 @@
+includes("HelloWorld")
+includes("PluginExample")
+includes("PluginHost")
+includes("SimpleRhi")
+includes("SimpleWindow")

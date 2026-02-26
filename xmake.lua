@@ -44,6 +44,7 @@ end
 add_extrafiles("LICENSE.txt")
 add_extrafiles(".clang-format")
 add_extrafiles(".clang-tidy")
+add_extrafiles(".editorconfig")
 
 --
 

@@ -53,8 +53,9 @@ namespace Ame::Rhi
             Dg::RenderTargetBlendDesc BlendTarget;
             bool                      SwapRBChannels : 1 = false;
 
-            PsoCacheKey(const BlitDrawParameters& parameters, Dg::TEXTURE_FORMAT format) :
-                Format(format), BlendTarget(parameters.BlendTarget), SwapRBChannels(parameters.SwapRBChannels)
+            PsoCacheKey(const BlitDrawParameters& parameters, Dg::TEXTURE_FORMAT format)
+                : Format(format), BlendTarget(parameters.BlendTarget),
+                  SwapRBChannels(parameters.SwapRBChannels)
             {
             }
 
@@ -86,15 +87,17 @@ namespace Ame::Rhi
         /// <summary>
         /// Get or create a pipeline state for blit draw.
         /// </summary>
-        [[nodiscard]] const PsoCacheData& GetPipelineState(const BlitDrawParameters& parameters);
+        [[nodiscard]]
+        const PsoCacheData& GetPipelineState(const BlitDrawParameters& parameters);
 
         /// <summary>
         /// Get or create a shader.
         /// </summary>
-        [[nodiscard]] Ptr<Dg::IShader> GetShader(const Dg::ShaderCreateInfo& desc);
+        [[nodiscard]]
+        Ptr<Dg::IShader> GetShader(const Dg::ShaderCreateInfo& desc);
 
     private:
         Rhi::IRhiDevice* m_RhiDevice;
         PsoCache         m_PsoCache;
     };
-} // namespace Ame::Rhi
+}

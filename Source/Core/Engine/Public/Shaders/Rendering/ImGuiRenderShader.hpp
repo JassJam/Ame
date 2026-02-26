@@ -9,7 +9,8 @@ namespace Ame::Rhi
     private:
         static constexpr const char c_SourceCode[] = {
 #include "ImGuiRenderShader_VS.static.hlsli.h"
-            , 0x00
+            ,
+            0x00
         };
 
     public:
@@ -24,7 +25,8 @@ namespace Ame::Rhi
     private:
         static constexpr const char c_SourceCode[] = {
 #include "ImGuiRenderShader_PS.static.hlsli.h"
-            , 0x00
+            ,
+            0x00
         };
 
     public:
@@ -33,4 +35,4 @@ namespace Ame::Rhi
             Setup({ "R_ImGui_PS", Dg::SHADER_TYPE_PIXEL, true }, c_SourceCode);
         }
     };
-} // namespace Ame::Rhi
+}

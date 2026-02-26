@@ -9,8 +9,9 @@ namespace Ame::Rhi
         Blit(deviceContext, parameters);
     }
 
-    void BlitRenderPass::Blit(Dg::IDeviceContext* deviceContext, const BlitCopyParameters& parameters)
+    void BlitRenderPass::Blit(Dg::IDeviceContext*       deviceContext,
+                              const BlitCopyParameters& parameters)
     {
         deviceContext->CopyTexture(parameters);
     }
-} // namespace Ame::Rhi
+}

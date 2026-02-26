@@ -95,7 +95,8 @@ namespace Ame::Rhi
     bool Image::Paste(const Image& srcImage, const Math::RectI& rect)
     {
         AME_LOG_ASSERT(m_ReferenceType == ImageReferenceType::Local, "Image is not a local bitmap");
-        AME_LOG_ASSERT(srcImage.m_ReferenceType == ImageReferenceType::Local, "Source image is not a local bitmap");
+        AME_LOG_ASSERT(srcImage.m_ReferenceType == ImageReferenceType::Local,
+                       "Source image is not a local bitmap");
 
         auto dstBitmap = FreeImageUtils::GetBitmap(m_BitmapData);
         auto srcBitmap = FreeImageUtils::GetBitmap(srcImage.m_BitmapData);
@@ -251,8 +252,10 @@ namespace Ame::Rhi
 
     void Image::Append(const Image& image)
     {
-        AME_LOG_ASSERT(m_ReferenceType == ImageReferenceType::MultiBitmap, "Image is not a bitmap array");
-        AME_LOG_ASSERT(image.m_ReferenceType == ImageReferenceType::Local, "Source image is not a local bitmap");
+        AME_LOG_ASSERT(m_ReferenceType == ImageReferenceType::MultiBitmap,
+                       "Image is not a bitmap array");
+        AME_LOG_ASSERT(image.m_ReferenceType == ImageReferenceType::Local,
+                       "Source image is not a local bitmap");
 
         auto bitmap = FreeImageUtils::GetBitmapArray(m_BitmapData);
         auto src    = FreeImageUtils::GetBitmap(image.m_BitmapData);
@@ -262,8 +265,10 @@ namespace Ame::Rhi
 
     void Image::Add(uint32_t page, const Image& image)
     {
-        AME_LOG_ASSERT(m_ReferenceType == ImageReferenceType::MultiBitmap, "Image is not a bitmap array");
-        AME_LOG_ASSERT(image.m_ReferenceType == ImageReferenceType::Local, "Source image is not a local bitmap");
+        AME_LOG_ASSERT(m_ReferenceType == ImageReferenceType::MultiBitmap,
+                       "Image is not a bitmap array");
+        AME_LOG_ASSERT(image.m_ReferenceType == ImageReferenceType::Local,
+                       "Source image is not a local bitmap");
 
         auto bitmap = FreeImageUtils::GetBitmapArray(m_BitmapData);
         auto src    = FreeImageUtils::GetBitmap(image.m_BitmapData);
@@ -273,7 +278,8 @@ namespace Ame::Rhi
 
     void Image::Remove(uint32_t page)
     {
-        AME_LOG_ASSERT(m_ReferenceType == ImageReferenceType::MultiBitmap, "Image is not a bitmap array");
+        AME_LOG_ASSERT(m_ReferenceType == ImageReferenceType::MultiBitmap,
+                       "Image is not a bitmap array");
 
         auto bitmap = FreeImageUtils::GetBitmapArray(m_BitmapData);
         FreeImage_DeletePage(bitmap, page);
@@ -281,7 +287,8 @@ namespace Ame::Rhi
 
     Image Image::Lock(int page) const
     {
-        AME_LOG_ASSERT(m_ReferenceType == ImageReferenceType::MultiBitmap, "Image is not a bitmap array");
+        AME_LOG_ASSERT(m_ReferenceType == ImageReferenceType::MultiBitmap,
+                       "Image is not a bitmap array");
 
         auto bitmap = FreeImageUtils::GetBitmapArray(m_BitmapData);
         auto lock   = FreeImage_LockPage(bitmap, page);
@@ -290,8 +297,10 @@ namespace Ame::Rhi
 
     void Image::Unlock(const Image& image, bool changed) const
     {
-        AME_LOG_ASSERT(m_ReferenceType == ImageReferenceType::MultiBitmap, "Image is not a bitmap array");
-        AME_LOG_ASSERT(image.m_ReferenceType == ImageReferenceType::Local, "Source image is not a local bitmap");
+        AME_LOG_ASSERT(m_ReferenceType == ImageReferenceType::MultiBitmap,
+                       "Image is not a bitmap array");
+        AME_LOG_ASSERT(image.m_ReferenceType == ImageReferenceType::Local,
+                       "Source image is not a local bitmap");
 
         auto bitmap      = FreeImageUtils::GetBitmapArray(m_BitmapData);
         auto imageBitmap = FreeImageUtils::GetBitmap(image.m_BitmapData);
@@ -301,7 +310,8 @@ namespace Ame::Rhi
 
     bool Image::Move(int srcPage, int dstPage)
     {
-        AME_LOG_ASSERT(m_ReferenceType == ImageReferenceType::MultiBitmap, "Image is not a bitmap array");
+        AME_LOG_ASSERT(m_ReferenceType == ImageReferenceType::MultiBitmap,
+                       "Image is not a bitmap array");
 
         auto bitmap = FreeImageUtils::GetBitmapArray(m_BitmapData);
         return FreeImage_MovePage(bitmap, srcPage, dstPage);
@@ -309,7 +319,8 @@ namespace Ame::Rhi
 
     int Image::GetPagesCount() const
     {
-        AME_LOG_ASSERT(m_ReferenceType == ImageReferenceType::MultiBitmap, "Image is not a bitmap array");
+        AME_LOG_ASSERT(m_ReferenceType == ImageReferenceType::MultiBitmap,
+                       "Image is not a bitmap array");
 
         auto bitmap = FreeImageUtils::GetBitmapArray(m_BitmapData);
         return FreeImage_GetPageCount(bitmap);
@@ -337,8 +348,7 @@ namespace Ame::Rhi
                 case ImageReferenceType::MultiBitmap:
                     FreeImage_CloseMultiBitmap(FreeImageUtils::GetBitmapArray(m_BitmapData));
                     break;
-                default:
-                    std::unreachable();
+                default: std::unreachable();
                 }
             }
             catch (...)
@@ -350,9 +360,9 @@ namespace Ame::Rhi
 
     //
 
-    ImageMemory::ImageMemory(void* memory, void* bitmap, ImageFormat format) :
-        m_Memory(Image::Wrap(memory, format, ImageReferenceType::Memory, true)),
-        m_Image(Image::Wrap(bitmap, format, ImageReferenceType::Local, true))
+    ImageMemory::ImageMemory(void* memory, void* bitmap, ImageFormat format)
+        : m_Memory(Image::Wrap(memory, format, ImageReferenceType::Memory, true)),
+          m_Image(Image::Wrap(bitmap, format, ImageReferenceType::Local, true))
     {
     }
 
@@ -430,4 +440,4 @@ namespace Ame::Rhi
 
         return subresources;
     }
-} // namespace Ame::Rhi
+}

@@ -6,8 +6,9 @@
 
 namespace Ame::Scripting
 {
-    AmeSharpRuntimePlugin::AmeSharpRuntimePlugin() :
-        IPlugin({ "AmeSharp.Runtime", "01Pollux", "C# scripting plugin for Ame Engine", __DATE__ })
+    AmeSharpRuntimePlugin::AmeSharpRuntimePlugin()
+        : IPlugin(
+              { "AmeSharp.Runtime", "01Pollux", "C# scripting plugin for Ame Engine", __DATE__ })
     {
     }
 
@@ -31,6 +32,6 @@ namespace Ame::Scripting
             return false;
         }
     }
-} // namespace Ame::Scripting
+}
 
 AME_PLUGIN_EXPORT(Ame::Scripting::AmeSharpRuntimePlugin);

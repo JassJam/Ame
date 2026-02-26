@@ -30,4 +30,4 @@ namespace Ame::Editor
     {
         return m_CurrentProject;
     }
-} // namespace Ame::Editor
+}

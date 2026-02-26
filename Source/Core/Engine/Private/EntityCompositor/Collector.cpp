@@ -19,7 +19,9 @@ namespace Ame::Gfx
         }
     }
 
-    void EntityCollector::AddEntity(DrawInstanceType type, Ecs::IBaseRenderable* renderable, uint32_t instanceId)
+    void EntityCollector::AddEntity(DrawInstanceType      type,
+                                    Ecs::IBaseRenderable* renderable,
+                                    uint32_t              instanceId)
     {
         auto& commands = m_DrawCommands[std::to_underlying(type)];
         commands.emplace_back(renderable, instanceId);
@@ -36,7 +38,8 @@ namespace Ame::Gfx
     {
         for (auto& commands : m_DrawCommands)
         {
-            std::sort(commands.begin(), commands.end(),
+            std::sort(commands.begin(),
+                      commands.end(),
                       [&cameraTransform](auto& a, auto& b)
                       {
                           a.SetDistance(cameraTransform.GetPosition());
@@ -71,4 +74,4 @@ namespace Ame::Gfx
     {
         return m_Storage.get().GetWorld();
     }
-} // namespace Ame::Gfx
+}

@@ -24,4 +24,4 @@ namespace Ame::Ecs
 
         RegisterSignals(world);
     }
-} // namespace Ame::Ecs
+}

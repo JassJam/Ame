@@ -59,4 +59,4 @@ namespace Ame::Ecs
             [allCameras](const Math::Size2I& newSize)
             { allCameras.run(std::bind_back(OnWindowSizeChanged_UpdateCamera, newSize)); });
     }
-} // namespace Ame::Ecs
+}

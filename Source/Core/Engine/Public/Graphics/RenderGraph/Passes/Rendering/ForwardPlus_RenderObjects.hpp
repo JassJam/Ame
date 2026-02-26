@@ -8,7 +8,7 @@
 namespace Ame::Ecs
 {
     class World;
-} // namespace Ame::Ecs
+}
 
 namespace Ame::Gfx
 {
@@ -57,4 +57,4 @@ namespace Ame::Gfx
         PassData                    m_PassData;
         Ptr<Rhi::MaterialTechnique> m_Technique;
     };
-} // namespace Ame::Gfx
+}

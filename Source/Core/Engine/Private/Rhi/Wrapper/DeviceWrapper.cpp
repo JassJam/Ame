@@ -5,15 +5,18 @@
 
 // TODO:
 // Add MSAA swapchain support
-// Add auxiliary texture gl texture for swapchain support, since we can't use the swapchain texture directly
+// Add auxiliary texture gl texture for swapchain support, since we can't use the swapchain texture
+// directly
 namespace Ame::Rhi
 {
     Opt<DeviceWrapper> DeviceWrapper::Create(const DeviceCreateDesc& createDesc)
     {
         for (auto& type : createDesc.Types)
         {
-            auto deviceWrapper = std::visit(
-                VariantVisitor{ [&](const auto& deviceDesc) { return CreateImpl(createDesc, deviceDesc); } }, type);
+            auto deviceWrapper =
+                std::visit(VariantVisitor{ [&](const auto& deviceDesc)
+                                           { return CreateImpl(createDesc, deviceDesc); } },
+                           type);
             if (deviceWrapper)
             {
                 return deviceWrapper;
@@ -26,10 +29,12 @@ namespace Ame::Rhi
 
     //
 
-    DeviceWrapper::DeviceWrapper(Ptr<Dg::IEngineFactory> engineFactory, Ptr<Dg::IRenderDevice> renderDevice,
-                                 Ptr<Dg::IDeviceContext> deviceContext, UniquePtr<WindowWrapper> windowWrapper) :
-        m_EngineFactory(std::move(engineFactory)), m_RenderDevice(std::move(renderDevice)),
-        m_ImmediateContext(std::move(deviceContext)), m_WindowWrapper(std::move(windowWrapper))
+    DeviceWrapper::DeviceWrapper(Ptr<Dg::IEngineFactory>  engineFactory,
+                                 Ptr<Dg::IRenderDevice>   renderDevice,
+                                 Ptr<Dg::IDeviceContext>  deviceContext,
+                                 UniquePtr<WindowWrapper> windowWrapper)
+        : m_EngineFactory(std::move(engineFactory)), m_RenderDevice(std::move(renderDevice)),
+          m_ImmediateContext(std::move(deviceContext)), m_WindowWrapper(std::move(windowWrapper))
     {
     }
 
@@ -67,4 +72,4 @@ namespace Ame::Rhi
     {
         return m_WindowWrapper.get();
     }
-} // namespace Ame::Rhi
+}

@@ -13,8 +13,9 @@ namespace Ame::Rg
     class Pass
     {
     public:
-        using BuildFuncType   = std::move_only_function<void(Resolver&)>;
-        using ExecuteFuncType = std::move_only_function<void(const ResourceStorage&, Dg::IDeviceContext*)>;
+        using BuildFuncType = std::move_only_function<void(Resolver&)>;
+        using ExecuteFuncType =
+            std::move_only_function<void(const ResourceStorage&, Dg::IDeviceContext*)>;
 
         Pass() = default;
 
@@ -83,7 +84,8 @@ namespace Ame::Rg
         /// <summary>
         /// Get the color of the pass
         /// </summary>
-        [[nodiscard]] const Math::Color4& GetColor() const
+        [[nodiscard]]
+        const Math::Color4& GetColor() const
         {
             return m_Color;
         }
@@ -91,7 +93,8 @@ namespace Ame::Rg
         /// <summary>
         /// Get the color of the pass
         /// </summary>
-        [[nodiscard]] const float* GetColorPtr() const
+        [[nodiscard]]
+        const float* GetColorPtr() const
         {
             return m_Color.a() != 0.f ? m_Color.data() : nullptr;
         }
@@ -99,7 +102,8 @@ namespace Ame::Rg
         /// <summary>
         /// Get the name of the pass
         /// </summary>
-        [[nodiscard]] StringView GetName() const
+        [[nodiscard]]
+        StringView GetName() const
         {
             return m_Name;
         }
@@ -107,7 +111,8 @@ namespace Ame::Rg
         /// <summary>
         /// Get the color of the pass
         /// </summary>
-        [[nodiscard]] Math::Color4 GetColor() const
+        [[nodiscard]]
+        Math::Color4 GetColor() const
         {
             return {};
         }
@@ -115,7 +120,8 @@ namespace Ame::Rg
         /// <summary>
         /// Get the color of the pass
         /// </summary>
-        [[nodiscard]] const float* GetColorPtr() const
+        [[nodiscard]]
+        const float* GetColorPtr() const
         {
             return nullptr;
         }
@@ -123,7 +129,8 @@ namespace Ame::Rg
         /// <summary>
         /// Get the name of the pass
         /// </summary>
-        [[nodiscard]] StringView GetName() const
+        [[nodiscard]]
+        StringView GetName() const
         {
             return "";
         }
@@ -132,7 +139,8 @@ namespace Ame::Rg
         /// <summary>
         /// Get the flags of the pass
         /// </summary>
-        [[nodiscard]] PassFlags GetFlags() const
+        [[nodiscard]]
+        PassFlags GetFlags() const
         {
             return m_Flags;
         }
@@ -140,7 +148,8 @@ namespace Ame::Rg
         /// <summary>
         /// Build render pass
         /// </summary>
-        [[nodiscard]] void DoBuild(Resolver& resolver)
+        [[nodiscard]]
+        void DoBuild(Resolver& resolver)
         {
             if (m_BuildFunc) [[likely]]
             {
@@ -172,11 +181,13 @@ namespace Ame::Rg
 
     //
 
-    template<typename Ty> class TypedPass : public Pass
+    template<typename Ty>
+    class TypedPass : public Pass
     {
     public:
-        using BuildFuncType   = std::move_only_function<void(Ty&, Resolver&)>;
-        using ExecuteFuncType = std::move_only_function<void(const Ty&, const ResourceStorage&, Dg::IDeviceContext*)>;
+        using BuildFuncType = std::move_only_function<void(Ty&, Resolver&)>;
+        using ExecuteFuncType =
+            std::move_only_function<void(const Ty&, const ResourceStorage&, Dg::IDeviceContext*)>;
 
         /// <summary>
         /// Initializes a build callback
@@ -200,7 +211,8 @@ namespace Ame::Rg
         Ty m_Data;
     };
 
-    template<> class TypedPass<void> : public Pass
+    template<>
+    class TypedPass<void> : public Pass
     {
     public:
         using BuildFuncType   = Pass::BuildFuncType;
@@ -226,4 +238,4 @@ namespace Ame::Rg
     };
 
     using UntypedPass = TypedPass<void>;
-} // namespace Ame::Rg
+}

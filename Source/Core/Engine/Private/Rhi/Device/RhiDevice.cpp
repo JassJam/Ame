@@ -6,4 +6,4 @@ namespace Ame::Rhi
     {
         return AmeCreate(RhiDeviceImpl, createDesc);
     }
-} // namespace Ame::Rhi
+}

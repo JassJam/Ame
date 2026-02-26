@@ -56,27 +56,20 @@ namespace Ame::Editor
         auto path = m_SolutionRootPath;
         switch (type)
         {
-        case ProjectDataPath::SolutionRoot:
-            break;
+        case ProjectDataPath::SolutionRoot: break;
         case ProjectDataPath::Solution:
             path /= GetProperty(String{ ProjectPropNames::Name })->get_value<String>() + ".ame";
             break;
-        case ProjectDataPath::ProjectRoot:
-            path /= ".ame";
-            break;
-        case ProjectDataPath::Cache:
-            path /= ".ame/Cache";
-            break;
-        case ProjectDataPath::ProjectData:
-            path /= ".ame/ProjectData";
-            break;
-        default:
-            std::unreachable();
+        case ProjectDataPath::ProjectRoot: path /= ".ame"; break;
+        case ProjectDataPath::Cache      : path /= ".ame/Cache"; break;
+        case ProjectDataPath::ProjectData: path /= ".ame/ProjectData"; break;
+        default                          : std::unreachable();
         }
         return path;
     }
 
-    auto ProjectImpl::ResolvePath(ProjectDataPath type, const String& path) const -> std::filesystem::path
+    auto ProjectImpl::ResolvePath(ProjectDataPath type, const String& path) const
+        -> std::filesystem::path
     {
         return ResolvePath(type) / path;
     }
@@ -96,4 +89,4 @@ namespace Ame::Editor
     {
         return m_EventListener;
     }
-} // namespace Ame::Editor
+}

@@ -59,29 +59,38 @@ namespace Ame::ImGuiUtils
     /// <summary>
     /// Center the cursor position.
     /// </summary>
-    AME_ENGINE_API void CenterCursor(bool region, ImVec2 offset = {}, bool centerX = true, bool centerY = false);
+    AME_ENGINE_API void CenterCursor(bool   region,
+                                     ImVec2 offset  = {},
+                                     bool   centerX = true,
+                                     bool   centerY = false);
 
     /// <summary>
     /// Center the text position.
     /// </summary>
-    AME_ENGINE_API void CenterText(const char* text, bool region, bool centerX = true, bool centerY = false);
+    AME_ENGINE_API void CenterText(const char* text,
+                                   bool        region,
+                                   bool        centerX = true,
+                                   bool        centerY = false);
 
     //
 
     /// <summary>
     /// Push a font scale.
     /// </summary>
-    [[nodiscard]] AME_ENGINE_API float PushFontScale(float scale);
+    [[nodiscard]]
+    AME_ENGINE_API float PushFontScale(float scale);
 
     /// <summary>
     /// Push a font scale while multiplying with old value.
     /// </summary>
-    [[nodiscard]] AME_ENGINE_API float PushFontScaleMul(float scale);
+    [[nodiscard]]
+    AME_ENGINE_API float PushFontScaleMul(float scale);
 
     /// <summary>
     /// Push a font scale while adding with old value.
     /// </summary>
-    [[nodiscard]] AME_ENGINE_API float PushFontScaleMul(float scale);
+    [[nodiscard]]
+    AME_ENGINE_API float PushFontScaleMul(float scale);
 
     /// <summary>
     /// Pop a font scale.
@@ -93,14 +102,16 @@ namespace Ame::ImGuiUtils
     /// <summary>
     /// Draw label with the given color.
     /// </summary>
-    AME_ENGINE_API void DrawLabel(const String& label, const ImColor& color,
-                                  const ImVec2& maxSize = { -FLT_MIN, -FLT_MIN });
+    AME_ENGINE_API void DrawLabel(const String&  label,
+                                  const ImColor& color,
+                                  const ImVec2&  maxSize = { -FLT_MIN, -FLT_MIN });
 
     /// <summary>
     /// Draw label with the given color.
     /// </summary>
-    AME_ENGINE_API void DrawLabel(const char* label, const ImColor& color,
-                                  const ImVec2& maxSize = { -FLT_MIN, -FLT_MIN });
+    AME_ENGINE_API void DrawLabel(const char*    label,
+                                  const ImColor& color,
+                                  const ImVec2&  maxSize = { -FLT_MIN, -FLT_MIN });
 
     //
 
@@ -130,7 +141,8 @@ namespace Ame::ImGuiUtils
     /// <summary>
     /// Begins a component header with the given label and togglable state.
     /// </summary>
-    [[nodiscard]] inline ComponentHeaderInfo BeginComponentHeader(const char* label, bool* togglable = nullptr)
+    [[nodiscard]]
+    inline ComponentHeaderInfo BeginComponentHeader(const char* label, bool* togglable = nullptr)
     {
         ComponentHeaderInfo ret;
         const bool          isActive = togglable ? *togglable : true;
@@ -138,7 +150,9 @@ namespace Ame::ImGuiUtils
         {
             // Check if the component is disabled
             imcxx::disabled Uisabled{ !isActive };
-            ret.IsOpen = ImGui::TreeNodeEx(label, ImGuiTreeNodeFlags_AllowOverlap | ImGuiTreeNodeFlags_Framed);
+            ret.IsOpen =
+                ImGui::TreeNodeEx(label,
+                                  ImGuiTreeNodeFlags_AllowOverlap | ImGuiTreeNodeFlags_Framed);
         }
 
         // Draw the settings button
@@ -158,7 +172,8 @@ namespace Ame::ImGuiUtils
         {
             using namespace EnumBitOperators;
             for (auto& [buttonName, action] :
-                 { std::pair{ "Copy", ComponentActionType::Copy }, std::pair{ "Paste", ComponentActionType::Paste },
+                 { std::pair{ "Copy", ComponentActionType::Copy },
+                   std::pair{ "Paste", ComponentActionType::Paste },
                    std::pair{ "Reset", ComponentActionType::Reset },
                    std::pair{ "Remove", ComponentActionType::Remove } })
             {
@@ -197,7 +212,9 @@ namespace Ame::ImGuiUtils
     /// <summary>
     /// Draws a component label with the given tooltip.
     /// </summary>
-    AME_ENGINE_API void DrawComponentLabel(const char* label, bool sameLine = true, float propertyNameWidth = 0.25f);
+    AME_ENGINE_API void DrawComponentLabel(const char* label,
+                                           bool        sameLine          = true,
+                                           float       propertyNameWidth = 0.25f);
 
     enum class DrawVectorType : uint8_t
     {
@@ -208,7 +225,8 @@ namespace Ame::ImGuiUtils
 
     inline constexpr const char* DrawVectorPositionNames[] = { "X", "Y", "Z", "W" };
 
-    template<Math::VectorType _Ty> struct DrawVectorData
+    template<Math::VectorType _Ty>
+    struct DrawVectorData
     {
         _Ty& Value = nullptr;
 
@@ -246,8 +264,9 @@ namespace Ame::ImGuiUtils
             textSize += ImGui::CalcTextSize(drawData.Names[i]).x;
         }
 
-        float regionWidth = ((ImGui::GetContentRegionAvail().x - textSize) / _Ty::length()) -
-                            (ImGui::GetStyle().ItemSpacing.x + ImGui::GetStyle().FramePadding.x + 1.5f);
+        float regionWidth =
+            ((ImGui::GetContentRegionAvail().x - textSize) / _Ty::length()) -
+            (ImGui::GetStyle().ItemSpacing.x + ImGui::GetStyle().FramePadding.x + 1.5f);
 
         for (typename _Ty::length_type i = 0; i < _Ty::length(); i++)
         {
@@ -269,13 +288,17 @@ namespace Ame::ImGuiUtils
             {
                 if constexpr (std::is_same_v<typename _Ty::value_type, float>)
                 {
-                    changed |= ImGui::DragFloat("", &drawData.Value[i], 0.1f, drawData.Min, drawData.Max);
+                    changed |=
+                        ImGui::DragFloat("", &drawData.Value[i], 0.1f, drawData.Min, drawData.Max);
                 }
                 else if constexpr (std::is_same_v<typename _Ty::value_type, int32_t> ||
                                    std::is_same_v<typename _Ty::value_type, uint32_t>)
                 {
-                    changed |=
-                        ImGui::DragInt("", std::bit_cast<int*>(&drawData.Value[i]), 1, drawData.Min, drawData.Max);
+                    changed |= ImGui::DragInt("",
+                                              std::bit_cast<int*>(&drawData.Value[i]),
+                                              1,
+                                              drawData.Min,
+                                              drawData.Max);
                 }
             }
             else if constexpr (DrawType == DrawVectorType::Input)
@@ -285,7 +308,8 @@ namespace Ame::ImGuiUtils
                     changed |= ImGui::InputFloat("", &drawData.Value[i]);
                     if (drawData.Min < drawData.Max)
                     {
-                        drawData.Value[i] = std::clamp(drawData.Value[i], drawData.Min, drawData.Max);
+                        drawData.Value[i] =
+                            std::clamp(drawData.Value[i], drawData.Min, drawData.Max);
                     }
                 }
                 else if constexpr (std::is_same_v<typename _Ty::value_type, int32_t> ||
@@ -294,7 +318,8 @@ namespace Ame::ImGuiUtils
                     changed |= ImGui::InputInt("", std::bit_cast<int*>(&drawData.Value[i]));
                     if (drawData.Min < drawData.Max)
                     {
-                        drawData.Value[i] = std::clamp(drawData.Value[i], drawData.Min, drawData.Max);
+                        drawData.Value[i] =
+                            std::clamp(drawData.Value[i], drawData.Min, drawData.Max);
                     }
                 }
             }
@@ -302,13 +327,16 @@ namespace Ame::ImGuiUtils
             {
                 if constexpr (std::is_same_v<typename _Ty::value_type, float>)
                 {
-                    changed |= ImGui::SliderFloat("", &drawData.Value[i], drawData.Min, drawData.Max);
+                    changed |=
+                        ImGui::SliderFloat("", &drawData.Value[i], drawData.Min, drawData.Max);
                 }
                 else if constexpr (std::is_same_v<typename _Ty::value_type, int32_t> ||
                                    std::is_same_v<typename _Ty::value_type, uint32_t>)
                 {
-                    changed |=
-                        ImGui::SliderInt("", std::bit_cast<int*>(&drawData.Value[i]), drawData.Min, drawData.Max);
+                    changed |= ImGui::SliderInt("",
+                                                std::bit_cast<int*>(&drawData.Value[i]),
+                                                drawData.Min,
+                                                drawData.Max);
                 }
             }
 
@@ -329,7 +357,8 @@ namespace Ame::ImGuiUtils
     /// If Flags is 0, the default flags are used.
     /// Flags are either ImGuiSliderFlags for slider+drag or ImGuiInputTextFlags for input.
     /// </summary>
-    template<Math::VectorType _Ty> static bool DragVectorComponent(DrawVectorData<_Ty> drawData)
+    template<Math::VectorType _Ty>
+    static bool DragVectorComponent(DrawVectorData<_Ty> drawData)
     {
         return DrawVectorComponent<DrawVectorType::Drag>(std::move(drawData));
     }
@@ -341,7 +370,8 @@ namespace Ame::ImGuiUtils
     /// If Flags is 0, the default flags are used.
     /// Flags are either ImGuiSliderFlags for slider+drag or ImGuiInputTextFlags for input.
     /// </summary>
-    template<Math::VectorType _Ty> static bool DragVectorComponent(_Ty& value)
+    template<Math::VectorType _Ty>
+    static bool DragVectorComponent(_Ty& value)
     {
         return DrawVectorComponent<DrawVectorType::Drag>(DrawVectorData(value));
     }
@@ -353,7 +383,8 @@ namespace Ame::ImGuiUtils
     /// If Flags is 0, the default flags are used.
     /// Flags are either ImGuiSliderFlags for slider+drag or ImGuiInputTextFlags for input.
     /// </summary>
-    template<Math::VectorType _Ty> static bool InputVectorComponent(DrawVectorData<_Ty> drawData)
+    template<Math::VectorType _Ty>
+    static bool InputVectorComponent(DrawVectorData<_Ty> drawData)
     {
         return DrawVectorComponent<DrawVectorType::Input>(std::move(drawData));
     }
@@ -365,7 +396,8 @@ namespace Ame::ImGuiUtils
     /// If Flags is 0, the default flags are used.
     /// Flags are either ImGuiSliderFlags for slider+drag or ImGuiInputTextFlags for input.
     /// </summary>
-    template<Math::VectorType _Ty> static bool InputVectorComponent(_Ty& value)
+    template<Math::VectorType _Ty>
+    static bool InputVectorComponent(_Ty& value)
     {
         return DrawVectorComponent<DrawVectorType::Input>(DrawVectorData(value));
     }
@@ -377,7 +409,8 @@ namespace Ame::ImGuiUtils
     /// If Flags is 0, the default flags are used.
     /// Flags are either ImGuiSliderFlags for slider+drag or ImGuiInputTextFlags for input.
     /// </summary>
-    template<Math::VectorType _Ty> static bool SliderVectorComponent(DrawVectorData<_Ty> drawData)
+    template<Math::VectorType _Ty>
+    static bool SliderVectorComponent(DrawVectorData<_Ty> drawData)
     {
         return DrawVectorComponent<DrawVectorType::Slider>(std::move(drawData));
     }
@@ -389,7 +422,8 @@ namespace Ame::ImGuiUtils
     /// If Flags is 0, the default flags are used.
     /// Flags are either ImGuiSliderFlags for slider+drag or ImGuiInputTextFlags for input.
     /// </summary>
-    template<Math::VectorType _Ty> static bool SliderVectorComponent(_Ty& value)
+    template<Math::VectorType _Ty>
+    static bool SliderVectorComponent(_Ty& value)
     {
         return DrawVectorComponent<DrawVectorType::Slider>(DrawVectorData(value));
     }
@@ -397,20 +431,22 @@ namespace Ame::ImGuiUtils
     /// <summary>
     /// Draw a color picker.
     /// </summary>
-    AME_ENGINE_API bool DrawColorPicker(const char* name, Math::Color4& color,
-                                        ImGuiColorEditFlags flags = ImGuiColorEditFlags_NoSidePreview |
-                                                                    ImGuiColorEditFlags_NoSmallPreview |
-                                                                    ImGuiColorEditFlags_AlphaBar |
-                                                                    ImGuiColorEditFlags_HDR);
+    AME_ENGINE_API bool DrawColorPicker(
+        const char*         name,
+        Math::Color4&       color,
+        ImGuiColorEditFlags flags = ImGuiColorEditFlags_NoSidePreview |
+                                    ImGuiColorEditFlags_NoSmallPreview |
+                                    ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_HDR);
 
     /// <summary>
     /// Draw a color picker.
     /// </summary>
-    AME_ENGINE_API bool DrawColorPicker(const char* Name, Math::Color3& Color,
-                                        ImGuiColorEditFlags Flags = ImGuiColorEditFlags_NoSidePreview |
-                                                                    ImGuiColorEditFlags_NoSmallPreview |
-                                                                    ImGuiColorEditFlags_AlphaBar |
-                                                                    ImGuiColorEditFlags_HDR);
+    AME_ENGINE_API bool DrawColorPicker(
+        const char*         Name,
+        Math::Color3&       Color,
+        ImGuiColorEditFlags Flags = ImGuiColorEditFlags_NoSidePreview |
+                                    ImGuiColorEditFlags_NoSmallPreview |
+                                    ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_HDR);
 
     //
 
@@ -427,13 +463,21 @@ namespace Ame::ImGuiUtils
     /// <summary>
     /// Draw basic shape icon to draw list
     /// </summary>
-    AME_ENGINE_API void DrawIcon(ImDrawList* drawList, const ImVec2& size, BasicIconType type, bool filled, ImU32 color,
-                                 ImU32 fillColor);
+    AME_ENGINE_API void DrawIcon(ImDrawList*   drawList,
+                                 const ImVec2& size,
+                                 BasicIconType type,
+                                 bool          filled,
+                                 ImU32         color,
+                                 ImU32         fillColor);
 
     /// <summary>
     /// Draw basic shape icon to current window's draw list
     /// </summary>
-    inline void DrawIcon(const ImVec2& size, BasicIconType type, bool filled, ImU32 color, ImU32 fillColor)
+    inline void DrawIcon(const ImVec2& size,
+                         BasicIconType type,
+                         bool          filled,
+                         ImU32         color,
+                         ImU32         fillColor)
     {
         DrawIcon(ImGui::GetWindowDrawList(), size, type, filled, color, fillColor);
     }
@@ -459,4 +503,4 @@ namespace Ame::ImGuiUtils
     {
         return Math::Color3(color.Value.x, color.Value.y, color.Value.z);
     }
-} // namespace Ame::ImGuiUtils
+}

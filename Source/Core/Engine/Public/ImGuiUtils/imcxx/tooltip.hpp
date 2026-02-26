@@ -34,4 +34,4 @@ namespace imcxx
             ImGui::EndTooltip();
         }
     };
-} // namespace imcxx
+}

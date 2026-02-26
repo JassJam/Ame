@@ -8,8 +8,9 @@
 
 namespace Ame::Editor
 {
-    EntityHierarchyDisplayer::EntityHierarchyDisplayer(Ecs::RuntimeScene* scene, Ecs::Entity& entityToRename) noexcept :
-        m_RuntimeScene(scene), m_EntityToRename(entityToRename)
+    EntityHierarchyDisplayer::EntityHierarchyDisplayer(Ecs::RuntimeScene* scene,
+                                                       Ecs::Entity&       entityToRename) noexcept
+        : m_RuntimeScene(scene), m_EntityToRename(entityToRename)
     {
     }
 
@@ -24,7 +25,9 @@ namespace Ame::Editor
         }
         catch (const std::exception& e)
         {
-            AME_LOG_ERROR(std::format("Error while executing deferred task: '{}' for hierarchy editor.", e.what()));
+            AME_LOG_ERROR(
+                std::format("Error while executing deferred task: '{}' for hierarchy editor.",
+                            e.what()));
         }
     }
 
@@ -180,11 +183,13 @@ namespace Ame::Editor
 
     //
 
-    void EntityHierarchyDisplayer::DisplayEdit(const Ecs::Entity& selectedEntity, const Ecs::Entity& parentEntity,
-                                               bool editable)
+    void EntityHierarchyDisplayer::DisplayEdit(const Ecs::Entity& selectedEntity,
+                                               const Ecs::Entity& parentEntity,
+                                               bool               editable)
     {
-        ImGuiTableFlags tableFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth |
-                                     ImGuiTreeNodeFlags_FramePadding | ImGuiTreeNodeFlags_SpanFullWidth;
+        ImGuiTableFlags tableFlags =
+            ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth |
+            ImGuiTreeNodeFlags_FramePadding | ImGuiTreeNodeFlags_SpanFullWidth;
 
         // Create filter to check if entity has children.
         auto children = parentEntity.GetChildren();
@@ -212,7 +217,8 @@ namespace Ame::Editor
         auto& name = parentEntity.GetName();
 
         ImGui::SetNextItemAllowOverlap();
-        imcxx::tree_node hierachyNode(std::bit_cast<void*>(parentEntity->raw_id()), tableFlags,
+        imcxx::tree_node hierachyNode(std::bit_cast<void*>(parentEntity->raw_id()),
+                                      tableFlags,
                                       m_EntityToRename == parentEntity ? "" : name.c_str());
 
         bool editingName = false;
@@ -220,11 +226,15 @@ namespace Ame::Editor
             // If we clicked F2 or double click on this entity, set it as the entity to rename.
             if (editable && ImGui::IsItemFocused())
             {
-                if (ImGui::IsKeyPressed(ImGuiKey_F2) || ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+                if (ImGui::IsKeyPressed(ImGuiKey_F2) ||
+                    ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
                 {
                     m_EntityToRename = parentEntity;
-                    strncpy_s(m_RenameBuffer, name.c_str(),
-                              name.size() < std::size(m_RenameBuffer) ? name.size() : (std::size(m_RenameBuffer) - 1));
+                    strncpy_s(m_RenameBuffer,
+                              name.c_str(),
+                              name.size() < std::size(m_RenameBuffer)
+                                  ? name.size()
+                                  : (std::size(m_RenameBuffer) - 1));
                 }
                 else if (ImGui::IsKeyPressed(ImGuiKey_Delete))
                 {
@@ -244,12 +254,16 @@ namespace Ame::Editor
                     editingName = true;
 
                     // If user pressed enter, or clicked outside the text box, rename the entity.
-                    if (ImGui::InputText("##Name", m_RenameBuffer, static_cast<int>(std::size(m_RenameBuffer)),
-                                         ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_EnterReturnsTrue) ||
+                    if (ImGui::InputText("##Name",
+                                         m_RenameBuffer,
+                                         static_cast<int>(std::size(m_RenameBuffer)),
+                                         ImGuiInputTextFlags_AutoSelectAll |
+                                             ImGuiInputTextFlags_EnterReturnsTrue) ||
                         (ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow) &&
                          ImGui::IsMouseClicked(ImGuiMouseButton_Left)))
                     {
-                        m_DeferredTask   = [this, parentEntity]() mutable { parentEntity.SetName(m_RenameBuffer); };
+                        m_DeferredTask = [this, parentEntity]() mutable
+                        { parentEntity.SetName(m_RenameBuffer); };
                         m_EntityToRename = {};
                     }
                 }
@@ -258,7 +272,8 @@ namespace Ame::Editor
 
         overrideColor.pop(isDisabled ? 1 : 0);
 
-        if (ImGui::IsItemHovered(ImGuiHoveredFlags_None) && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+        if (ImGui::IsItemHovered(ImGuiHoveredFlags_None) &&
+            ImGui::IsMouseClicked(ImGuiMouseButton_Left))
         {
             // TODO: Select entity
         }
@@ -336,10 +351,11 @@ namespace Ame::Editor
         return entity;
     }
 
-    Ecs::Entity EntityHierarchyDisplayer::HelperCreateEntityWithTransform(const Ecs::Entity& parentEntity)
+    Ecs::Entity EntityHierarchyDisplayer::HelperCreateEntityWithTransform(
+        const Ecs::Entity& parentEntity)
     {
         auto entity = HelperCreateEntity(parentEntity);
         entity->add<Ecs::TransformComponent>();
         return entity;
     }
-} // namespace Ame::Editor
+}

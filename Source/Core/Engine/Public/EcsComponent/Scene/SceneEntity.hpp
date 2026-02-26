@@ -24,4 +24,4 @@ namespace Ame::Ecs
     struct ActiveSceneEntityTag
     {
     };
-} // namespace Ame::Ecs
+}

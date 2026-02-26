@@ -11,12 +11,18 @@ namespace Ame::Gfx
 
     inline const Rg::ResourceId c_RGFrameData{ "_FrameData" }; // cbuffer FrameDataBuffer
 
-    inline const Rg::ResourceId c_RGTransformTable{ "_Transforms" }; // StructuredBuffer<Transform> Transforms
+    inline const Rg::ResourceId c_RGTransformTable{
+        "_Transforms"
+    }; // StructuredBuffer<Transform> Transforms
     inline const Rg::ResourceId c_RGRenderInstanceTable{
         "_RenderInstances"
     }; // StructuredBuffer<RenderInstance> RenderInstances
-    inline const Rg::ResourceId c_RGLightInstanceTable{ "_LightInstances" }; // StructuredBuffer<Light> LightInstances
-    inline const Rg::ResourceId c_RGLightIdInstanceTable{ "_LightIdInstances" }; // StructuredBuffer<uint> LightIndices
+    inline const Rg::ResourceId c_RGLightInstanceTable{
+        "_LightInstances"
+    }; // StructuredBuffer<Light> LightInstances
+    inline const Rg::ResourceId c_RGLightIdInstanceTable{
+        "_LightIdInstances"
+    }; // StructuredBuffer<uint> LightIndices
 
     //
 
@@ -30,10 +36,14 @@ namespace Ame::Gfx
     inline const Rg::ResourceId c_RGLightHeads_Transparent{
         "_LightHeads_Transparent"
     }; // RWTexture2D<uint2> | Texture2D<uint>
-    inline const Rg::ResourceId c_RGLightHeads_Opaque{ "_LightHeads_Opaque" }; // RWTexture2D<uint2> | Texture2D<uint>
+    inline const Rg::ResourceId c_RGLightHeads_Opaque{
+        "_LightHeads_Opaque"
+    }; // RWTexture2D<uint2> | Texture2D<uint>
 
 #ifndef AME_DIST
-    inline const Rg::ResourceId c_RGLightDebugTextures{ "_LightDebugTextures" }; // RWTexture2D<float>
+    inline const Rg::ResourceId c_RGLightDebugTextures{
+        "_LightDebugTextures"
+    }; // RWTexture2D<float>
 #endif
 
     //
@@ -59,4 +69,4 @@ namespace Ame::Gfx
     }; // Srb: [LinkedLightIndices, LightGrid]
 
     inline const Rg::ResourceId c_RGEntityEmptyVertexBuffers{ "_EEVB" };
-} // namespace Ame::Gfx
+}

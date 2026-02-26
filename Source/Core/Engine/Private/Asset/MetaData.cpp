@@ -37,8 +37,9 @@ namespace Ame::Asset
     UId AssetMetaDataDef::GetUId() const noexcept
     {
         auto Iter = m_MetaData.find("Guid");
-        return Iter != m_MetaData.not_found() ? UIdUtils::FromString(Iter->second.get_value<String>())
-                                              : UIdUtils::Null();
+        return Iter != m_MetaData.not_found()
+                   ? UIdUtils::FromString(Iter->second.get_value<String>())
+                   : UIdUtils::Null();
     }
 
     void AssetMetaDataDef::SetGuid(const UId& uid) noexcept
@@ -80,7 +81,8 @@ namespace Ame::Asset
 
     std::filesystem::path AssetMetaDataDef::GetAssetPath() const
     {
-        return FileSystem::ConvertToUnixPath(std::filesystem::path(GetMetaPath()).replace_extension(""));
+        return FileSystem::ConvertToUnixPath(
+            std::filesystem::path(GetMetaPath()).replace_extension(""));
     }
 
     std::filesystem::path AssetMetaDataDef::GetMetaPath() const
@@ -125,4 +127,4 @@ namespace Ame::Asset
             depsnode.push_back({ "", boost::property_tree::ptree(std::move(dependency)) });
         }
     }
-} // namespace Ame::Asset
+}

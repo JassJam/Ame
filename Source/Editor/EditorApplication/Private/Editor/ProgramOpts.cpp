@@ -18,43 +18,53 @@ namespace Ame
         programOpts.add_options()("help", "Produce help message")(
 
             "custom_titlebar,ctb",
-            bpo::value<bool>()->default_value(true)->notifier([&](bool val) { windowCreateDesc.CustomTitleBar = val; }),
+            bpo::value<bool>()->default_value(true)->notifier(
+                [&](bool val) { windowCreateDesc.CustomTitleBar = val; }),
             "Run maximized")(
 
             "maximized,m",
-            bpo::value<bool>()->default_value(false)->notifier([&](bool val) { windowCreateDesc.Maximized = val; }),
+            bpo::value<bool>()->default_value(false)->notifier(
+                [&](bool val) { windowCreateDesc.Maximized = val; }),
             "Run maximized")(
 
             "fullscreen",
-            bpo::value<bool>()->default_value(false)->notifier([&](bool val) { windowCreateDesc.FullScreen = val; }),
+            bpo::value<bool>()->default_value(false)->notifier(
+                [&](bool val) { windowCreateDesc.FullScreen = val; }),
             "Run in fullscreen mode")(
 
-            "width,w", bpo::value<int>()->default_value(1280)->notifier([&](int val) { windowCreateDesc.Width = val; }),
+            "width,w",
+            bpo::value<int>()->default_value(1280)->notifier([&](int val)
+                                                             { windowCreateDesc.Width = val; }),
             "Set window width")(
 
             "height,h",
-            bpo::value<int>()->default_value(720)->notifier([&](int val) { windowCreateDesc.Height = val; }),
+            bpo::value<int>()->default_value(720)->notifier([&](int val)
+                                                            { windowCreateDesc.Height = val; }),
             "Set window height")(
 
             "start-in-middle,sim",
-            bpo::value<bool>()->default_value(true)->notifier([&](bool val) { windowCreateDesc.StartInMiddle = val; }),
+            bpo::value<bool>()->default_value(true)->notifier(
+                [&](bool val) { windowCreateDesc.StartInMiddle = val; }),
             "Start window in the middle of the screen")(
 
             "project-path,p",
-            bpo::value<String>()->notifier([&](String val) { projectConfig->ProjectPath = std::move(val); }),
+            bpo::value<String>()->notifier([&](String val)
+                                           { projectConfig->ProjectPath = std::move(val); }),
             "Project path (containing .neon file) to load")(
 
             "new-project-name,n",
-            bpo::value<String>()->notifier([&](String val) { projectConfig->ProjectName = std::move(val); }),
+            bpo::value<String>()->notifier([&](String val)
+                                           { projectConfig->ProjectName = std::move(val); }),
             "Creates a new project with name");
         return programOpts;
     }
 
     bool EditorApplicationConfig::Parse(int argc, char** argv)
     {
-        Window::WindowCreateDesc windowCreateDesc{
-            .Title = "Ame Editor", .Width = 1280, .Height = 720, .CustomTitleBar = true
-        };
+        Window::WindowCreateDesc windowCreateDesc{ .Title          = "Ame Editor",
+                                                   .Width          = 1280,
+                                                   .Height         = 720,
+                                                   .CustomTitleBar = true };
 
         auto               programOpts = GetProgramOptions(windowCreateDesc, *this);
         bpo::variables_map programVars;
@@ -85,11 +95,13 @@ namespace Ame
         //
 
         Rhi::DeviceCreateDesc rhiDeviceDesc{
-            .Types{ Rhi::DeviceCreateDescD3D12{}, Rhi::DeviceCreateDescVulkan{},
-                    Rhi::DeviceCreateDescD3D11{} }, // OpenGL is not supported as structured buffer and combined texture
-                                                    // is too much hassle
-            .Surface = Rhi::RenderSurfaceDesc{ Window::CreateWindow(
-                Window::WindowType::DesktopWindow, std::move(windowCreateDesc)) },
+            .Types{ Rhi::DeviceCreateDescD3D12{},
+                    Rhi::DeviceCreateDescVulkan{},
+                    Rhi::DeviceCreateDescD3D11{} }, // OpenGL is not supported as structured buffer
+                                                    // and combined texture is too much hassle
+            .Surface =
+                Rhi::RenderSurfaceDesc{ Window::CreateWindow(Window::WindowType::DesktopWindow,
+                                                             std::move(windowCreateDesc)) },
         };
 
         auto& loggerStreams = Application.Engine.CoreConfig.LoggerDesc.Streams;
@@ -97,7 +109,8 @@ namespace Ame
         loggerStreams.emplace_back(std::make_unique<Log::MsvcDebugStream>());
         loggerStreams.emplace_back(std::make_unique<Log::ConsoleStream>());
 
-        Application.Engine.RhiConfig = Interfaces::RhiModuleConfig{ .RhiDeviceDesc = std::move(rhiDeviceDesc) };
+        Application.Engine.RhiConfig =
+            Interfaces::RhiModuleConfig{ .RhiDeviceDesc = std::move(rhiDeviceDesc) };
 
         Application.Engine.EcsConfig.emplace();
         Application.Engine.GraphicsConfig.emplace();
@@ -114,4 +127,4 @@ namespace Ame
         }
         return editorConfig;
     }
-} // namespace Ame
+}

@@ -5,7 +5,8 @@
 
 namespace std
 {
-    template<> struct hash<Ame::Rhi::ShaderCreateInfoX>
+    template<>
+    struct hash<Ame::Rhi::ShaderCreateInfoX>
     {
         size_t operator()(const Ame::Rhi::ShaderCreateInfoX& createInfo) const
         {
@@ -16,11 +17,15 @@ namespace std
             }
             if (createInfo.SourceCode())
             {
-                Dg::HashCombine(hash, Dg::ComputeHashRaw(createInfo.SourceCode(), createInfo.SourceCodeLength()));
+                Dg::HashCombine(
+                    hash,
+                    Dg::ComputeHashRaw(createInfo.SourceCode(), createInfo.SourceCodeLength()));
             }
             else if (createInfo.ByteCodeSize())
             {
-                Dg::HashCombine(hash, Dg::ComputeHashRaw(createInfo.ByteCode(), createInfo.ByteCodeSize()));
+                Dg::HashCombine(
+                    hash,
+                    Dg::ComputeHashRaw(createInfo.ByteCode(), createInfo.ByteCodeSize()));
             }
             Dg::HashCombine(hash, createInfo.EntryPoint());
             for (const auto& [name, value] : createInfo.Macros())
@@ -53,7 +58,8 @@ namespace std
 
     //
 
-    template<> struct hash<Ame::Rhi::MaterialShaderSourceStorage>
+    template<>
+    struct hash<Ame::Rhi::MaterialShaderSourceStorage>
     {
         size_t operator()(const Ame::Rhi::MaterialShaderSourceStorage& storageMap) const
         {
@@ -68,7 +74,8 @@ namespace std
 
     //
 
-    template<> struct hash<Ame::Rhi::MaterialShaderStorage>
+    template<>
+    struct hash<Ame::Rhi::MaterialShaderStorage>
     {
         size_t operator()(const Ame::Rhi::MaterialShaderStorage& storage) const
         {
@@ -84,7 +91,8 @@ namespace std
 
     //
 
-    template<> struct hash<Ame::Rhi::MaterialRenderState>
+    template<>
+    struct hash<Ame::Rhi::MaterialRenderState>
     {
         size_t operator()(const Ame::Rhi::MaterialRenderState& state) const
         {
@@ -110,15 +118,22 @@ namespace std
                 Dg::HashCombine(hash, std::to_underlying(format));
             }
 
-            Dg::HashCombine(hash, state.Blend, state.SampleMask, state.Rasterizer, state.DepthStencil, state.Sample,
-                            std::to_underlying(state.ShadingRateFlags), std::to_underlying(state.DSFormat),
+            Dg::HashCombine(hash,
+                            state.Blend,
+                            state.SampleMask,
+                            state.Rasterizer,
+                            state.DepthStencil,
+                            state.Sample,
+                            std::to_underlying(state.ShadingRateFlags),
+                            std::to_underlying(state.DSFormat),
                             state.ReadOnlyDSV);
 
             return hash;
         }
     };
 
-    template<> struct hash<Ame::Rhi::MaterialVertexDesc>
+    template<>
+    struct hash<Ame::Rhi::MaterialVertexDesc>
     {
         size_t operator()(const Ame::Rhi::MaterialVertexDesc& state) const
         {
@@ -127,4 +142,4 @@ namespace std
             return hash;
         }
     };
-} // namespace std
+}

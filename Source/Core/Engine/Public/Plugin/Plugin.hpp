@@ -27,7 +27,8 @@ namespace Ame
     public:
         template<typename Ty>
             requires std::derived_from<Ty, IPlugin>
-        [[nodiscard]] static IPlugin* Create()
+        [[nodiscard]]
+        static IPlugin* Create()
         {
             return new Ty();
         }
@@ -80,7 +81,8 @@ namespace Ame
         /// <summary>
         /// Get registered plugin info
         /// </summary>
-        [[nodiscard]] const PluginInfo& GetPluginInfo() const noexcept
+        [[nodiscard]]
+        const PluginInfo& GetPluginInfo() const noexcept
         {
             return m_PluginInfo;
         }
@@ -88,7 +90,8 @@ namespace Ame
         /// <summary>
         /// Get plugin state
         /// </summary>
-        [[nodiscard]] bool IsPluginPaused() const noexcept
+        [[nodiscard]]
+        bool IsPluginPaused() const noexcept
         {
             return m_IsPaused;
         }
@@ -101,7 +104,8 @@ namespace Ame
         /// <summary>
         /// Get plugin name
         /// </summary>
-        [[nodiscard]] const String& GetPluginName() const noexcept
+        [[nodiscard]]
+        const String& GetPluginName() const noexcept
         {
             return m_PluginName;
         }
@@ -109,7 +113,8 @@ namespace Ame
         /// <summary>
         /// Get plugin path
         /// </summary>
-        [[nodiscard]] const String& GetPluginPath() const noexcept
+        [[nodiscard]]
+        const String& GetPluginPath() const noexcept
         {
             return m_PluginPath;
         }
@@ -120,8 +125,9 @@ namespace Ame
         const PluginInfo m_PluginInfo;
         bool             m_IsPaused = false;
     };
-} // namespace Ame
+}
 
 #define AME_PLUGIN_EXPORT_FUNCTION Ame_GetPlugin
-#define AME_PLUGIN_EXPORT_NAME     "Ame_GetPlugin"
-#define AME_PLUGIN_EXPORT(Type)    BOOST_DLL_ALIAS(Ame::IPlugin::Create<Type>, AME_PLUGIN_EXPORT_FUNCTION)
+#define AME_PLUGIN_EXPORT_NAME "Ame_GetPlugin"
+#define AME_PLUGIN_EXPORT(Type)                                                                    \
+    BOOST_DLL_ALIAS(Ame::IPlugin::Create<Type>, AME_PLUGIN_EXPORT_FUNCTION)

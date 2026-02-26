@@ -22,4 +22,4 @@ namespace Ame
     private:
         UniquePtr<EditorApplicationProjectConfig> m_ProjectConfig;
     };
-} // namespace Ame
+}

@@ -27,11 +27,13 @@ namespace Ame::Gfx
         };
 
         Math::Vector4 Color;
-        Math::Vector3 Attenuation_Angle{}; // 0 for directional light, (attenuation, 0, 0) for point light,
-                                           // (attenuation, angle, attenuation) for spot light
-        float    Range       = 0.f;        // 0 for directional light, Point light + spot light
-        uint32_t TransformId = std::numeric_limits<uint32_t>::max(); // Id of the transform component
-        uint32_t Flags       = 0;                                    // LightFlags::* flags
+        Math::Vector3
+            Attenuation_Angle{}; // 0 for directional light, (attenuation, 0, 0) for point light,
+                                 // (attenuation, angle, attenuation) for spot light
+        float    Range = 0.f;    // 0 for directional light, Point light + spot light
+        uint32_t TransformId =
+            std::numeric_limits<uint32_t>::max(); // Id of the transform component
+        uint32_t Flags = 0;                       // LightFlags::* flags
     };
 
     struct EntityGpuStorageTraits_Light
@@ -57,7 +59,7 @@ namespace Ame::Gfx
                 instance.Color                 = pointLight->Color;
                 instance.Range                 = pointLight->Range;
                 instance.Attenuation_Angle.x() = pointLight->Attenuation;
-                typeMask                       = static_cast<uint32_t>(instance_type::LightFlags::Point);
+                typeMask = static_cast<uint32_t>(instance_type::LightFlags::Point);
             }
             else if (auto spotLight = entity->get<Ecs::SpotLightComponent>())
             {
@@ -66,7 +68,7 @@ namespace Ame::Gfx
                 instance.Attenuation_Angle.x() = spotLight->Attenuation;
                 instance.Attenuation_Angle.y() = spotLight->Angle;
                 instance.Attenuation_Angle.z() = spotLight->AngleAttenuation;
-                typeMask                       = static_cast<uint32_t>(instance_type::LightFlags::Spot);
+                typeMask = static_cast<uint32_t>(instance_type::LightFlags::Spot);
             }
 
             instance.TransformId = transformId;
@@ -83,4 +85,4 @@ namespace Ame::Gfx
     };
 
     using EntityLightGpuStorage = EntityGpuStorage<EntityGpuStorageTraits_Light>;
-} // namespace Ame::Gfx
+}

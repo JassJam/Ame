@@ -8,8 +8,9 @@
 
 namespace Ame::Rhi
 {
-    Material::LocalData::LocalData(const MaterialCommonState& commonState, const LocalData* copyFrom) :
-        Name(copyFrom ? copyFrom->Name : "")
+    Material::LocalData::LocalData(const MaterialCommonState& commonState,
+                                   const LocalData*           copyFrom)
+        : Name(copyFrom ? copyFrom->Name : "")
     {
         auto& userDataDesc = commonState.GetUserDataDesc();
         if (auto userDataSize = userDataDesc.GetStructSize())
@@ -31,8 +32,8 @@ namespace Ame::Rhi
         }
     }
 
-    Material::SharedData::SharedData(Dg::IRenderDevice* renderDevice, MaterialCreateDesc createDesc) :
-        RenderDevice(renderDevice), CommonState(renderDevice, std::move(createDesc))
+    Material::SharedData::SharedData(Dg::IRenderDevice* renderDevice, MaterialCreateDesc createDesc)
+        : RenderDevice(renderDevice), CommonState(renderDevice, std::move(createDesc))
     {
     }
 
@@ -121,16 +122,18 @@ namespace Ame::Rhi
 
     //
 
-    Material::Material(IReferenceCounters* counters, Dg::IRenderDevice* renderDevice,
-                       const MaterialCreateDesc& materialDesc) :
-        IObjectWithCallback(counters), m_SharedData(std::make_shared<SharedData>(renderDevice, materialDesc)),
-        m_LocalData(m_SharedData->CommonState, nullptr)
+    Material::Material(IReferenceCounters*       counters,
+                       Dg::IRenderDevice*        renderDevice,
+                       const MaterialCreateDesc& materialDesc)
+        : IObjectWithCallback(counters),
+          m_SharedData(std::make_shared<SharedData>(renderDevice, materialDesc)),
+          m_LocalData(m_SharedData->CommonState, nullptr)
     {
     }
 
-    Material::Material(IReferenceCounters* counters, const Material* material) :
-        IObjectWithCallback(counters), m_SharedData(material->m_SharedData),
-        m_LocalData(m_SharedData->CommonState, &material->m_LocalData)
+    Material::Material(IReferenceCounters* counters, const Material* material)
+        : IObjectWithCallback(counters), m_SharedData(material->m_SharedData),
+          m_LocalData(m_SharedData->CommonState, &material->m_LocalData)
     {
     }
-} // namespace Ame::Rhi
+}

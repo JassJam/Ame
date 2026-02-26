@@ -10,7 +10,8 @@ namespace Ame::Signals
     using Connection       = boost::signals2::connection;
     using ScopedConnection = boost::signals2::scoped_connection;
 
-    template<typename... SigTy> class Signal
+    template<typename... SigTy>
+    class Signal
     {
     public:
         using base_type = boost::signals2::signal<SigTy...>;
@@ -27,11 +28,13 @@ namespace Ame::Signals
 
         struct SignalImpl : ISignal
         {
-            [[nodiscard]] Connection Connect(const slot_type& slot) override
+            [[nodiscard]]
+            Connection Connect(const slot_type& slot) override
             {
                 return m_Signal.connect(slot);
             }
-            [[nodiscard]] Connection ConnectEx(const slot_ex& slot) override
+            [[nodiscard]]
+            Connection ConnectEx(const slot_ex& slot) override
             {
                 return m_Signal.connect_extended(slot);
             }
@@ -49,7 +52,8 @@ namespace Ame::Signals
             return m_Signal->ConnectEx(slot);
         }
 
-        template<typename... Args> auto Invoke(Args&&... args)
+        template<typename... Args>
+        auto Invoke(Args&&... args)
         {
             auto impl = static_cast<SignalImpl*>(m_Signal.get());
             return impl->m_Signal(std::forward<Args>(args)...);
@@ -62,13 +66,14 @@ namespace Ame::Signals
     //
 
     // Used in the C API
-    template<typename CbTy> auto WrapSignalCallback(auto& signal, CbTy slot, void* userData)
+    template<typename CbTy>
+    auto WrapSignalCallback(auto& signal, CbTy slot, void* userData)
     {
-        auto con = new Ame::Signals::Connection(
-            signal.ConnectEx([slot = std::move(slot), userData](auto& connection)
-                             { return slot(std::bit_cast<const Ame_SignalConnection_t*>(&connection), userData); }));
+        auto con = new Ame::Signals::Connection(signal.ConnectEx(
+            [slot = std::move(slot), userData](auto& connection)
+            { return slot(std::bit_cast<const Ame_SignalConnection_t*>(&connection), userData); }));
         return std::bit_cast<Ame_SignalConnection_t*>(con);
     }
-} // namespace Ame::Signals
+}
 
 #define AME_SIGNAL_DECL(Name, ...) using Name##_Signal = Ame::Signals::Signal<__VA_ARGS__>;

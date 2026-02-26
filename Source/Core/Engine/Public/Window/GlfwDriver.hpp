@@ -6,10 +6,12 @@
 namespace Ame::Window
 {
     /// <summary>
-    /// IGlfwDriver is a class dedicated to managing and executing GLFW operations (glfw* functions).
+    /// IGlfwDriver is a class dedicated to managing and executing GLFW operations (glfw*
+    /// functions).
     ///
-    /// It is actually a wrapper around a single-threaded executor that is used to execute GLFW operations.
-    /// Failure to use this class to execute GLFW operations will result in undefined behavior and possible deadlocks.
+    /// It is actually a wrapper around a single-threaded executor that is used to execute GLFW
+    /// operations. Failure to use this class to execute GLFW operations will result in undefined
+    /// behavior and possible deadlocks.
     /// </summary>
     class IGlfwDriver : public Co::derivable_executor<IGlfwDriver>
     {
@@ -17,4 +19,4 @@ namespace Ame::Window
         using Co::derivable_executor<IGlfwDriver>::derivable_executor;
         virtual ~IGlfwDriver() = default;
     };
-} // namespace Ame::Window
+}

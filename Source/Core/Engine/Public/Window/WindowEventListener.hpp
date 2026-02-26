@@ -10,7 +10,7 @@ namespace Ame::Signals
     AME_SIGNAL_DECL(OnWindowMinized, void(bool minimized));
     AME_SIGNAL_DECL(OnWindowClosed, void());
     AME_SIGNAL_DECL(OnWindowTitleHitTest, bool(const Math::Vector2I& mousePos));
-} // namespace Ame::Signals
+}
 
 namespace Ame::Window
 {
@@ -37,4 +37,4 @@ namespace Ame::Window
         /// </summary>
         Signals::OnWindowTitleHitTest_Signal OnWindowTitleHitTest;
     };
-} // namespace Ame::Window
+}

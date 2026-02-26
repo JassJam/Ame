@@ -49,8 +49,7 @@ namespace Ame::Rhi
             stdPos = std::ios::end;
             break;
         }
-        default:
-            return 1;
+        default: return 1;
         }
 
         offset += static_cast<long>(io.Offset);
@@ -77,9 +76,11 @@ namespace Ame::Rhi
 
     //
 
-    auto FreeImageUtils::GetIO(std::istream* istream, std::ostream* ostream) -> std::pair<FreeImageIO, IOStream>
+    auto FreeImageUtils::GetIO(std::istream* istream, std::ostream* ostream)
+        -> std::pair<FreeImageIO, IOStream>
     {
-        AME_LOG_ASSERT((istream != nullptr) ^ (ostream != nullptr), "Either istream or ostream must be set");
+        AME_LOG_ASSERT((istream != nullptr) ^ (ostream != nullptr),
+                       "Either istream or ostream must be set");
         auto offset = istream ? istream->tellg() : ostream->tellp();
         return { FreeImageIO{ .read_proc  = FIReadPorc,
                               .write_proc = FIWriteProc,
@@ -305,4 +306,4 @@ namespace Ame::Rhi
     {
         return static_cast<FIMULTIBITMAP*>(bitmap);
     }
-} // namespace Ame::Rhi
+}

@@ -19,31 +19,47 @@ namespace Ame::Scripting
     public:
         using IObjectWithCallback::IObjectWithCallback;
 
-        [[nodiscard]] virtual auto GetLibrary() const -> ILibrary*   = 0;
-        [[nodiscard]] virtual auto GetName() const -> NativeString   = 0;
-        [[nodiscard]] virtual auto GetBaseType() const -> Ptr<IType> = 0;
-        [[nodiscard]] virtual auto CastAs(IType* type) const -> bool = 0;
-        [[nodiscard]] virtual auto GetSize() const -> size_t         = 0;
+        [[nodiscard]]
+        virtual auto GetLibrary() const -> ILibrary* = 0;
+        [[nodiscard]]
+        virtual auto GetName() const -> NativeString = 0;
+        [[nodiscard]]
+        virtual auto GetBaseType() const -> Ptr<IType> = 0;
+        [[nodiscard]]
+        virtual auto CastAs(IType* type) const -> bool = 0;
+        [[nodiscard]]
+        virtual auto GetSize() const -> size_t = 0;
 
-        [[nodiscard]] virtual auto CreateInstanceRaw(std::span<void* const> args) -> Ptr<IInstance> = 0;
+        [[nodiscard]]
+        virtual auto CreateInstanceRaw(std::span<void* const> args) -> Ptr<IInstance> = 0;
 
-        [[nodiscard]] virtual auto GetField(const NativeString& name) -> Ptr<IField>         = 0;
-        [[nodiscard]] virtual auto GetMethod(const NativeString& name) -> Ptr<IMethod>       = 0;
-        [[nodiscard]] virtual auto GetAttribute(const NativeString& name) -> Ptr<IAttribute> = 0;
-        [[nodiscard]] virtual auto GetProperty(const NativeString& name) -> Ptr<IProperty>   = 0;
+        [[nodiscard]]
+        virtual auto GetField(const NativeString& name) -> Ptr<IField> = 0;
+        [[nodiscard]]
+        virtual auto GetMethod(const NativeString& name) -> Ptr<IMethod> = 0;
+        [[nodiscard]]
+        virtual auto GetAttribute(const NativeString& name) -> Ptr<IAttribute> = 0;
+        [[nodiscard]]
+        virtual auto GetProperty(const NativeString& name) -> Ptr<IProperty> = 0;
 
-        [[nodiscard]] virtual auto GetFields() -> Co::generator<Ptr<IField>>         = 0;
-        [[nodiscard]] virtual auto GetMethods() -> Co::generator<Ptr<IMethod>>       = 0;
-        [[nodiscard]] virtual auto GetAttributes() -> Co::generator<Ptr<IAttribute>> = 0;
-        [[nodiscard]] virtual auto GetProperties() -> Co::generator<Ptr<IProperty>>  = 0;
+        [[nodiscard]]
+        virtual auto GetFields() -> Co::generator<Ptr<IField>> = 0;
+        [[nodiscard]]
+        virtual auto GetMethods() -> Co::generator<Ptr<IMethod>> = 0;
+        [[nodiscard]]
+        virtual auto GetAttributes() -> Co::generator<Ptr<IAttribute>> = 0;
+        [[nodiscard]]
+        virtual auto GetProperties() -> Co::generator<Ptr<IProperty>> = 0;
 
-        template<typename... Args> auto CreateInstance(Args&&... args)
+        template<typename... Args>
+        auto CreateInstance(Args&&... args)
         {
             return CreateInstanceImpl(NativeConverter<Args>::Wrap(std::forward<Args>(args))...);
         }
 
     private:
-        template<typename... Args> auto CreateInstanceImpl(Args&&... args)
+        template<typename... Args>
+        auto CreateInstanceImpl(Args&&... args)
         {
             constexpr size_t argsCount = sizeof...(args);
 
@@ -51,4 +67,4 @@ namespace Ame::Scripting
             return CreateInstanceRaw(argsPtrs);
         }
     };
-} // namespace Ame::Scripting
+}

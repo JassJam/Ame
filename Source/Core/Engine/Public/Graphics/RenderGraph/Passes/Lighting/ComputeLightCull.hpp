@@ -6,7 +6,7 @@
 namespace Ame::Ecs
 {
     class World;
-} // namespace Ame::Ecs
+}
 
 namespace Ame::Gfx
 {
@@ -58,7 +58,8 @@ namespace Ame::Gfx
         ComputeLightCullPass(uint8_t blockSize = 16, uint16_t maxLightChunkSize = 1024);
 
     private:
-        void UpdateAndBindResourcesOnce(const Rg::ResourceStorage& storage, Dg::IDeviceContext* deviceContext);
+        void UpdateAndBindResourcesOnce(const Rg::ResourceStorage& storage,
+                                        Dg::IDeviceContext*        deviceContext);
         void CreateResourcesOnce(const Rg::ResourceStorage& storage);
 
     private:
@@ -75,4 +76,4 @@ namespace Ame::Gfx
         uint8_t        m_BlockSize         = 16;
         uint16_t       m_MaxLightChunkSize = 1024;
     };
-} // namespace Ame::Gfx
+}

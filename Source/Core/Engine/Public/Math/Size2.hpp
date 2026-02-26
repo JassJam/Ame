@@ -4,14 +4,16 @@
 
 namespace Ame::Math
 {
-    template<typename Ty> struct Size2T : Ty
+    template<typename Ty>
+    struct Size2T : Ty
     {
     public:
         using Ty::Ty;
 
         using value_type = typename Ty::value_type;
 
-        [[nodiscard]] value_type Width() const
+        [[nodiscard]]
+        value_type Width() const
         {
             return this->x();
         }
@@ -21,7 +23,8 @@ namespace Ame::Math
             this->x() = val;
         }
 
-        [[nodiscard]] value_type Height() const
+        [[nodiscard]]
+        value_type Height() const
         {
             return this->y();
         }
@@ -37,5 +40,6 @@ namespace Ame::Math
     using Size2U = Size2T<Vector2U>;
 
     template<typename Ty>
-    concept Size2Type = std::is_same_v<Ty, Size2> || std::is_same_v<Ty, Size2I> || std::is_same_v<Ty, Size2U>;
-} // namespace Ame::Math
+    concept Size2Type =
+        std::is_same_v<Ty, Size2> || std::is_same_v<Ty, Size2I> || std::is_same_v<Ty, Size2U>;
+}

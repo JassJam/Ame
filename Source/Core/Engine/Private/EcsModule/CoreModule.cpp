@@ -23,4 +23,4 @@ namespace Ame::Ecs
         world->import <ViewporEcsModule>();
         world->import <LightingEcsModule>();
     }
-} // namespace Ame::Ecs
+}

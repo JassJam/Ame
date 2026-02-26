@@ -4,12 +4,15 @@
 class PluginImpl : public Ame::IPlugin
 {
 public:
-    PluginImpl(const Ame_PluginInfo_t* desc) :
-        Ame::IPlugin({ desc->Name,
-                       desc->Author,
-                       desc->Description,
-                       desc->Date,
-                       { desc->Version.Major, desc->Version.Minor, desc->Version.Build, desc->Version.Revision } })
+    PluginImpl(const Ame_PluginInfo_t* desc)
+        : Ame::IPlugin({ desc->Name,
+                         desc->Author,
+                         desc->Description,
+                         desc->Date,
+                         { desc->Version.Major,
+                           desc->Version.Minor,
+                           desc->Version.Build,
+                           desc->Version.Revision } })
     {
     }
 
@@ -17,7 +20,8 @@ public:
     {
         if (OnPreloadFn)
         {
-            return OnPreloadFn(std::bit_cast<Ame_IPlugin_t*>(this), std::bit_cast<Ame_IModuleRegistry_t*>(registry));
+            return OnPreloadFn(std::bit_cast<Ame_IPlugin_t*>(this),
+                               std::bit_cast<Ame_IModuleRegistry_t*>(registry));
         }
         return true;
     }
@@ -26,7 +30,8 @@ public:
     {
         if (OnLoadFn)
         {
-            OnLoadFn(std::bit_cast<Ame_IPlugin_t*>(this), std::bit_cast<Ame_IModuleRegistry_t*>(registry));
+            OnLoadFn(std::bit_cast<Ame_IPlugin_t*>(this),
+                     std::bit_cast<Ame_IModuleRegistry_t*>(registry));
         }
     }
 
@@ -34,7 +39,8 @@ public:
     {
         if (OnInterfaceDropFn)
         {
-            OnInterfaceDropFn(std::bit_cast<Ame_IPlugin_t*>(this), std::bit_cast<Ame_IBaseObject_t*>(iface));
+            OnInterfaceDropFn(std::bit_cast<Ame_IPlugin_t*>(this),
+                              std::bit_cast<Ame_IBaseObject_t*>(iface));
         }
     }
 
@@ -74,19 +80,22 @@ void Ame_Plugin_Release(Ame_IPlugin_t* plugin)
     delete std::bit_cast<Ame::IPlugin*>(plugin);
 }
 
-void Ame_Plugin_SetOnPreLoad(Ame_IPlugin_t* plugin, bool(AME_CDECL* callback)(Ame_IPlugin_t*, Ame_IModuleRegistry_t*))
+void Ame_Plugin_SetOnPreLoad(Ame_IPlugin_t* plugin,
+                             bool(AME_CDECL* callback)(Ame_IPlugin_t*, Ame_IModuleRegistry_t*))
 {
     auto impl         = std::bit_cast<PluginImpl*>(plugin);
     impl->OnPreloadFn = callback;
 }
 
-void Ame_Plugin_SetOnLoad(Ame_IPlugin_t* plugin, void(AME_CDECL* callback)(Ame_IPlugin_t*, Ame_IModuleRegistry_t*))
+void Ame_Plugin_SetOnLoad(Ame_IPlugin_t* plugin,
+                          void(AME_CDECL* callback)(Ame_IPlugin_t*, Ame_IModuleRegistry_t*))
 {
     auto impl      = std::bit_cast<PluginImpl*>(plugin);
     impl->OnLoadFn = callback;
 }
 
-void Ame_Plugin_SetOnInterfaceDrop(Ame_IPlugin_t* plugin, void(AME_CDECL* callback)(Ame_IPlugin_t*, Ame_IBaseObject_t*))
+void Ame_Plugin_SetOnInterfaceDrop(Ame_IPlugin_t* plugin,
+                                   void(AME_CDECL* callback)(Ame_IPlugin_t*, Ame_IBaseObject_t*))
 {
     auto impl               = std::bit_cast<PluginImpl*>(plugin);
     impl->OnInterfaceDropFn = callback;
@@ -98,7 +107,8 @@ void Ame_Plugin_SetOnUnload(Ame_IPlugin_t* plugin, void(AME_CDECL* callback)(Ame
     impl->OnUnloadFn = callback;
 }
 
-void Ame_Plugin_SetOnPauseChanged(Ame_IPlugin_t* plugin, void(AME_CDECL* callback)(Ame_IPlugin_t*, bool))
+void Ame_Plugin_SetOnPauseChanged(Ame_IPlugin_t* plugin,
+                                  void(AME_CDECL* callback)(Ame_IPlugin_t*, bool))
 {
     auto impl              = std::bit_cast<PluginImpl*>(plugin);
     impl->OnPauseChangedFn = callback;
@@ -112,7 +122,10 @@ Ame_PluginInfo_t Ame_Plugin_GetPluginInfo(Ame_IPlugin_t* plugin)
              info.Author,
              info.Description,
              info.Date,
-             { info.Version.Major(), info.Version.Minor(), info.Version.Build(), info.Version.Revision() } };
+             { info.Version.Major(),
+               info.Version.Minor(),
+               info.Version.Build(),
+               info.Version.Revision() } };
 }
 
 Ame_StringView_t Ame_Plugin_GetPluginName(Ame_IPlugin_t* plugin)

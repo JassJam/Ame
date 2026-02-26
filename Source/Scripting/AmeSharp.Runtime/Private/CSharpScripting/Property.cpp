@@ -4,25 +4,31 @@
 
 namespace Ame::Scripting
 {
-    static constexpr const char* ClassName = "AmeSharp.RuntimeHost.Runtime.PropertyBridge, AmeSharp.RuntimeHost";
+    static constexpr const char* ClassName =
+        "AmeSharp.RuntimeHost.Runtime.PropertyBridge, AmeSharp.RuntimeHost";
 
     void CLRRuntime::RegisterCommonFunctions_PropertyBridge()
     {
         RegisterCommonFunction(Functions::PropertyBridge_Free, GetFunctionPtr(ClassName, "Free"));
-        RegisterCommonFunction(Functions::PropertyBridge_GetName, GetFunctionPtr(ClassName, "GetName"));
-        RegisterCommonFunction(Functions::PropertyBridge_IsStatic, GetFunctionPtr(ClassName, "IsStatic"));
-        RegisterCommonFunction(Functions::PropertyBridge_GetValue, GetFunctionPtr(ClassName, "GetValue"));
-        RegisterCommonFunction(Functions::PropertyBridge_SetValue, GetFunctionPtr(ClassName, "SetValue"));
+        RegisterCommonFunction(Functions::PropertyBridge_GetName,
+                               GetFunctionPtr(ClassName, "GetName"));
+        RegisterCommonFunction(Functions::PropertyBridge_IsStatic,
+                               GetFunctionPtr(ClassName, "IsStatic"));
+        RegisterCommonFunction(Functions::PropertyBridge_GetValue,
+                               GetFunctionPtr(ClassName, "GetValue"));
+        RegisterCommonFunction(Functions::PropertyBridge_SetValue,
+                               GetFunctionPtr(ClassName, "SetValue"));
     }
 
-    CSProperty::CSProperty(IReferenceCounters* counters, CSType* type, void* property) :
-        IProperty(counters), m_Type(type), m_Property(property)
+    CSProperty::CSProperty(IReferenceCounters* counters, CSType* type, void* property)
+        : IProperty(counters), m_Type(type), m_Property(property)
     {
     }
 
     CSProperty::~CSProperty()
     {
-        auto propFree = GetRuntime().GetCommonFunction<FreeFn>(CLRRuntime::Functions::PropertyBridge_Free);
+        auto propFree =
+            GetRuntime().GetCommonFunction<FreeFn>(CLRRuntime::Functions::PropertyBridge_Free);
         propFree(m_Property);
     }
 
@@ -30,7 +36,8 @@ namespace Ame::Scripting
 
     NativeString CSProperty::GetName() const
     {
-        auto getName = GetRuntime().GetCommonFunction<GetNameFn>(CLRRuntime::Functions::PropertyBridge_GetName);
+        auto getName = GetRuntime().GetCommonFunction<GetNameFn>(
+            CLRRuntime::Functions::PropertyBridge_GetName);
         return getName(m_Property);
     }
 
@@ -41,20 +48,23 @@ namespace Ame::Scripting
 
     bool CSProperty::IsStatic() const
     {
-        auto isStatic = GetRuntime().GetCommonFunction<IsStaticFn>(CLRRuntime::Functions::PropertyBridge_IsStatic);
+        auto isStatic = GetRuntime().GetCommonFunction<IsStaticFn>(
+            CLRRuntime::Functions::PropertyBridge_IsStatic);
         return isStatic(m_Property);
     }
 
     void CSProperty::GetValue(IInstance* instance, void* valuePtr)
     {
-        auto getValue = GetRuntime().GetCommonFunction<GetValueFn>(CLRRuntime::Functions::PropertyBridge_GetValue);
+        auto getValue = GetRuntime().GetCommonFunction<GetValueFn>(
+            CLRRuntime::Functions::PropertyBridge_GetValue);
         auto instanceHandle = instance ? static_cast<CSInstance*>(instance)->GetHandle() : nullptr;
         getValue(m_Property, instanceHandle, valuePtr);
     }
 
     void CSProperty::SetValue(IInstance* instance, const void* valuePtr)
     {
-        auto setValue = GetRuntime().GetCommonFunction<SetValueFn>(CLRRuntime::Functions::PropertyBridge_SetValue);
+        auto setValue = GetRuntime().GetCommonFunction<SetValueFn>(
+            CLRRuntime::Functions::PropertyBridge_SetValue);
         auto instanceHandle = instance ? static_cast<CSInstance*>(instance)->GetHandle() : nullptr;
         setValue(m_Property, instanceHandle, valuePtr);
     }
@@ -65,4 +75,4 @@ namespace Ame::Scripting
     {
         return m_Type->GetRuntime();
     }
-} // namespace Ame::Scripting
+}

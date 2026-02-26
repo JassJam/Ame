@@ -9,4 +9,4 @@ namespace Ame::Log
     public:
         ConsoleStream();
     };
-} // namespace Ame::Log
+}

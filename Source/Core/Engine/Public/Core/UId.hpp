@@ -22,13 +22,19 @@ namespace Ame
             bool operator()(const UId& lhs, const UId& rhs) const;
         };
 
-        [[nodiscard]] static bool IsNull(const UId& id);
+        [[nodiscard]]
+        static bool IsNull(const UId& id);
 
-        [[nodiscard]] static UId    FromString(const String& str);
-        [[nodiscard]] static String ToString(const UId& id);
+        [[nodiscard]]
+        static UId FromString(const String& str);
+        [[nodiscard]]
+        static String ToString(const UId& id);
 
-        [[nodiscard]] static UId           Generate();
-        [[nodiscard]] static const UId&    Null();
-        [[nodiscard]] static const String& NullString();
+        [[nodiscard]]
+        static UId Generate();
+        [[nodiscard]]
+        static const UId& Null();
+        [[nodiscard]]
+        static const String& NullString();
     };
-} // namespace Ame
+}

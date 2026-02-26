@@ -14,8 +14,8 @@ namespace Ame::Ecs
     /// </summary>
     static std::mutex g_FlecsMutex;
 
-    World::World(IReferenceCounters* counters, Ptr<Rhi::IRhiDevice> rhiDevice) :
-        IObjectWithCallback(counters), m_RhiDevice(std::move(rhiDevice))
+    World::World(IReferenceCounters* counters, Ptr<Rhi::IRhiDevice> rhiDevice)
+        : IObjectWithCallback(counters), m_RhiDevice(std::move(rhiDevice))
     {
         std::lock_guard initLock(g_FlecsMutex);
 
@@ -83,4 +83,4 @@ namespace Ame::Ecs
 #endif
         return !m_World->should_quit();
     }
-} // namespace Ame::Ecs
+}

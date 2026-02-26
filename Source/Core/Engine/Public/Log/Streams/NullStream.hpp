@@ -9,4 +9,4 @@ namespace Ame::Log
     public:
         NullStream();
     };
-} // namespace Ame::Log
+}

@@ -5,7 +5,8 @@
 
 namespace Ame::Ecs
 {
-    template<typename Ty> struct Unique
+    template<typename Ty>
+    struct Unique
     {
     public:
         Unique() = default;
@@ -36,7 +37,8 @@ namespace Ame::Ecs
         }
 
     public:
-        [[nodiscard]] explicit operator bool() const noexcept
+        [[nodiscard]]
+        explicit operator bool() const noexcept
         {
             return IsValid();
         }
@@ -44,7 +46,8 @@ namespace Ame::Ecs
         /// <summary>
         /// Check if the entity is valid.
         /// </summary>
-        [[nodiscard]] bool IsValid() const
+        [[nodiscard]]
+        bool IsValid() const
         {
             if (!m_Entity)
             {
@@ -58,17 +61,20 @@ namespace Ame::Ecs
                 return true;
         }
 
-        [[nodiscard]] auto operator->() const
+        [[nodiscard]]
+        auto operator->() const
         {
             return &m_Entity;
         }
 
-        [[nodiscard]] auto operator->()
+        [[nodiscard]]
+        auto operator->()
         {
             return &m_Entity;
         }
 
-        [[nodiscard]] operator Ty() const
+        [[nodiscard]]
+        operator Ty() const
         {
             return Get();
         }
@@ -76,7 +82,8 @@ namespace Ame::Ecs
         /// <summary>
         /// Get the entity.
         /// </summary>
-        [[nodiscard]] const Ty& Get() const
+        [[nodiscard]]
+        const Ty& Get() const
         {
             return m_Entity;
         }
@@ -101,8 +108,8 @@ namespace Ame::Ecs
                     bool shouldDelete = true;
                     if constexpr (requires { m_Entity.entity(); })
                     {
-                        // assert: query_->entity != 0 destruct() should only be called on queries associated with
-                        // entities
+                        // assert: query_->entity != 0 destruct() should only be called on queries
+                        // associated with entities
                         if (!m_Entity.entity())
                         {
                             shouldDelete = false;
@@ -124,4 +131,4 @@ namespace Ame::Ecs
     private:
         Ty m_Entity{};
     };
-} // namespace Ame::Ecs
+}

@@ -30,7 +30,8 @@ namespace Ame::Asset::Common
         /// <summary>
         /// Get the underlying string
         /// </summary>
-        [[nodiscard]] String& GetRef() noexcept
+        [[nodiscard]]
+        String& GetRef() noexcept
         {
             return m_Text;
         }
@@ -38,7 +39,8 @@ namespace Ame::Asset::Common
         /// <summary>
         /// Get the underlying string
         /// </summary>
-        [[nodiscard]] const String& Get() const noexcept
+        [[nodiscard]]
+        const String& Get() const noexcept
         {
             return m_Text;
         }
@@ -54,4 +56,4 @@ namespace Ame::Asset::Common
     private:
         String m_Text;
     };
-} // namespace Ame::Asset::Common
+}

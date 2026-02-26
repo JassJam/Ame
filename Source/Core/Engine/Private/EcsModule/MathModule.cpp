@@ -21,4 +21,4 @@ namespace Ame::Ecs
 
         RegisterTransformObservers(world);
     }
-} // namespace Ame::Ecs
+}

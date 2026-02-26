@@ -15,30 +15,42 @@ namespace Ame::Scripting
     public:
         using IObjectWithCallback::IObjectWithCallback;
 
-        [[nodiscard]] virtual auto GetType() const -> IType*       = 0;
-        [[nodiscard]] virtual auto IsStatic() const -> bool        = 0;
-        [[nodiscard]] virtual auto GetName() const -> NativeString = 0;
+        [[nodiscard]]
+        virtual auto GetType() const -> IType* = 0;
+        [[nodiscard]]
+        virtual auto IsStatic() const -> bool = 0;
+        [[nodiscard]]
+        virtual auto GetName() const -> NativeString = 0;
 
-        [[nodiscard]] virtual auto GetParamTypes() const -> Co::generator<Ptr<IType>>                     = 0;
-        [[nodiscard]] virtual auto GetReturnType() const -> Ptr<IType>                                    = 0;
-        virtual void InvokeMethod(IInstance* instance, std::span<void* const> arguments, void* returnPtr) = 0;
+        [[nodiscard]]
+        virtual auto GetParamTypes() const -> Co::generator<Ptr<IType>> = 0;
+        [[nodiscard]]
+        virtual auto GetReturnType() const -> Ptr<IType> = 0;
+        virtual void InvokeMethod(IInstance*             instance,
+                                  std::span<void* const> arguments,
+                                  void*                  returnPtr)       = 0;
         void         InvokeStaticMethod(std::span<void* const> arguments, void* returnPtr)
         {
             InvokeMethod(nullptr, arguments, returnPtr);
         }
 
-        template<typename RetTy, typename... Args> RetTy Invoke(IInstance* instance, Args&&... args)
+        template<typename RetTy, typename... Args>
+        RetTy Invoke(IInstance* instance, Args&&... args)
         {
-            return InvokeImpl<RetTy>(instance, NativeConverter<Args>::Wrap(std::forward<Args>(args))...);
+            return InvokeImpl<RetTy>(instance,
+                                     NativeConverter<Args>::Wrap(std::forward<Args>(args))...);
         }
 
-        template<typename RetTy, typename... Args> RetTy InvokeStatic(Args&&... args)
+        template<typename RetTy, typename... Args>
+        RetTy InvokeStatic(Args&&... args)
         {
-            return InvokeImpl<RetTy>(nullptr, NativeConverter<Args>::Wrap(std::forward<Args>(args))...);
+            return InvokeImpl<RetTy>(nullptr,
+                                     NativeConverter<Args>::Wrap(std::forward<Args>(args))...);
         }
 
     private:
-        template<typename RetTy, typename... Args> RetTy InvokeImpl(IInstance* instance, Args&&... args)
+        template<typename RetTy, typename... Args>
+        RetTy InvokeImpl(IInstance* instance, Args&&... args)
         {
             constexpr size_t argsCount = sizeof...(args);
 
@@ -72,4 +84,4 @@ namespace Ame::Scripting
             }
         }
     };
-} // namespace Ame::Scripting
+}

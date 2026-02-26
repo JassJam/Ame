@@ -18,4 +18,4 @@ namespace Ame
     {
         mi_free(ptr);
     }
-} // namespace Ame
+}

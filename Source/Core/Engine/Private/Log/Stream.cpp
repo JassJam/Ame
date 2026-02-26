@@ -30,4 +30,4 @@ namespace Ame::Log
     {
         return m_Sink;
     }
-} // namespace Ame::Log
+}

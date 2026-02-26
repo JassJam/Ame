@@ -6,16 +6,17 @@
 namespace Ame::Scripting
 {
     // {F53516D8-4B6B-4AEA-AADF-7892298F830A}
-    inline constexpr UId IID_CSInstance{
-        0xf53516d8, 0x4b6b, 0x4aea, { 0xaa, 0xdf, 0x78, 0x92, 0x29, 0x8f, 0x83, 0xa }
-    };
+    inline constexpr UId IID_CSInstance{ 0xf53516d8,
+                                         0x4b6b,
+                                         0x4aea,
+                                         { 0xaa, 0xdf, 0x78, 0x92, 0x29, 0x8f, 0x83, 0xa } };
 
     class CSType;
 
     class CSInstance : public IInstance
     {
         using FreeFn         = void (*)(void*);
-        using GetTypeFn      = void* (*)(void*);
+        using GetTypeFn      = void* (*) (void*);
         using InvokeMethodFn = void (*)(void*, const NativeString&, const void*, size_t, void*);
         using GetFieldFn     = void (*)(void*, const NativeString&, void*);
         using SetFieldFn     = void (*)(void*, const NativeString&, const void*);
@@ -33,7 +34,9 @@ namespace Ame::Scripting
 
     public:
         auto GetType() const -> IType* override;
-        void InvokeMethod(const NativeString& methodName, std::span<void* const> arguments, void* returnPtr) override;
+        void InvokeMethod(const NativeString&    methodName,
+                          std::span<void* const> arguments,
+                          void*                  returnPtr) override;
 
         void GetFieldMethod(const NativeString& fieldName, void* valuePtr) override;
         void SetFieldMethod(const NativeString& fieldName, const void* valuePtr) override;
@@ -42,11 +45,13 @@ namespace Ame::Scripting
         void SetPropertyMethod(const NativeString& propertyName, const void* valuePtr) override;
 
     public:
-        [[nodiscard]] auto GetRuntime() const -> const CLRRuntime&;
-        [[nodiscard]] auto GetHandle() const -> void*;
+        [[nodiscard]]
+        auto GetRuntime() const -> const CLRRuntime&;
+        [[nodiscard]]
+        auto GetHandle() const -> void*;
 
     private:
         Ptr<CSType> m_Type;
         void*       m_Instance = nullptr;
     };
-} // namespace Ame::Scripting
+}

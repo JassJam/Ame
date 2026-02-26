@@ -1,13 +1,13 @@
 #pragma once
 
 #ifndef AME_NO_IMGUI
-#include <map>
-#include <imgui.h>
+    #include <map>
+    #include <imgui.h>
 
-#include <Rhi/ImGui/ImGuiRenderer.hpp>
-#include <Rhi/ImGui/ImGuiRendererCreateDesc.hpp>
+    #include <Rhi/ImGui/ImGuiRenderer.hpp>
+    #include <Rhi/ImGui/ImGuiRendererCreateDesc.hpp>
 
-#include <Window/Window.hpp>
+    #include <Window/Window.hpp>
 
 namespace Ame::Rhi
 {
@@ -79,5 +79,5 @@ namespace Ame::Rhi
 
         bool m_BaseVertexSupported : 1 = false;
     };
-} // namespace Ame::Rhi
+}
 #endif

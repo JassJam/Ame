@@ -40,23 +40,27 @@ namespace Ame::Asset
         /// <summary>
         /// Get the assets in this package as a coroutine.
         /// </summary>
-        [[nodiscard]] virtual Co::generator<UId> GetAssets() = 0;
+        [[nodiscard]]
+        virtual Co::generator<UId> GetAssets() = 0;
 
         /// <summary>
         /// Query if this package contains the given asset.
         /// </summary>
-        [[nodiscard]] virtual bool ContainsAsset(const UId& uid) const = 0;
+        [[nodiscard]]
+        virtual bool ContainsAsset(const UId& uid) const = 0;
 
     public:
         /// <summary>
         /// Finds assets by path.
         /// </summary>
-        [[nodiscard]] virtual UId FindAsset(const String& path) const = 0;
+        [[nodiscard]]
+        virtual UId FindAsset(const String& path) const = 0;
 
         /// <summary>
         /// Finds assets by path as regex.
         /// </summary>
-        [[nodiscard]] virtual Co::generator<UId> FindAssets(const std::regex& pathRegex) const = 0;
+        [[nodiscard]]
+        virtual Co::generator<UId> FindAssets(const std::regex& pathRegex) const = 0;
 
     public:
         /// <summary>
@@ -78,7 +82,8 @@ namespace Ame::Asset
         /// <summary>
         /// Load an asset from this package.
         /// </summary>
-        [[nodiscard]] virtual Ptr<IAsset> LoadAsset(const UId& uid, bool loadTemp) = 0;
+        [[nodiscard]]
+        virtual Ptr<IAsset> LoadAsset(const UId& uid, bool loadTemp) = 0;
 
         /// <summary>
         /// Unload an asset from this package.
@@ -89,7 +94,8 @@ namespace Ame::Asset
         /// <summary>
         /// Used for sanity checks against mounting to multiple storages.
         /// </summary>
-        [[nodiscard]] Storage& GetStorage() const;
+        [[nodiscard]]
+        Storage& GetStorage() const;
 
     protected:
         Ref<Storage>     m_Storage;
@@ -98,4 +104,4 @@ namespace Ame::Asset
         AssetCacheMap             m_Cache;
         mutable std::shared_mutex m_CacheMutex;
     };
-} // namespace Ame::Asset
+}

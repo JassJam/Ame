@@ -64,7 +64,8 @@ namespace Ame
 #ifdef AME_DEBUG
         if (*object != nullptr)
         {
-            AME_LOG_WARNING(std::format("Interface '{}' will be overwritten", UIdUtils::ToString(iid)));
+            AME_LOG_WARNING(
+                std::format("Interface '{}' will be overwritten", UIdUtils::ToString(iid)));
         }
 #endif
 
@@ -150,7 +151,8 @@ namespace Ame
         }
         catch (const std::exception& e)
         {
-            AME_LOG_WARNING(std::format("Failed to load plugin: '{}' (error: '{}')", name, e.what()));
+            AME_LOG_WARNING(
+                std::format("Failed to load plugin: '{}' (error: '{}')", name, e.what()));
         }
 
         if (ctxPtr)
@@ -220,4 +222,4 @@ namespace Ame
                           return erase;
                       });
     }
-} // namespace Ame
+}

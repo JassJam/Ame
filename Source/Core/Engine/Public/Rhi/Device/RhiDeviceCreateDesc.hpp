@@ -6,7 +6,7 @@
 namespace Ame::Window
 {
     class IWindow;
-} // namespace Ame::Window
+}
 
 namespace Ame::Rhi
 {
@@ -20,7 +20,8 @@ namespace Ame::Rhi
         /// in release builds.
         DebugLayer = 0x01,
 
-        /// Verify that constant or structured buffer size is not smaller than what is expected by the shader.
+        /// Verify that constant or structured buffer size is not smaller than what is expected by
+        /// the shader.
         ///
         /// \remarks  This flag only has effect in Debug/Development builds.
         ///           This type of validation is never performed in Release builds.
@@ -40,32 +41,34 @@ namespace Ame::Rhi
 
         /// D3D12:
         /// Whether to break execution when D3D12 debug layer detects an error.
-        /// This flag only has effect if validation is enabled (EngineCreateInfo.EnableValidation is true).
-        /// This option is disabled by default in all validation levels.
+        /// This flag only has effect if validation is enabled (EngineCreateInfo.EnableValidation is
+        /// true). This option is disabled by default in all validation levels.
         BreakOnError = 1 << 1,
 
         /// D3D12:
         /// Whether to break execution when D3D12 debug layer detects a memory corruption.
-        /// This flag only has effect if validation is enabled (EngineCreateInfo.EnableValidation is true).
-        /// This option is enabled by default when validation is enabled.
+        /// This flag only has effect if validation is enabled (EngineCreateInfo.EnableValidation is
+        /// true). This option is enabled by default when validation is enabled.
         BreakOnCorruption = 1 << 2,
 
         /// D3D12:
         /// Enable validation on the GPU timeline.
-        /// See https://docs.microsoft.com/en-us/windows/win32/direct3d12/using-d3d12-debug-layer-gpu-based-validation
-        /// This flag only has effect if validation is enabled (EngineCreateInfo.EnableValidation is true).
-        /// This option is enabled in validation level 2 (see Diligent::VALIDATION_LEVEL).
+        /// See
+        /// https://docs.microsoft.com/en-us/windows/win32/direct3d12/using-d3d12-debug-layer-gpu-based-validation
+        /// This flag only has effect if validation is enabled (EngineCreateInfo.EnableValidation is
+        /// true). This option is enabled in validation level 2 (see Diligent::VALIDATION_LEVEL).
         ///
         /// \note Enabling this option may slow things down a lot.
         GpuBasedValidation = 1 << 3,
 
-        All = DebugLayer | CheckShaderBufferSize | CommittedResourceRelevance | BreakOnError | BreakOnCorruption |
-              GpuBasedValidation
+        All = DebugLayer | CheckShaderBufferSize | CommittedResourceRelevance | BreakOnError |
+              BreakOnCorruption | GpuBasedValidation
     };
 
-    using GraphicsAdapterInfo       = Diligent::GraphicsAdapterInfo;
-    using GraphicsAdapterInfoFinder = std::function<Opt<uint32_t>(std::span<const GraphicsAdapterInfo>)>;
-    using DeviceFeatures            = Diligent::DeviceFeatures;
+    using GraphicsAdapterInfo = Diligent::GraphicsAdapterInfo;
+    using GraphicsAdapterInfoFinder =
+        std::function<Opt<uint32_t>(std::span<const GraphicsAdapterInfo>)>;
+    using DeviceFeatures = Diligent::DeviceFeatures;
 
     //
 
@@ -93,17 +96,18 @@ namespace Ame::Rhi
         /// When the application exits, the engine prints the GPU descriptor heap
         /// statistics to the log, for example:
         ///
-        ///     Diligent Engine: Info: D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER     GPU heap max allocated size
-        ///     (static|dynamic): 0/128 (0.00%) | 0/1920 (0.00%). Diligent Engine: Info:
-        ///     D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV GPU heap max allocated size (static|dynamic): 9/16384 (0.05%) |
-        ///     128/32768 (0.39%).
+        ///     Diligent Engine: Info: D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER     GPU heap max allocated
+        ///     size (static|dynamic): 0/128 (0.00%) | 0/1920 (0.00%). Diligent Engine: Info:
+        ///     D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV GPU heap max allocated size (static|dynamic):
+        ///     9/16384 (0.05%) | 128/32768 (0.39%).
         ///
         /// An application should monitor the GPU descriptor heap statistics and
         /// set GPUDescriptorHeapSize and GPUDescriptorHeapDynamicSize accordingly.
         /// </summary>
         struct
         {
-            uint32_t MaxResources         = 0; // (CBV, SRV, UAV) 0 = Use whatever diligent default deems default.
+            uint32_t MaxResources =
+                0; // (CBV, SRV, UAV) 0 = Use whatever diligent default deems default.
             uint32_t MaxSamplers          = 0; // 0 = Use whatever diligent default deems default.
             uint32_t MaxRenderTargets     = 0; // 0 = Use whatever diligent default deems default.
             uint32_t MaxDepthStencilViews = 0; // 0 = Use whatever diligent default deems default.
@@ -124,18 +128,19 @@ namespace Ame::Rhi
         /// When the application exits, the engine prints the GPU descriptor heap
         /// statistics to the log, for example:
         ///
-        ///     Diligent Engine: Info: D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER     GPU heap max allocated size
-        ///     (static|dynamic): 0/128 (0.00%) | 0/1920 (0.00%). Diligent Engine: Info:
-        ///     D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV GPU heap max allocated size (static|dynamic): 9/16384 (0.05%) |
-        ///     128/32768 (0.39%).
+        ///     Diligent Engine: Info: D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER     GPU heap max allocated
+        ///     size (static|dynamic): 0/128 (0.00%) | 0/1920 (0.00%). Diligent Engine: Info:
+        ///     D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV GPU heap max allocated size (static|dynamic):
+        ///     9/16384 (0.05%) | 128/32768 (0.39%).
         ///
         /// An application should monitor the GPU descriptor heap statistics and
         /// set GPUDescriptorHeapSize and GPUDescriptorHeapDynamicSize accordingly.
         /// </summary>
         struct
         {
-            uint32_t MaxResources = 0; // (CBV, SRV, UAV) 0 = Use whatever diligent default deems default.
-            uint32_t MaxSamplers  = 0; // 0 = Use whatever diligent default deems default.
+            uint32_t MaxResources =
+                0; // (CBV, SRV, UAV) 0 = Use whatever diligent default deems default.
+            uint32_t MaxSamplers = 0; // 0 = Use whatever diligent default deems default.
         } GpuDescriptors;
 
         /// <summary>
@@ -156,8 +161,9 @@ namespace Ame::Rhi
         /// </summary>
         struct
         {
-            uint32_t MaxResources = 0; // (CBV, SRV, UAV) 0 = Use whatever diligent default deems default.
-            uint32_t MaxSamplers  = 0; // 0 = Use whatever diligent default deems default.
+            uint32_t MaxResources =
+                0; // (CBV, SRV, UAV) 0 = Use whatever diligent default deems default.
+            uint32_t MaxSamplers = 0; // 0 = Use whatever diligent default deems default.
         } GpuDynamicDescriptors;
 
         /// <summary>
@@ -173,8 +179,9 @@ namespace Ame::Rhi
         /// </summary>
         struct
         {
-            uint32_t MaxResources = 0; // (CBV, SRV, UAV) 0 = Use whatever diligent default deems default.
-            uint32_t MaxSamplers  = 0; // 0 = Use whatever diligent default deems default.
+            uint32_t MaxResources =
+                0; // (CBV, SRV, UAV) 0 = Use whatever diligent default deems default.
+            uint32_t MaxSamplers = 0; // 0 = Use whatever diligent default deems default.
         } GpuDynamicDescriptorsChunk;
 
         /// <summary>
@@ -191,7 +198,8 @@ namespace Ame::Rhi
         /// Number of dynamic heap pages that will be reserved by the
         /// global dynamic heap manager to avoid page creation at run time.
         /// </summary>
-        uint32_t NumDynamicHeapPagesToReserve = 0; // 0 = Use whatever diligent default deems default.
+        uint32_t NumDynamicHeapPagesToReserve =
+            0; // 0 = Use whatever diligent default deems default.
 
         /// <summary>
         /// Query pool size for each query type.
@@ -227,23 +235,33 @@ namespace Ame::Rhi
         ///
         /// DynamicDescriptorPool:
         /// Size of the dynamic descriptor pool that is used to allocate descriptor sets
-        /// for dynamic variables. Every device context has its own dynamic descriptor set allocator.
-        /// The allocator requests pools from global dynamic descriptor pool manager, and then
-        /// performs lock-free suballocations from the pool.
+        /// for dynamic variables. Every device context has its own dynamic descriptor set
+        /// allocator. The allocator requests pools from global dynamic descriptor pool manager, and
+        /// then performs lock-free suballocations from the pool.
         /// </summary>
         struct
         {
-            uint32_t MaxDescriptorSets                = 0; // 0 = Use whatever diligent default deems default.
-            uint32_t NumSeparateSamplerDescriptors    = 0; // 0 = Use whatever diligent default deems default.
-            uint32_t NumCombinedSamplerDescriptors    = 0; // 0 = Use whatever diligent default deems default.
-            uint32_t NumSampledImageDescriptors       = 0; // 0 = Use whatever diligent default deems default.
-            uint32_t NumStorageImageDescriptors       = 0; // 0 = Use whatever diligent default deems default.
-            uint32_t NumUniformBufferDescriptors      = 0; // 0 = Use whatever diligent default deems default.
-            uint32_t NumStorageBufferDescriptors      = 0; // 0 = Use whatever diligent default deems default.
-            uint32_t NumUniformTexelBufferDescriptors = 0; // 0 = Use whatever diligent default deems default.
-            uint32_t NumStorageTexelBufferDescriptors = 0; // 0 = Use whatever diligent default deems default.
-            uint32_t NumInputAttachmentDescriptors    = 0; // 0 = Use whatever diligent default deems default.
-            uint32_t NumAccelStructDescriptors        = 0; // 0 = Use whatever diligent default deems default.
+            uint32_t MaxDescriptorSets = 0; // 0 = Use whatever diligent default deems default.
+            uint32_t NumSeparateSamplerDescriptors =
+                0; // 0 = Use whatever diligent default deems default.
+            uint32_t NumCombinedSamplerDescriptors =
+                0; // 0 = Use whatever diligent default deems default.
+            uint32_t NumSampledImageDescriptors =
+                0; // 0 = Use whatever diligent default deems default.
+            uint32_t NumStorageImageDescriptors =
+                0; // 0 = Use whatever diligent default deems default.
+            uint32_t NumUniformBufferDescriptors =
+                0; // 0 = Use whatever diligent default deems default.
+            uint32_t NumStorageBufferDescriptors =
+                0; // 0 = Use whatever diligent default deems default.
+            uint32_t NumUniformTexelBufferDescriptors =
+                0; // 0 = Use whatever diligent default deems default.
+            uint32_t NumStorageTexelBufferDescriptors =
+                0; // 0 = Use whatever diligent default deems default.
+            uint32_t NumInputAttachmentDescriptors =
+                0; // 0 = Use whatever diligent default deems default.
+            uint32_t NumAccelStructDescriptors =
+                0; // 0 = Use whatever diligent default deems default.
         } MainDescriptorPool, DynamicDescriptorPool;
 
         std::span<const char*> RequiredLayerExtensions;
@@ -275,14 +293,16 @@ namespace Ame::Rhi
         /// The engine does not pre-allocate the memory, but rather keeps free
         /// pages when resources are released.
         /// </summary>
-        uint32_t DeviceLocalMemoryReserveSize = 0; // 0 = Use whatever diligent default deems default.
+        uint32_t DeviceLocalMemoryReserveSize =
+            0; // 0 = Use whatever diligent default deems default.
 
         /// <summary>
         /// Amount of host-visible memory reserved by the engine.
         /// The engine does not pre-allocate the memory, but rather keeps free
         /// pages when resources are released.
         /// </summary>
-        uint32_t HostVisibleMemoryReserveSize = 0; // 0 = Use whatever diligent default deems default.
+        uint32_t HostVisibleMemoryReserveSize =
+            0; // 0 = Use whatever diligent default deems default.
 
         /// <summary>
         /// Page size of the upload heap that is allocated by immediate/deferred
@@ -300,8 +320,8 @@ namespace Ame::Rhi
         ///             On exit, the engine prints the number of pages that were
         ///             allocated by each context to the log, for example:
         ///
-        ///                 Diligent Engine: Info: Upload heap of immediate context peak used/allocated frame
-        ///                 size: 80.00 MB / 80.00 MB (80 pages)
+        ///                 Diligent Engine: Info: Upload heap of immediate context peak
+        ///                 used/allocated frame size: 80.00 MB / 80.00 MB (80 pages)
         /// </summary>
         uint32_t UploadHeapPageSize = 0; // 0 = Use whatever diligent default deems default.
 
@@ -326,11 +346,13 @@ namespace Ame::Rhi
         ///             the engine prints dynamic heap statistics to the log, for example:
         ///
         ///                 Diligent Engine: Info: Dynamic memory manager usage stats:
-        ///                 Total size: 8.00 MB. Peak allocated size: 0.50 MB. Peak utilization: 6.2%
+        ///                 Total size: 8.00 MB. Peak allocated size: 0.50 MB. Peak
+        ///                 utilization: 6.2%
         ///
         ///             The peak allocated size (0.50 MB in the example above) is the value that
         ///             should be used to guide setting this variable. An application should always
-        ///             allow some extra space in the dynamic heap to avoid running out of dynamic memory.
+        ///             allow some extra space in the dynamic heap to avoid running out of dynamic
+        ///             memory.
         /// </summary>
         uint32_t DynamicHeapSize = 0; // 0 = Use whatever diligent default deems default.
 
@@ -349,16 +371,21 @@ namespace Ame::Rhi
         ///             for each context to the log, for example:
         ///
         ///                 Diligent Engine: Info: Dynamic heap of immediate context usage stats:
-        ///                                        Peak used/aligned/allocated size: 94.14 KB / 94.56 KB / 256.00 KB (1
-        ///                                        page). Peak efficiency (used/aligned): 99.6%. Peak utilization
+        ///                                        Peak used/aligned/allocated size: 94.14 KB
+        ///                                        / 94.56 KB / 256.00 KB (1 page). Peak efficiency
+        ///                                        (used/aligned): 99.6%. Peak utilization
         ///                                        (used/allocated): 36.8%
         ///
-        ///             * Peak used size is the total amount of memory required for dynamic resources
+        ///             * Peak used size is the total amount of memory required for dynamic
+        ///             resources
         ///               allocated by the context during the frame.
-        ///             * Peak aligned size is the total amount of memory required for dynamic resources
-        ///               allocated by the context during the frame, accounting for necessary alignment. This
-        ///               value is always greater than or equal to the peak used size.
-        ///             * Peak allocated size is the total amount of memory allocated from the dynamic
+        ///             * Peak aligned size is the total amount of memory required for dynamic
+        ///             resources
+        ///               allocated by the context during the frame, accounting for necessary
+        ///               alignment. This value is always greater than or equal to the peak used
+        ///               size.
+        ///             * Peak allocated size is the total amount of memory allocated from the
+        ///             dynamic
         ///               heap by the context during the frame. This value is always a multiple of
         ///               DynamicHeapPageSize.
         /// </summary>
@@ -384,8 +411,10 @@ namespace Ame::Rhi
 
     //
 
-    using DeviceCreateDescVariant =
-        std::variant<DeviceCreateDescD3D11, DeviceCreateDescD3D12, DeviceCreateDescGL, DeviceCreateDescVulkan>;
+    using DeviceCreateDescVariant = std::variant<DeviceCreateDescD3D11,
+                                                 DeviceCreateDescD3D12,
+                                                 DeviceCreateDescGL,
+                                                 DeviceCreateDescVulkan>;
 
     using DeviceCreateDescStream = std::vector<DeviceCreateDescVariant>;
 
@@ -484,9 +513,9 @@ namespace Ame::Rhi
 #ifdef AME_DEBUG_SANITIZE
         DeviceValidationType ValidationLayer = DeviceValidationType::All;
 #elif defined(AME_DEBUG)
-        DeviceValidationType ValidationLayer =
-            static_cast<DeviceValidationType>(std::to_underlying(DeviceValidationType::BreakOnError) |
-                                              std::to_underlying(DeviceValidationType::BreakOnCorruption));
+        DeviceValidationType ValidationLayer = static_cast<DeviceValidationType>(
+            std::to_underlying(DeviceValidationType::BreakOnError) |
+            std::to_underlying(DeviceValidationType::BreakOnCorruption));
 #else
         DeviceValidationType ValidationLayer = DeviceValidationType::None;
 #endif
@@ -503,9 +532,10 @@ namespace Ame::Rhi
         Opt<RenderSurfaceDesc> Surface;
 
     public:
-        [[nodiscard]] bool IsHeadless() const
+        [[nodiscard]]
+        bool IsHeadless() const
         {
             return !Surface.has_value();
         }
     };
-} // namespace Ame::Rhi
+}

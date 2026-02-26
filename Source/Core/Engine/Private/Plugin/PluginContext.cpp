@@ -4,7 +4,7 @@
 namespace Ame
 {
     namespace bdll         = boost::dll;
-    using PluginCreateFunc = IPlugin* (*)();
+    using PluginCreateFunc = IPlugin* (*) ();
 
     PluginContext::PluginContext(const String& pluginPath)
     {
@@ -23,4 +23,4 @@ namespace Ame
         m_Plugin->m_PluginName = path.filename().string();
         m_Plugin->m_PluginPath = path.parent_path().string();
     }
-} // namespace Ame
+}

@@ -27,24 +27,28 @@ namespace Ame::Rg
         void Execute(Dg::IDeviceContext* contexts);
 
     public:
-        void               MarkDirty() noexcept;
-        [[nodiscard]] bool IsDirty() const noexcept;
+        void MarkDirty() noexcept;
+        [[nodiscard]]
+        bool IsDirty() const noexcept;
 
     public:
         /// <summary>
         /// Get the render graph builder
         /// </summary>
-        [[nodiscard]] PassStorage& GetPassStorage();
+        [[nodiscard]]
+        PassStorage& GetPassStorage();
 
         /// <summary>
         /// Get the render graph storage
         /// </summary>
-        [[nodiscard]] const ResourceStorage& GetResourceStorage() const;
+        [[nodiscard]]
+        const ResourceStorage& GetResourceStorage() const;
 
         /// <summary>
         /// Get the render graph storage
         /// </summary>
-        [[nodiscard]] ResourceStorage& GetResourceStorage();
+        [[nodiscard]]
+        ResourceStorage& GetResourceStorage();
 
     private:
         Context     m_Context;
@@ -52,4 +56,4 @@ namespace Ame::Rg
 
         Signals::ScopedConnection m_OnWindowSizeChanged;
     };
-} // namespace Ame::Rg
+}

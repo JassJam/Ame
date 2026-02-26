@@ -33,4 +33,4 @@ namespace Ame::Rhi
 
         ImGuiColorConversionMode ConversionMode = ImGuiColorConversionMode::Auto;
     };
-} // namespace Ame::Rhi
+}

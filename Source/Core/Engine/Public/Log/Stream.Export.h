@@ -5,11 +5,11 @@ typedef struct Ame_LoggerStream_t Ame_LoggerStream_t;
 // Must match the LogLevel enum in Core.hpp
 #define AME_LOGLEVEL_TRACE 0
 #define AME_LOGLEVEL_DEBUG 1
-#define AME_LOGLEVEL_INFO  2
-#define AME_LOGLEVEL_WARN  3
+#define AME_LOGLEVEL_INFO 2
+#define AME_LOGLEVEL_WARN 3
 #define AME_LOGLEVEL_ERROR 4
 #define AME_LOGLEVEL_FATAL 5
-#define AME_LOGLEVEL_OFF   6
+#define AME_LOGLEVEL_OFF 6
 
 typedef struct Ame_LoggerInfo_t
 {
@@ -25,7 +25,8 @@ typedef struct Ame_Logger_LogData
     char             Level;
 } Ame_Logger_LogData;
 
-typedef void(AME_CDECL* Ame_LoggerStream_Callback_t)(void* /*stream*/, const Ame_Logger_LogData* /*data*/,
+typedef void(AME_CDECL* Ame_LoggerStream_Callback_t)(void* /*stream*/,
+                                                     const Ame_Logger_LogData* /*data*/,
                                                      void* /*userData*/);
 
 // clang-format off

@@ -5,7 +5,7 @@
 namespace Ame::Editor
 {
     class IProject;
-} // namespace Ame::Editor
+} 
 
 namespace Ame::Interfaces
 {
@@ -23,4 +23,4 @@ namespace Ame::Interfaces
         virtual Editor::IProject*               OpenProject(const String& path)                       = 0;
         [[nodiscard]] virtual Editor::IProject* GetCurrentProject()                                   = 0;
     };
-} // namespace Ame::Interfaces
+} 

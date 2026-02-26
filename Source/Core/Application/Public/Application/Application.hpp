@@ -41,12 +41,14 @@ namespace Ame
         }
 
     protected:
-        [[nodiscard]] AmeEngine& GetEngine() noexcept
+        [[nodiscard]]
+        AmeEngine& GetEngine() noexcept
         {
             return *m_Engine;
         }
 
-        [[nodiscard]] const AmeEngine& GetEngine() const noexcept
+        [[nodiscard]]
+        const AmeEngine& GetEngine() const noexcept
         {
             return *m_Engine;
         }
@@ -54,4 +56,4 @@ namespace Ame
     private:
         UniquePtr<AmeEngine> m_Engine;
     };
-} // namespace Ame
+}

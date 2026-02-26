@@ -13,9 +13,11 @@ namespace Ame::Scripting
     public:
         using IObjectWithCallback::IObjectWithCallback;
 
-        [[nodiscard]] virtual auto GetType() const -> IType*     = 0;
-        virtual void               InvokeMethod(const NativeString& methodName, std::span<void* const> arguments,
-                                                void* returnPtr) = 0;
+        [[nodiscard]]
+        virtual auto GetType() const -> IType*     = 0;
+        virtual void InvokeMethod(const NativeString&    methodName,
+                                  std::span<void* const> arguments,
+                                  void*                  returnPtr) = 0;
 
         virtual void GetFieldMethod(const NativeString& fieldName, void* valuePtr)       = 0;
         virtual void SetFieldMethod(const NativeString& fieldName, const void* valuePtr) = 0;
@@ -24,37 +26,46 @@ namespace Ame::Scripting
         virtual void SetPropertyMethod(const NativeString& propertyName, const void* valuePtr) = 0;
 
     public:
-        template<typename RetTy, typename... Args> RetTy Invoke(const NativeString& methodName, Args&&... args)
+        template<typename RetTy, typename... Args>
+        RetTy Invoke(const NativeString& methodName, Args&&... args)
         {
-            return InvokeImpl<RetTy>(methodName, NativeConverter<Args>::Wrap(std::forward<Args>(args))...);
+            return InvokeImpl<RetTy>(methodName,
+                                     NativeConverter<Args>::Wrap(std::forward<Args>(args))...);
         }
 
-        template<typename Ty> [[nodiscard]] Ty GetField(const NativeString& fieldName)
+        template<typename Ty>
+        [[nodiscard]]
+        Ty GetField(const NativeString& fieldName)
         {
             Ty result{};
             GetFieldMethod(fieldName, std::addressof(result));
             return result;
         }
 
-        template<typename Ty> void SetField(const NativeString& fieldName, Ty&& value)
+        template<typename Ty>
+        void SetField(const NativeString& fieldName, Ty&& value)
         {
             SetFieldImpl(fieldName, NativeConverter<Ty>::Wrap(std::forward<Ty>(value)));
         }
 
-        template<typename Ty> [[nodiscard]] Ty GetProperty(const NativeString& propertyName)
+        template<typename Ty>
+        [[nodiscard]]
+        Ty GetProperty(const NativeString& propertyName)
         {
             Ty result{};
             GetPropertyMethod(propertyName, std::addressof(result));
             return result;
         }
 
-        template<typename Ty> void SetProperty(const NativeString& propertyName, Ty&& value)
+        template<typename Ty>
+        void SetProperty(const NativeString& propertyName, Ty&& value)
         {
             SetPropertyImpl(propertyName, NativeConverter<Ty>::Wrap(std::forward<Ty>(value)));
         }
 
     private:
-        template<typename RetTy, typename... Args> RetTy InvokeImpl(const NativeString& methodName, Args&&... args)
+        template<typename RetTy, typename... Args>
+        RetTy InvokeImpl(const NativeString& methodName, Args&&... args)
         {
             constexpr size_t argsCount = sizeof...(args);
 
@@ -88,16 +99,18 @@ namespace Ame::Scripting
             }
         }
 
-        template<typename Ty> void SetFieldImpl(const NativeString& fieldName, const Ty& value)
+        template<typename Ty>
+        void SetFieldImpl(const NativeString& fieldName, const Ty& value)
         {
             const void* valuePtr = std::bit_cast<const void*>(std::addressof(value));
             SetFieldMethod(fieldName, valuePtr);
         }
 
-        template<typename Ty> void SetPropertyImpl(const NativeString& fieldName, const Ty& value)
+        template<typename Ty>
+        void SetPropertyImpl(const NativeString& fieldName, const Ty& value)
         {
             const void* valuePtr = std::bit_cast<const void*>(std::addressof(value));
             SetPropertyMethod(fieldName, valuePtr);
         }
     };
-} // namespace Ame::Scripting
+}

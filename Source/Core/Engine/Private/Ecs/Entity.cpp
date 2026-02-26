@@ -83,7 +83,8 @@ namespace Ame::Ecs
         std::vector<Entity> children;
         if (!allowDisabled)
         {
-            m_Entity.children([&children](const flecs::entity& Child) { children.emplace_back(Child); });
+            m_Entity.children([&children](const flecs::entity& Child)
+                              { children.emplace_back(Child); });
         }
         else
         {
@@ -131,4 +132,4 @@ namespace Ame::Ecs
     {
         m_Entity.child_of(parent.GetFlecsEntity());
     }
-} // namespace Ame::Ecs
+}

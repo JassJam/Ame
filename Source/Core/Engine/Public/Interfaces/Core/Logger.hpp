@@ -8,4 +8,4 @@ namespace Ame::Interfaces
     inline constexpr UId IID_Logger = Log::IID_Logger;
 
     using ILogger = Ame::Log::ILogger;
-} // namespace Ame::Interfaces
+}

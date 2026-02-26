@@ -8,17 +8,22 @@ namespace Ame::Asset
     class DirectoryAssetPackage : public IAssetPackage
     {
     public:
-        IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(IID_DirectoryAssetPackage, IID_BaseAssetPackage, IAssetPackage);
+        IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(IID_DirectoryAssetPackage,
+                                            IID_BaseAssetPackage,
+                                            IAssetPackage);
 
     public:
         using AssetMetaMap = std::unordered_map<UId, AssetMetaDataDef, UIdUtils::Hasher>;
         using AssetPathMap = std::unordered_map<String, UId>;
 
     private:
-        IMPLEMENT_INTERFACE_CTOR(DirectoryAssetPackage, Storage& storage, std::filesystem::path path);
+        IMPLEMENT_INTERFACE_CTOR(DirectoryAssetPackage,
+                                 Storage&              storage,
+                                 std::filesystem::path path);
 
     public:
-        [[nodiscard]] Co::generator<UId> GetAssets() override;
+        [[nodiscard]]
+        Co::generator<UId> GetAssets() override;
 
         bool ContainsAsset(const UId& uid) const override;
 
@@ -49,7 +54,8 @@ namespace Ame::Asset
         /// <summary>
         /// Get all files in the directory, recursively
         /// </summary>
-        [[nodiscard]] static Co::generator<String> GetFiles(const std::filesystem::path& path);
+        [[nodiscard]]
+        static Co::generator<String> GetFiles(const std::filesystem::path& path);
 
         /// <summary>
         /// Export all asset metadata to file
@@ -59,12 +65,14 @@ namespace Ame::Asset
         /// <summary>
         /// Load asset from the cache if it exists
         /// </summary>
-        [[nodiscard]] Ptr<IAsset> LoadAssetFromCache(const UId& uid);
+        [[nodiscard]]
+        Ptr<IAsset> LoadAssetFromCache(const UId& uid);
 
         /// <summary>
         /// Load asset and its dependencies
         /// </summary>
-        [[nodiscard]] Ptr<IAsset> LoadAssetAndDependencies(const UId& uid, bool loadTemp);
+        [[nodiscard]]
+        Ptr<IAsset> LoadAssetAndDependencies(const UId& uid, bool loadTemp);
 
         /// <summary>
         /// Save asset and its dependencies
@@ -76,4 +84,4 @@ namespace Ame::Asset
         AssetMetaMap          m_AssetMeta;
         AssetPathMap          m_AssetPath;
     };
-} // namespace Ame::Asset
+}

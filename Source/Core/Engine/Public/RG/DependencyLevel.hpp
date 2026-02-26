@@ -38,4 +38,4 @@ namespace Ame::Rg
     private:
         std::vector<Pass*> m_Passes;
     };
-} // namespace Ame::Rg
+}

@@ -25,8 +25,8 @@ namespace Ame::Rhi
 
         MaterialBaseShaderDesc() = default;
 
-        MaterialBaseShaderDesc(const Dg::ShaderCreateInfo& createInfo) :
-            StreamFactories({ Ptr{ createInfo.pShaderSourceStreamFactory } })
+        MaterialBaseShaderDesc(const Dg::ShaderCreateInfo& createInfo)
+            : StreamFactories({ Ptr{ createInfo.pShaderSourceStreamFactory } })
         {
             Macros.reserve(createInfo.Macros.Count);
             for (auto& element : std::span{ createInfo.Macros.Elements, createInfo.Macros.Count })
@@ -54,8 +54,9 @@ namespace Ame::Rhi
     //
 
     /// <summary>
-    /// We will merge both MaterialCreateDesc::Shaders and MaterialShaderLinks::Sources to generate the shaders at
-    /// runtime We use this to separate shader permutation between different pipelines such as deferred, forward, etc.
+    /// We will merge both MaterialCreateDesc::Shaders and MaterialShaderLinks::Sources to generate
+    /// the shaders at runtime We use this to separate shader permutation between different
+    /// pipelines such as deferred, forward, etc.
     /// </summary>
     struct MaterialShaderLinks
     {
@@ -100,7 +101,8 @@ namespace Ame::Rhi
         /// depend on whether an application uses multisample render targets.
         uint32_t SampleMask = 0xFFFF'FFFF;
 
-        /// Shading rate flags that specify which type of the shading rate will be used with this pipeline.
+        /// Shading rate flags that specify which type of the shading rate will be used with this
+        /// pipeline.
         Dg::PIPELINE_SHADING_RATE_FLAGS ShadingRateFlags = Dg::PIPELINE_SHADING_RATE_FLAG_NONE;
 
         Dg::TEXTURE_FORMAT DSFormat    = Dg::TEX_FORMAT_UNKNOWN;
@@ -128,8 +130,8 @@ namespace Ame::Rhi
                 m_Elements[i].BufferSlot    = i;
                 m_Elements[i].NumComponents = c_InputVertexAttributes[i].NumComponents;
                 m_Elements[i].ValueType     = c_InputVertexAttributes[i].Type;
-                m_Elements[i].IsNormalized =
-                    (m_Elements[i].ValueType == Dg::VT_UINT8 || m_Elements[i].ValueType == Dg::VT_INT8);
+                m_Elements[i].IsNormalized  = (m_Elements[i].ValueType == Dg::VT_UINT8 ||
+                                              m_Elements[i].ValueType == Dg::VT_INT8);
                 if (!hasAttribute)
                 {
                     m_Elements[i].Stride = 0;
@@ -137,7 +139,8 @@ namespace Ame::Rhi
             }
         }
 
-        [[nodiscard]] operator Dg::InputLayoutDesc() const noexcept
+        [[nodiscard]]
+        operator Dg::InputLayoutDesc() const noexcept
         {
             return { m_Elements, Count32(m_Elements) };
         }
@@ -149,4 +152,4 @@ namespace Ame::Rhi
     //
 
     using MaterialHash = size_t;
-} // namespace Ame::Rhi
+}

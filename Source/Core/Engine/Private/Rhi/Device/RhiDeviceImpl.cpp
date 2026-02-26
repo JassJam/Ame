@@ -26,9 +26,9 @@ namespace Ame::Rhi
 
     //
 
-    RhiDeviceImpl::RhiDeviceImpl(IReferenceCounters* counters, const DeviceCreateDesc& createDesc) :
-        IRhiDevice(counters), m_Wrapper(*DeviceWrapper::Create(createDesc)),
-        m_CommonRenderPass(AmeCreate(CommonRenderPass, this))
+    RhiDeviceImpl::RhiDeviceImpl(IReferenceCounters* counters, const DeviceCreateDesc& createDesc)
+        : IRhiDevice(counters), m_Wrapper(*DeviceWrapper::Create(createDesc)),
+          m_CommonRenderPass(AmeCreate(CommonRenderPass, this))
     {
     }
 
@@ -92,4 +92,4 @@ namespace Ame::Rhi
     {
         return m_RenderStateCache;
     }
-} // namespace Ame::Rhi
+}

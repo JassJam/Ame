@@ -7,14 +7,17 @@
 namespace Ame::Scripting
 {
     // {0046865B-F4FE-4F70-A1B0-D681153A7DC3}
-    inline constexpr UId IID_CSLibrary{ 0x46865b, 0xf4fe, 0x4f70, { 0xa1, 0xb0, 0xd6, 0x81, 0x15, 0x3a, 0x7d, 0xc3 } };
+    inline constexpr UId IID_CSLibrary{ 0x46865b,
+                                        0xf4fe,
+                                        0x4f70,
+                                        { 0xa1, 0xb0, 0xd6, 0x81, 0x15, 0x3a, 0x7d, 0xc3 } };
 
     class CSLibraryContext;
 
     class CSLibrary : public ILibrary
     {
         using GetNameFn  = NativeString (*)(void* library);
-        using GetTypeFn  = void* (*)(void* library, const NativeString& name);
+        using GetTypeFn  = void* (*) (void* library, const NativeString& name);
         using GetTypesFn = NativeArray<void*> (*)(void* library);
 
     public:
@@ -31,10 +34,11 @@ namespace Ame::Scripting
         auto GetTypes() -> Co::generator<Ptr<IType>> override;
 
     public:
-        [[nodiscard]] auto GetRuntime() const -> const CLRRuntime&;
+        [[nodiscard]]
+        auto GetRuntime() const -> const CLRRuntime&;
 
     private:
         CSLibraryContext* m_Context;
         void*             m_Library = 0;
     };
-} // namespace Ame::Scripting
+}

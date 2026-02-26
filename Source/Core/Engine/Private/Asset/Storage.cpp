@@ -8,7 +8,8 @@
 
 namespace Ame::Asset
 {
-    Storage::Storage(SharedPtr<Co::runtime> coroutine) : m_Runtime(std::move(coroutine)), m_Manager(*this)
+    Storage::Storage(SharedPtr<Co::runtime> coroutine)
+        : m_Runtime(std::move(coroutine)), m_Manager(*this)
     {
         Mount<MemoryAssetPackage>();
         RegisterHandler<DefaultAssetHandler<Common::DataBlobAsset, IID_DataBlobAssetHandler>>();
@@ -28,4 +29,4 @@ namespace Ame::Asset
     {
         return *m_Runtime;
     }
-} // namespace Ame::Asset
+}

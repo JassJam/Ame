@@ -33,5 +33,6 @@ void Ame_Engine_Exit(Ame_Engine_t* engine, int exitCode)
 
 Ame_IModuleRegistry_t* Ame_Engine_GetModuleRegistry(Ame_Engine_t* engine)
 {
-    return std::bit_cast<Ame_IModuleRegistry_t*>(std::bit_cast<Ame::AmeEngine*>(engine)->GetRegistry());
+    return std::bit_cast<Ame_IModuleRegistry_t*>(
+        std::bit_cast<Ame::AmeEngine*>(engine)->GetRegistry());
 }

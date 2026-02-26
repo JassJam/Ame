@@ -106,18 +106,21 @@ namespace Ame::Asset
         /// Gets the asset handler for the specified asset.
         /// Not thread safe.
         /// </summary>
-        [[nodiscard]] std::pair<UId, IAssetHandler*> GetHandler(IAsset* asset);
+        [[nodiscard]]
+        std::pair<UId, IAssetHandler*> GetHandler(IAsset* asset);
 
         /// <summary>
         /// Gets the asset handler for the specified id.
         /// Not thread safe.
         /// </summary>
-        [[nodiscard]] IAssetHandler* GetHandler(const UId& uid);
+        [[nodiscard]]
+        IAssetHandler* GetHandler(const UId& uid);
 
         /// <summary>
         /// Get the associated asset manager.
         /// </summary>
-        [[nodiscard]] Manager& GetManager();
+        [[nodiscard]]
+        Manager& GetManager();
 
     private:
         /// <summary>
@@ -163,36 +166,44 @@ namespace Ame::Asset
         /// Gets the asset package with the specified name.
         /// Not thread safe.
         /// </summary>
-        [[nodiscard]] Co::generator<Ptr<IAssetPackage>> GetPackages(const PackageFlags& flags = PackageFlags::Disk);
+        [[nodiscard]]
+        Co::generator<Ptr<IAssetPackage>> GetPackages(
+            const PackageFlags& flags = PackageFlags::Disk);
 
         /// <summary>
         /// Gets all assets in all packages.
         /// Not thread safe.
         /// </summary>
-        [[nodiscard]] Co::generator<PackageAndAsset> GetAllAssets(const PackageFlags& flags = PackageFlags::Disk);
+        [[nodiscard]]
+        Co::generator<PackageAndAsset> GetAllAssets(const PackageFlags& flags = PackageFlags::Disk);
 
     public:
         /// <summary>
         /// Finds an asset by uid.
         /// </summary>
-        [[nodiscard]] IAssetPackage* FindPackage(const UId& uid, const PackageFlags& flags = PackageFlags::Disk);
+        [[nodiscard]]
+        IAssetPackage* FindPackage(const UId& uid, const PackageFlags& flags = PackageFlags::Disk);
 
         /// <summary>
         /// Finds assets by path.
         /// </summary>
-        [[nodiscard]] PackageAndAsset FindAsset(const String& path, const PackageFlags& flags = PackageFlags::Disk);
+        [[nodiscard]]
+        PackageAndAsset FindAsset(const String&       path,
+                                  const PackageFlags& flags = PackageFlags::Disk);
 
         /// <summary>
         /// Finds assets by path as regex.
         /// </summary>
-        [[nodiscard]] Co::generator<PackageAndAsset> FindAssets(const std::regex&   pathRegex,
-                                                                const PackageFlags& flags = PackageFlags::Disk);
+        [[nodiscard]]
+        Co::generator<PackageAndAsset> FindAssets(const std::regex&   pathRegex,
+                                                  const PackageFlags& flags = PackageFlags::Disk);
 
     private:
         /// <summary>
         /// Used for initializing package and preventing mounts from multiple storages.
         /// </summary>
-        [[nodiscard]] Co::runtime& GetRuntime() const;
+        [[nodiscard]]
+        Co::runtime& GetRuntime() const;
 
     private:
         SharedPtr<Co::runtime> m_Runtime;
@@ -201,4 +212,4 @@ namespace Ame::Asset
         AssetPackageList m_Packages;
         AssetHandlerMap  m_Handlers;
     };
-} // namespace Ame::Asset
+}

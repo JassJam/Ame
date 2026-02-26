@@ -22,10 +22,12 @@ namespace imcxx
     };
 
     /// <summary>
-    /// Useful for handling multiple Push/Pop of different types (check 'shared_override_strategy') when the items is in
-    /// current window,
+    /// Useful for handling multiple Push/Pop of different types (check 'shared_override_strategy')
+    /// when the items is in current window,
     /// </summary>
-    template<shared_override_strategy _Strategy> class [[nodiscard]] shared_override
+    template<shared_override_strategy _Strategy>
+    class [[nodiscard]]
+    shared_override
     {
     public:
         shared_override() = default;
@@ -33,7 +35,8 @@ namespace imcxx
         shared_override(const shared_override&)            = delete;
         shared_override& operator=(const shared_override&) = delete;
 
-        shared_override(shared_override&& other) noexcept : m_PopCount(std::exchange(other.m_PopCount, 0))
+        shared_override(shared_override&& other) noexcept
+            : m_PopCount(std::exchange(other.m_PopCount, 0))
         {
         }
         shared_override& operator=(shared_override&& other) noexcept
@@ -46,7 +49,8 @@ namespace imcxx
             return *this;
         }
 
-        template<typename... _Args> shared_override(_Args&&... args)
+        template<typename... _Args>
+        shared_override(_Args&&... args)
         {
             push(std::forward<_Args>(args)...);
         }
@@ -57,7 +61,8 @@ namespace imcxx
                 pop(m_PopCount);
         }
 
-        template<typename... _Args> void push(_Args&&... args)
+        template<typename... _Args>
+        void push(_Args&&... args)
         {
             static constexpr size_t strategy_size = get_strategy_size();
 
@@ -148,7 +153,8 @@ namespace imcxx
             m_PopCount -= count;
         }
 
-        [[nodiscard]] size_t count() const noexcept
+        [[nodiscard]]
+        size_t count() const noexcept
         {
             return m_PopCount;
         }
@@ -158,21 +164,18 @@ namespace imcxx
         {
             switch (_Strategy)
             {
-            case shared_override_strategy::clip_rect:
-                return 3;
+            case shared_override_strategy::clip_rect: return 3;
 
             case shared_override_strategy::style_color:
             case shared_override_strategy::style_var:
-            case shared_override_strategy::item_flag:
-                return 2;
+            case shared_override_strategy::item_flag  : return 2;
 
             case shared_override_strategy::font:
             case shared_override_strategy::text_wrap:
             case shared_override_strategy::item_width:
             case shared_override_strategy::item_id:
             case shared_override_strategy::focus_scope:
-            case shared_override_strategy::column_clip_rect:
-                return 1;
+            case shared_override_strategy::column_clip_rect: return 1;
 
             default:
             {
@@ -224,7 +227,8 @@ namespace imcxx
                 push_impl_2(std::forward<_TyX>(others)...);
         }
 
-        template<typename _Ty0, typename... _TyX> void push_impl_1(_Ty0 value, _TyX&&... others)
+        template<typename _Ty0, typename... _TyX>
+        void push_impl_1(_Ty0 value, _TyX&&... others)
         {
             if constexpr (_Strategy == shared_override_strategy::font)
             {
@@ -281,4 +285,4 @@ namespace imcxx
     using shared_focus_scope = shared_override<shared_override_strategy::focus_scope>;
     using shared_clip_rect   = shared_override<shared_override_strategy::clip_rect>;
     using shared_column_rect = shared_override<shared_override_strategy::column_clip_rect>;
-} // namespace imcxx
+}

@@ -4,18 +4,21 @@
 
 namespace Ame::Scripting
 {
-    static constexpr const char* ClassName = "AmeSharp.RuntimeHost.Runtime.AssemblyBridge, AmeSharp.RuntimeHost";
+    static constexpr const char* ClassName =
+        "AmeSharp.RuntimeHost.Runtime.AssemblyBridge, AmeSharp.RuntimeHost";
 
     void CLRRuntime::RegisterCommonFunctions_AssemblyBridge()
     {
-        RegisterCommonFunction(Functions::AssemblyBridge_GetType, GetFunctionPtr(ClassName, "GetType"));
-        RegisterCommonFunction(Functions::AssemblyBridge_GetTypes, GetFunctionPtr(ClassName, "GetTypes"));
+        RegisterCommonFunction(Functions::AssemblyBridge_GetType,
+                               GetFunctionPtr(ClassName, "GetType"));
+        RegisterCommonFunction(Functions::AssemblyBridge_GetTypes,
+                               GetFunctionPtr(ClassName, "GetTypes"));
     }
 
     //
 
-    CSLibrary::CSLibrary(IReferenceCounters* counters, CSLibraryContext* context, void* library) :
-        ILibrary(counters), m_Context(context), m_Library(library)
+    CSLibrary::CSLibrary(IReferenceCounters* counters, CSLibraryContext* context, void* library)
+        : ILibrary(counters), m_Context(context), m_Library(library)
     {
     }
 
@@ -32,14 +35,16 @@ namespace Ame::Scripting
 
     Ptr<IType> CSLibrary::GetType(const NativeString& name)
     {
-        auto getType = GetRuntime().GetCommonFunction<GetTypeFn>(CLRRuntime::Functions::AssemblyBridge_GetType);
-        auto type    = getType(m_Library, name);
+        auto getType = GetRuntime().GetCommonFunction<GetTypeFn>(
+            CLRRuntime::Functions::AssemblyBridge_GetType);
+        auto type = getType(m_Library, name);
         return type ? AmeCreate(CSType, this, type) : Ptr<IType>{};
     }
 
     Co::generator<Ptr<IType>> CSLibrary::GetTypes()
     {
-        auto getTypes = GetRuntime().GetCommonFunction<GetTypesFn>(CLRRuntime::Functions::AssemblyBridge_GetTypes);
+        auto getTypes = GetRuntime().GetCommonFunction<GetTypesFn>(
+            CLRRuntime::Functions::AssemblyBridge_GetTypes);
         for (auto type : getTypes(m_Library))
         {
             co_yield AmeCreate(CSType, this, type);
@@ -52,4 +57,4 @@ namespace Ame::Scripting
     {
         return m_Context->GetRuntime();
     }
-} // namespace Ame::Scripting
+}

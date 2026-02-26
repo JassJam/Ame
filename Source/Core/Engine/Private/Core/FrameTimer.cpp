@@ -32,7 +32,8 @@ namespace Ame
     void FrameTimer::SetTimeScale(float timeScale) noexcept
     {
         // We were paused and now we are unpaused
-        if (m_TimeScale <= std::numeric_limits<float>::epsilon() && timeScale > std::numeric_limits<float>::epsilon())
+        if (m_TimeScale <= std::numeric_limits<float>::epsilon() &&
+            timeScale > std::numeric_limits<float>::epsilon())
         {
             m_PrevTime = steady_clock::now();
         }
@@ -49,13 +50,14 @@ namespace Ame
 
     void FrameTimer::Tick() noexcept
     {
-        m_CurrTime = steady_clock::now();
-        auto deltaTime =
-            std::max(std::chrono::duration_cast<fmilliseconds>(m_CurrTime - m_PrevTime).count() * .001, 0.0);
+        m_CurrTime     = steady_clock::now();
+        auto deltaTime = std::max(
+            std::chrono::duration_cast<fmilliseconds>(m_CurrTime - m_PrevTime).count() * .001,
+            0.0);
         m_DeltaTime = std::min(deltaTime, 0.2) * m_TimeScale;
         m_PrevTime  = m_CurrTime;
 
         m_GameTime += m_DeltaTime;
         m_EngineTime += m_DeltaTime;
     }
-} // namespace Ame
+}

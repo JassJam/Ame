@@ -122,4 +122,4 @@ namespace Ame::Asset
 
         return false;
     }
-} // namespace Ame::Asset
+}

@@ -8,14 +8,17 @@ namespace Ame
 {
     static auto GetDeviceDesc(Ptr<Window::IWindow> window)
     {
-        return Rhi::DeviceCreateDesc{ .Types{ Rhi::DeviceCreateDescD3D12{}, Rhi::DeviceCreateDescVulkan{},
-                                              Rhi::DeviceCreateDescD3D11{}, Rhi::DeviceCreateDescGL{} },
+        return Rhi::DeviceCreateDesc{ .Types{ Rhi::DeviceCreateDescD3D12{},
+                                              Rhi::DeviceCreateDescVulkan{},
+                                              Rhi::DeviceCreateDescD3D11{},
+                                              Rhi::DeviceCreateDescGL{} },
                                       .Surface = Rhi::RenderSurfaceDesc{ std::move(window) } };
     }
 
     static void Main()
     {
-        auto window    = Window::CreateWindow(Window::WindowType::DesktopWindow, { .Title = "Hello world" });
+        auto window =
+            Window::CreateWindow(Window::WindowType::DesktopWindow, { .Title = "Hello world" });
         auto rhiDevice = Rhi::CreateRhiDevice(GetDeviceDesc(window));
 
         while (window->IsRunning())
@@ -23,7 +26,7 @@ namespace Ame
             std::this_thread::sleep_for(std::chrono::milliseconds(16));
         }
     }
-} // namespace Ame
+}
 
 int main()
 {

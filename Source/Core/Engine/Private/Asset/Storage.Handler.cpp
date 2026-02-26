@@ -9,7 +9,8 @@ namespace Ame::Asset
 {
     void Storage::RegisterHandler(const UId& uid, Ptr<IAssetHandler> handler)
     {
-        AME_LOG_ASSERT(m_Handlers.emplace(uid, std::move(handler)).second, "Handler already registered");
+        AME_LOG_ASSERT(m_Handlers.emplace(uid, std::move(handler)).second,
+                       "Handler already registered");
     }
 
     void Storage::UnregisterHandler(const UId& uid)
@@ -35,4 +36,4 @@ namespace Ame::Asset
         auto iter = m_Handlers.find(uid);
         return iter != m_Handlers.end() ? iter->second : nullptr;
     }
-} // namespace Ame::Asset
+}

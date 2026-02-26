@@ -42,4 +42,4 @@ namespace Ame::Editor
 
         virtual auto GetEventListener() -> ProjectEventListener& = 0;
     };
-} // namespace Ame::Editor
+} 

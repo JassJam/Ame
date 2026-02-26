@@ -6,9 +6,10 @@
 namespace Ame::Ecs
 {
     // {B1E66472-0485-4A63-9646-5486139D0270}
-    inline constexpr UId IID_RuntimeScene{
-        0xb1e66472, 0x485, 0x4a63, { 0x96, 0x46, 0x54, 0x86, 0x13, 0x9d, 0x2, 0x70 }
-    };
+    inline constexpr UId IID_RuntimeScene{ 0xb1e66472,
+                                           0x485,
+                                           0x4a63,
+                                           { 0x96, 0x46, 0x54, 0x86, 0x13, 0x9d, 0x2, 0x70 } };
 
     enum class RuntimeSceneMerge
     {
@@ -18,14 +19,14 @@ namespace Ame::Ecs
         Copy,
 
         /// <summary>
-        /// Move the 'this' scene's entity tree to the target scene root, the 'this' scene will be empty, if the
-        /// current scene is same as 'this', no operation will be performed
+        /// Move the 'this' scene's entity tree to the target scene root, the 'this' scene will be
+        /// empty, if the current scene is same as 'this', no operation will be performed
         /// </summary>
         Move,
 
         /// <summary>
-        /// Replace the target scene root with the 'this' scene's entity tree, if the target scene is same as 'this',
-        /// no operation will be performed
+        /// Replace the target scene root with the 'this' scene's entity tree, if the target scene
+        /// is same as 'this', no operation will be performed
         /// </summary>
         Replace,
 
@@ -69,11 +70,13 @@ namespace Ame::Ecs
         /// </summary>
         void MergeTo(RuntimeScene* targetScene, RuntimeSceneMerge mergeType);
 
-        [[nodiscard]] const Ecs::Entity& GetRoot() const noexcept
+        [[nodiscard]]
+        const Ecs::Entity& GetRoot() const noexcept
         {
             return m_Root.Get();
         }
-        [[nodiscard]] const flecs::entity& GetRootFlecsEntity() const noexcept
+        [[nodiscard]]
+        const flecs::entity& GetRootFlecsEntity() const noexcept
         {
             return m_Root->GetFlecsEntity();
         }
@@ -82,18 +85,21 @@ namespace Ame::Ecs
         /// <summary>
         /// Get the current scene
         /// </summary>
-        [[nodiscard]] static RuntimeScene* GetCurrent(Ecs::World* world);
+        [[nodiscard]]
+        static RuntimeScene* GetCurrent(Ecs::World* world);
 
         /// <summary>
         /// Get the current scene entity
         /// </summary>
-        [[nodiscard]] static Ecs::Entity GetCurrentEntity(Ecs::World* world);
+        [[nodiscard]]
+        static Ecs::Entity GetCurrentEntity(Ecs::World* world);
 
         /// <summary>
         /// Set the scene as the current scene,
         /// if null, the current scene reference will be cleared
         /// </summary>
-        [[nodiscard]] static void SetCurrent(Ecs::World* world, RuntimeScene* scene);
+        [[nodiscard]]
+        static void SetCurrent(Ecs::World* world, RuntimeScene* scene);
 
         /// <summary>
         /// Set the scene as the current scene
@@ -108,4 +114,4 @@ namespace Ame::Ecs
     //
 
     AME_ECS_WRAP_COMPONENT_PTR(RuntimeScene);
-} // namespace Ame::Ecs
+}

@@ -3,10 +3,13 @@
 
 namespace Ame::Scripting
 {
-    static constexpr const char* ClassName = "AmeSharp.RuntimeHost.Runtime.ALCBridge, AmeSharp.RuntimeHost";
+    static constexpr const char* ClassName =
+        "AmeSharp.RuntimeHost.Runtime.ALCBridge, AmeSharp.RuntimeHost";
 
-    CSLibraryContext::CSLibraryContext(IReferenceCounters* counters, const CLRRuntime& runtime,
-                                       const NativeString& name) : ILibraryContext(counters), m_Runtime(&runtime)
+    CSLibraryContext::CSLibraryContext(IReferenceCounters* counters,
+                                       const CLRRuntime&   runtime,
+                                       const NativeString& name)
+        : ILibraryContext(counters), m_Runtime(&runtime)
     {
         auto create = m_Runtime->GetFunction<CreateFn>(ClassName, "Create");
         m_Context   = create(name);
@@ -30,7 +33,9 @@ namespace Ame::Scripting
         return m_Libraries.emplace(path.hash(), AmeCreate(CSLibrary, this, library)).first->second;
     }
 
-    ILibrary* CSLibraryContext::LoadLibrary(const NativeString& name, const std::byte* data, size_t dataSize)
+    ILibrary* CSLibraryContext::LoadLibrary(const NativeString& name,
+                                            const std::byte*    data,
+                                            size_t              dataSize)
     {
         if (auto library = GetLibrary(name); library != nullptr)
         {
@@ -48,4 +53,4 @@ namespace Ame::Scripting
         auto iter = m_Libraries.find(name.hash());
         return iter != m_Libraries.end() ? iter->second : nullptr;
     }
-} // namespace Ame::Scripting
+}

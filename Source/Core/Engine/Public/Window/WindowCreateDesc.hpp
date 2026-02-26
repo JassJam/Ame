@@ -50,4 +50,4 @@ namespace Ame::Window
         /// </summary>
         bool NoResize;
     };
-} // namespace Ame::Window
+}

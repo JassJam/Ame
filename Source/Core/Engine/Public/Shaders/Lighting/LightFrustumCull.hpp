@@ -25,22 +25,24 @@ namespace Ame::Rhi
 
         static constexpr const char c_SourceCode[] = {
 #ifndef AME_DIST
-#include "LightFrustumCull_CS_Debug.static.hlsli.h"
+    #include "LightFrustumCull_CS_Debug.static.hlsli.h"
             ,
-#include "LightFrustumCull_CS.static.hlsli.h"
+    #include "LightFrustumCull_CS.static.hlsli.h"
 #else
-#include "LightFrustumCull_CS_DebugNone.static.hlsli.h"
+    #include "LightFrustumCull_CS_DebugNone.static.hlsli.h"
             ,
-#include "LightFrustumCull_CS.static.hlsli.h"
+    #include "LightFrustumCull_CS.static.hlsli.h"
 #endif
-            , 0x00
+            ,
+            0x00
         };
 
     public:
-        LightFrustumCull_ComputeShader(uint8_t blockSize, uint16_t maxLightChunkSize) :
-            m_DispatchChunkSize(std::to_string(blockSize)), m_MaxLightChunkSize(std::to_string(maxLightChunkSize)),
-            m_Macros{ Dg::ShaderMacro{ DISPATCH_CHUNK_SIZE, m_DispatchChunkSize.c_str() },
-                      Dg::ShaderMacro{ MAX_LIGHT_CHUNK_SIZE, m_MaxLightChunkSize.c_str() } }
+        LightFrustumCull_ComputeShader(uint8_t blockSize, uint16_t maxLightChunkSize)
+            : m_DispatchChunkSize(std::to_string(blockSize)),
+              m_MaxLightChunkSize(std::to_string(maxLightChunkSize)),
+              m_Macros{ Dg::ShaderMacro{ DISPATCH_CHUNK_SIZE, m_DispatchChunkSize.c_str() },
+                        Dg::ShaderMacro{ MAX_LIGHT_CHUNK_SIZE, m_MaxLightChunkSize.c_str() } }
         {
             Setup({ "L_LightFrustumCull_CS", Dg::SHADER_TYPE_COMPUTE, true }, c_SourceCode);
             m_CreateInfo.Macros = { m_Macros.data(), Count32(m_Macros) };
@@ -67,16 +69,23 @@ namespace Ame::Rhi
                 {
                     { transformStruct.GetMemoryShaderSourceFileInfo(transformStruct.Name) },
                     { lightStruct.GetMemoryShaderSourceFileInfo(lightStruct.Name) },
-                    { renderInstanceStruct.GetMemoryShaderSourceFileInfo(renderInstanceStruct.Name) },
-                    { cameraFrameDataStruct.GetMemoryShaderSourceFileInfo(cameraFrameDataStruct.Name) },
+                    { renderInstanceStruct.GetMemoryShaderSourceFileInfo(
+                        renderInstanceStruct.Name) },
+                    { cameraFrameDataStruct.GetMemoryShaderSourceFileInfo(
+                        cameraFrameDataStruct.Name) },
 
-                    { geometryCommonShader.GetMemoryShaderSourceFileInfo(geometryCommonShader.Name) },
-                    { geometryPlanesStruct.GetMemoryShaderSourceFileInfo(geometryPlanesStruct.Name) },
-                    { geometryFrustumPlanesStruct.GetMemoryShaderSourceFileInfo(geometryFrustumPlanesStruct.Name) },
-                    { geometrySphereStruct.GetMemoryShaderSourceFileInfo(geometrySphereStruct.Name) },
+                    { geometryCommonShader.GetMemoryShaderSourceFileInfo(
+                        geometryCommonShader.Name) },
+                    { geometryPlanesStruct.GetMemoryShaderSourceFileInfo(
+                        geometryPlanesStruct.Name) },
+                    { geometryFrustumPlanesStruct.GetMemoryShaderSourceFileInfo(
+                        geometryFrustumPlanesStruct.Name) },
+                    { geometrySphereStruct.GetMemoryShaderSourceFileInfo(
+                        geometrySphereStruct.Name) },
 
                     { viewConverterStruct.GetMemoryShaderSourceFileInfo(viewConverterStruct.Name) },
-                    { geometryOperationsStruct.GetMemoryShaderSourceFileInfo(geometryOperationsStruct.Name) },
+                    { geometryOperationsStruct.GetMemoryShaderSourceFileInfo(
+                        geometryOperationsStruct.Name) },
                 },
                 true);
             m_CreateInfo.pShaderSourceStreamFactory = m_LinkedShaders;
@@ -90,4 +99,4 @@ namespace Ame::Rhi
 
         std::array<Dg::ShaderMacro, 2> m_Macros;
     };
-} // namespace Ame::Rhi
+}

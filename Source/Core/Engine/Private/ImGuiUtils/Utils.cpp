@@ -11,8 +11,10 @@ namespace Ame::ImGuiUtils
         ImVec2 endPos    = { pos.x + size.x + frameSize, pos.y + size.y + frameSize };
 
         drawList->AddRectFilled(pos, endPos, ImGui::GetColorU32(ImGuiCol_FrameBg));
-        drawList->AddText(
-            { pos.x + frameSize / 2.f, pos.y + frameSize / 2.f }, ImGui::GetColorU32(ImGuiCol_Text), text, textEnd);
+        drawList->AddText({ pos.x + frameSize / 2.f, pos.y + frameSize / 2.f },
+                          ImGui::GetColorU32(ImGuiCol_Text),
+                          text,
+                          textEnd);
 
         ImGui::Dummy(size);
     }
@@ -34,7 +36,8 @@ namespace Ame::ImGuiUtils
 
     void TableAlignCenter(float width)
     {
-        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() / 2.0f - width / 2.0f);
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() / 2.0f -
+                             width / 2.0f);
     }
 
     void CursorMiddleScreen(const char* label)
@@ -123,7 +126,10 @@ namespace Ame::ImGuiUtils
         }
 
         drawList->AddRectFilled(pos, endPos, color);
-        drawList->AddText(pos, ImGui::GetColorU32(ImGuiCol_Text), label.c_str(), label.c_str() + label.size());
+        drawList->AddText(pos,
+                          ImGui::GetColorU32(ImGuiCol_Text),
+                          label.c_str(),
+                          label.c_str() + label.size());
         ImGui::Dummy(size);
     }
 
@@ -169,7 +175,10 @@ namespace Ame::ImGuiUtils
         imcxx::shared_item_id id(name);
 
         auto imColor = GetImColor(color);
-        if (imcxx::button{ imcxx::button::color{}, "", imColor, flags,
+        if (imcxx::button{ imcxx::button::color{},
+                           "",
+                           imColor,
+                           flags,
                            ImVec2{ ImGui::GetContentRegionAvail().x, 0.f } })
         {
             ImGui::OpenPopup("ColorPalette");
@@ -194,8 +203,12 @@ namespace Ame::ImGuiUtils
 
     //
 
-    void DrawIcon(ImDrawList* drawList, const ImVec2& size, BasicIconType type, bool filled, ImU32 color,
-                  ImU32 fillColor)
+    void DrawIcon(ImDrawList*   drawList,
+                  const ImVec2& size,
+                  BasicIconType type,
+                  bool          filled,
+                  ImU32         color,
+                  ImU32         fillColor)
     {
         if (!ImGui::IsRectVisible(size))
         {
@@ -245,24 +258,30 @@ namespace Ame::ImGuiUtils
             ImVec2 tip_bottom(canvasX + canvasSize.x * 0.5f, bottom);
 
             drawList->PathLineTo(ImVec2(left, top) + ImVec2(0, rounding));
-            drawList->PathBezierCubicCurveTo(
-                ImVec2(left, top), ImVec2(left, top), ImVec2(left, top) + ImVec2(rounding, 0));
+            drawList->PathBezierCubicCurveTo(ImVec2(left, top),
+                                             ImVec2(left, top),
+                                             ImVec2(left, top) + ImVec2(rounding, 0));
 
             drawList->PathLineTo(tip_top);
             drawList->PathLineTo(tip_top + (tip_right - tip_top) * tipRound);
-            drawList->PathBezierCubicCurveTo(tip_right, tip_right, tip_bottom + (tip_right - tip_bottom) * tipRound);
+            drawList->PathBezierCubicCurveTo(tip_right,
+                                             tip_right,
+                                             tip_bottom + (tip_right - tip_bottom) * tipRound);
 
             drawList->PathLineTo(tip_bottom);
             drawList->PathLineTo(ImVec2(left, bottom) + ImVec2(rounding, 0));
-            drawList->PathBezierCubicCurveTo(
-                ImVec2(left, bottom), ImVec2(left, bottom), ImVec2(left, bottom) - ImVec2(0, rounding));
+            drawList->PathBezierCubicCurveTo(ImVec2(left, bottom),
+                                             ImVec2(left, bottom),
+                                             ImVec2(left, bottom) - ImVec2(0, rounding));
 
             if (!filled)
             {
                 // if it has alpha
                 if (fillColor & 0xFF000000)
                 {
-                    drawList->AddConvexPolyFilled(drawList->_Path.Data, drawList->_Path.size(), fillColor);
+                    drawList->AddConvexPolyFilled(drawList->_Path.Data,
+                                                  drawList->_Path.size(),
+                                                  fillColor);
                 }
                 drawList->PathStroke(color, true, 2.0f * outlineScale);
             }
@@ -283,11 +302,18 @@ namespace Ame::ImGuiUtils
                 {
                     drawList->AddCircleFilled(rectCenter, radius, fillColor, 12 + extraSegments);
                 }
-                drawList->AddCircle(rectCenter, radius, color, 12 + extraSegments, 2.0f * outlineScale);
+                drawList->AddCircle(rectCenter,
+                                    radius,
+                                    color,
+                                    12 + extraSegments,
+                                    2.0f * outlineScale);
             }
             else
             {
-                drawList->AddCircleFilled(rectCenter, 0.5f * size.x / 2.0f, color, 12 + extraSegments);
+                drawList->AddCircleFilled(rectCenter,
+                                          0.5f * size.x / 2.0f,
+                                          color,
+                                          12 + extraSegments);
             }
             break;
         }
@@ -312,7 +338,8 @@ namespace Ame::ImGuiUtils
                 {
                     drawList->AddRectFilled(p0, p1, fillColor, 0, ImDrawFlags_RoundCornersAll);
                 }
-                drawList->AddRect(p0, p1, color, 0, ImDrawFlags_RoundCornersAll, 2.0f * outlineScale);
+                drawList
+                    ->AddRect(p0, p1, color, 0, ImDrawFlags_RoundCornersAll, 2.0f * outlineScale);
             }
             break;
         }
@@ -364,9 +391,18 @@ namespace Ame::ImGuiUtils
 
                 if (fillColor & 0xFF000000)
                 {
-                    drawList->AddRectFilled(p0, p1, fillColor, radius * 0.5f, ImDrawFlags_RoundCornersAll);
+                    drawList->AddRectFilled(p0,
+                                            p1,
+                                            fillColor,
+                                            radius * 0.5f,
+                                            ImDrawFlags_RoundCornersAll);
                 }
-                drawList->AddRect(p0, p1, color, radius * 0.5f, ImDrawFlags_RoundCornersAll, 2.0f * outlineScale);
+                drawList->AddRect(p0,
+                                  p1,
+                                  color,
+                                  radius * 0.5f,
+                                  ImDrawFlags_RoundCornersAll,
+                                  2.0f * outlineScale);
             }
             break;
         }
@@ -392,16 +428,17 @@ namespace Ame::ImGuiUtils
 
                 if (fillColor & 0xFF000000)
                 {
-                    drawList->AddConvexPolyFilled(drawList->_Path.Data, drawList->_Path.size(), fillColor);
+                    drawList->AddConvexPolyFilled(drawList->_Path.Data,
+                                                  drawList->_Path.size(),
+                                                  fillColor);
                 }
                 drawList->PathStroke(color, true, 2.0f * outlineScale);
             }
             break;
         }
-        default:
-            std::unreachable();
+        default: std::unreachable();
         }
 
         ImGui::Dummy(size);
     }
-} // namespace Ame::ImGuiUtils
+}

@@ -14,4 +14,4 @@ namespace Ame::Editor
     };
 
     AME_ECS_WRAP_COMPONENT_REF(IProjectRequest);
-} // namespace Ame::Editor
+} 

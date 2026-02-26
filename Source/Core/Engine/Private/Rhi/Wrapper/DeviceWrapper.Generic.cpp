@@ -4,9 +4,9 @@
 #include <boost/predef.h>
 
 #ifdef BOOST_OS_WINDOWS
-#define GLFW_EXPOSE_NATIVE_WIN32
+    #define GLFW_EXPOSE_NATIVE_WIN32
 #elif defined(BOOST_OS_LINUX)
-#define GLFW_EXPOSE_NATIVE_X11
+    #define GLFW_EXPOSE_NATIVE_X11
 #endif
 
 #include <GLFW/glfw3.h>
@@ -14,8 +14,9 @@
 
 namespace Ame::Rhi
 {
-    uint32_t FindDiligentBestAdapter(Dg::IEngineFactory* engineFactory, const DeviceCreateDesc& createDesc,
-                                     const Dg::Version& version)
+    uint32_t FindDiligentBestAdapter(Dg::IEngineFactory*     engineFactory,
+                                     const DeviceCreateDesc& createDesc,
+                                     const Dg::Version&      version)
     {
         Dg::Uint32 numAdapters = 0;
         engineFactory->EnumerateAdapters(version, numAdapters, nullptr);
@@ -57,18 +58,21 @@ namespace Ame::Rhi
             .value_or(Dg::DEFAULT_ADAPTER_ID);
     }
 
-    void ParseDiligentEngineCreateDesc(const DeviceCreateDesc& createDesc, Dg::EngineCreateInfo& createInfo)
+    void ParseDiligentEngineCreateDesc(const DeviceCreateDesc& createDesc,
+                                       Dg::EngineCreateInfo&   createInfo)
     {
         using namespace EnumBitOperators;
 
         createInfo.Features = createDesc.Features;
 
         createInfo.EnableValidation =
-            (createDesc.ValidationLayer & DeviceValidationType::DebugLayer) == DeviceValidationType::DebugLayer;
+            (createDesc.ValidationLayer & DeviceValidationType::DebugLayer) ==
+            DeviceValidationType::DebugLayer;
         if ((createDesc.ValidationLayer & DeviceValidationType::CheckShaderBufferSize) ==
             DeviceValidationType::DebugLayer)
         {
-            createInfo.ValidationFlags |= Dg::VALIDATION_FLAGS::VALIDATION_FLAG_CHECK_SHADER_BUFFER_SIZE;
+            createInfo.ValidationFlags |=
+                Dg::VALIDATION_FLAGS::VALIDATION_FLAG_CHECK_SHADER_BUFFER_SIZE;
         }
 
         createInfo.pRawMemAllocator = &ObjectMemoryAllocator::Instance();
@@ -76,7 +80,8 @@ namespace Ame::Rhi
 
     //
 
-    Dg::SwapChainDesc CreateDiligentSwapChainDesc(Window::IWindow* window, const SwapchainDesc& swapchainDesc)
+    Dg::SwapChainDesc CreateDiligentSwapChainDesc(Window::IWindow*     window,
+                                                  const SwapchainDesc& swapchainDesc)
     {
         auto              size = window->GetSize();
         Dg::SwapChainDesc dgSwapchainDesc;
@@ -95,7 +100,8 @@ namespace Ame::Rhi
         return dgSwapchainDesc;
     }
 
-    Dg::FullScreenModeDesc CreateDiligentFullscreenDesc(Window::IWindow*, const FullscreenModeDesc& fullscreenDesc)
+    Dg::FullScreenModeDesc CreateDiligentFullscreenDesc(Window::IWindow*,
+                                                        const FullscreenModeDesc& fullscreenDesc)
     {
         return { .Fullscreen             = fullscreenDesc.Fullscreen,
                  .RefreshRateNumerator   = fullscreenDesc.RefreshRate.Numerator,
@@ -132,9 +138,11 @@ namespace Ame::Rhi
 
     //
 
-    void DILIGENT_CALL_TYPE OnDiligentMessageCallback(Dg::DEBUG_MESSAGE_SEVERITY severity, const Dg::Char* message,
+    void DILIGENT_CALL_TYPE OnDiligentMessageCallback(Dg::DEBUG_MESSAGE_SEVERITY       severity,
+                                                      const Dg::Char*                  message,
                                                       [[maybe_unused]] const Dg::Char* function,
-                                                      [[maybe_unused]] const Dg::Char* file, [[maybe_unused]] int line)
+                                                      [[maybe_unused]] const Dg::Char* file,
+                                                      [[maybe_unused]] int             line)
     {
         Log::LogLevel level = Log::LogLevel::Disabled;
         switch (severity)
@@ -165,18 +173,17 @@ namespace Ame::Rhi
 
             switch (code)
             {
-            case 0:
-                logger->WriteMessage({ level, message });
-                break;
+            case 0: logger->WriteMessage({ level, message }); break;
             case 1:
             case 2:
-                logger->WriteMessage({ level, std::format("{} (L{}): {}", file, function, line, message) });
+                logger->WriteMessage(
+                    { level, std::format("{} (L{}): {}", file, function, line, message) });
                 break;
             case 3:
-                logger->WriteMessage({ level, std::format("{}/{} (L{}): {}", file, function, line, message) });
+                logger->WriteMessage(
+                    { level, std::format("{}/{} (L{}): {}", file, function, line, message) });
                 break;
-            default:
-                std::unreachable();
+            default: std::unreachable();
             }
 #endif
         }
@@ -187,4 +194,4 @@ namespace Ame::Rhi
         Dg::SetDebugMessageCallback(&OnDiligentMessageCallback);
         factory->SetMessageCallback(&OnDiligentMessageCallback);
     }
-} // namespace Ame::Rhi
+}

@@ -38,28 +38,35 @@ namespace Ame::Rg
 
     //
 
-    [[nodiscard]] static size_t ComputeViewHash(const BufferResourceViewDesc& viewDesc)
+    [[nodiscard]]
+    static size_t ComputeViewHash(const BufferResourceViewDesc& viewDesc)
     {
-        return std::visit(VariantVisitor{ [](Dg::BUFFER_VIEW_TYPE type) -> size_t { return static_cast<size_t>(type); },
+        return std::visit(VariantVisitor{ [](Dg::BUFFER_VIEW_TYPE type) -> size_t
+                                          { return static_cast<size_t>(type); },
                                           [](const Dg::BufferViewDesc& desc) -> size_t
                                           {
-                                              return Dg::ComputeHash(
-                                                  desc.ViewType, desc.Format.ValueType, desc.Format.NumComponents,
-                                                  desc.Format.IsNormalized, desc.ByteOffset, desc.ByteWidth);
+                                              return Dg::ComputeHash(desc.ViewType,
+                                                                     desc.Format.ValueType,
+                                                                     desc.Format.NumComponents,
+                                                                     desc.Format.IsNormalized,
+                                                                     desc.ByteOffset,
+                                                                     desc.ByteWidth);
                                           } },
                           viewDesc);
     }
 
-    [[nodiscard]] static size_t ComputeViewHash(const TextureResourceViewDesc& viewDesc)
+    [[nodiscard]]
+    static size_t ComputeViewHash(const TextureResourceViewDesc& viewDesc)
     {
-        return std::visit(
-            VariantVisitor{ [](Dg::TEXTURE_VIEW_TYPE type) -> size_t { return static_cast<size_t>(type); },
-                            [](const auto& desc) -> size_t
-                            {
-                                using viewType = std::decay_t<decltype(desc)>;
-                                return Dg::ComputeHash(static_cast<const Dg::TextureViewDesc&>(desc));
-                            } },
-            viewDesc);
+        return std::visit(VariantVisitor{ [](Dg::TEXTURE_VIEW_TYPE type) -> size_t
+                                          { return static_cast<size_t>(type); },
+                                          [](const auto& desc) -> size_t
+                                          {
+                                              using viewType = std::decay_t<decltype(desc)>;
+                                              return Dg::ComputeHash(
+                                                  static_cast<const Dg::TextureViewDesc&>(desc));
+                                          } },
+                          viewDesc);
     }
 
     //
@@ -82,7 +89,8 @@ namespace Ame::Rg
     {
         size_t viewId = ComputeViewHash(viewDesc);
 
-        AME_LOG_ASSERT(std::holds_alternative<TextureHandle>(m_Handle), "Resource is not a texture");
+        AME_LOG_ASSERT(std::holds_alternative<TextureHandle>(m_Handle),
+                       "Resource is not a texture");
         auto& textureHandle = std::get<TextureHandle>(m_Handle);
         if (!textureHandle.Views.contains(viewId))
         {
@@ -102,7 +110,8 @@ namespace Ame::Rg
                                 if (!IsImported())
                                 {
                                     using descType = std::decay_t<decltype(handle.Desc)>;
-                                    if (!handle.Resource || handle.Resource->GetDesc() != handle.Desc)
+                                    if (!handle.Resource ||
+                                        handle.Resource->GetDesc() != handle.Desc)
                                     {
 #ifndef AME_DIST
                                         handle.Desc.Name = m_Name.c_str();
@@ -113,12 +122,16 @@ namespace Ame::Rg
                                             if (handle.InitData)
                                             {
                                                 auto initData = handle.InitData->GetInitData();
-                                                renderDevice->CreateTexture(handle.Desc, &initData, &handle.Resource);
+                                                renderDevice->CreateTexture(handle.Desc,
+                                                                            &initData,
+                                                                            &handle.Resource);
                                                 handle.InitData = {};
                                             }
                                             else
                                             {
-                                                renderDevice->CreateTexture(handle.Desc, nullptr, &handle.Resource);
+                                                renderDevice->CreateTexture(handle.Desc,
+                                                                            nullptr,
+                                                                            &handle.Resource);
                                             }
                                         }
                                         else
@@ -126,12 +139,16 @@ namespace Ame::Rg
                                             if (handle.InitData)
                                             {
                                                 auto initData = handle.InitData->GetInitData();
-                                                renderDevice->CreateBuffer(handle.Desc, &initData, &handle.Resource);
+                                                renderDevice->CreateBuffer(handle.Desc,
+                                                                           &initData,
+                                                                           &handle.Resource);
                                                 handle.InitData = {};
                                             }
                                             else
                                             {
-                                                renderDevice->CreateBuffer(handle.Desc, nullptr, &handle.Resource);
+                                                renderDevice->CreateBuffer(handle.Desc,
+                                                                           nullptr,
+                                                                           &handle.Resource);
                                             }
                                         }
                                     }
@@ -150,11 +167,12 @@ namespace Ame::Rg
         {
             if (!viewHandle.View) [[unlikely]]
             {
-                std::visit(VariantVisitor{ [&](Dg::BUFFER_VIEW_TYPE type)
-                                           { viewHandle.View = handle.Resource->GetDefaultView(type); },
-                                           [&](const Dg::BufferViewDesc& desc)
-                                           { handle.Resource->CreateView(desc, &viewHandle.View); } },
-                           viewHandle.Desc);
+                std::visit(
+                    VariantVisitor{ [&](Dg::BUFFER_VIEW_TYPE type)
+                                    { viewHandle.View = handle.Resource->GetDefaultView(type); },
+                                    [&](const Dg::BufferViewDesc& desc)
+                                    { handle.Resource->CreateView(desc, &viewHandle.View); } },
+                    viewHandle.Desc);
             }
         }
     }
@@ -165,15 +183,17 @@ namespace Ame::Rg
         {
             if (!viewHandle.View) [[unlikely]]
             {
-                std::visit(VariantVisitor{ [&](Dg::TEXTURE_VIEW_TYPE type)
-                                           { viewHandle.View = handle.Resource->GetDefaultView(type); },
-                                           [&](const auto& desc)
-                                           {
-                                               handle.Resource->CreateView(
-                                                   static_cast<const Dg::TextureViewDesc&>(desc), &viewHandle.View);
-                                           } },
-                           viewHandle.Desc);
+                std::visit(
+                    VariantVisitor{ [&](Dg::TEXTURE_VIEW_TYPE type)
+                                    { viewHandle.View = handle.Resource->GetDefaultView(type); },
+                                    [&](const auto& desc)
+                                    {
+                                        handle.Resource->CreateView(
+                                            static_cast<const Dg::TextureViewDesc&>(desc),
+                                            &viewHandle.View);
+                                    } },
+                    viewHandle.Desc);
             }
         }
     }
-} // namespace Ame::Rg
+}

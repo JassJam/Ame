@@ -3,8 +3,10 @@
 
 namespace Ame::Ecs
 {
-    [[nodiscard]] static Ecs::Entity CloneEntityInternal(const Ecs::Entity& sceneRoot, const Ecs::Entity& entity,
-                                                         const Ecs::Entity& newParent)
+    [[nodiscard]]
+    static Ecs::Entity CloneEntityInternal(const Ecs::Entity& sceneRoot,
+                                           const Ecs::Entity& entity,
+                                           const Ecs::Entity& newParent)
     {
         auto newEntity = entity->clone();
         if (sceneRoot)
@@ -18,7 +20,8 @@ namespace Ame::Ecs
         return newEntity;
     }
 
-    static Ecs::Entity CloneEntityTo(const Ecs::Entity& sceneRoot, const Ecs::Entity& entity,
+    static Ecs::Entity CloneEntityTo(const Ecs::Entity& sceneRoot,
+                                     const Ecs::Entity& entity,
                                      const Ecs::Entity& newParent)
     {
         auto newEntity = CloneEntityInternal(sceneRoot, entity, newParent);
@@ -41,7 +44,10 @@ namespace Ame::Ecs
         return CloneTo(GetSceneRoot(entity), entity, newParent, deepClone);
     }
 
-    Entity EntityUtils::CloneTo(const Entity& sceneRoot, const Entity& entity, Entity newParent, bool deepClone)
+    Entity EntityUtils::CloneTo(const Entity& sceneRoot,
+                                const Entity& entity,
+                                Entity        newParent,
+                                bool          deepClone)
     {
         if (!newParent)
         {
@@ -50,4 +56,4 @@ namespace Ame::Ecs
         return deepClone ? CloneEntityTo(sceneRoot, entity, newParent)
                          : CloneEntityInternal(sceneRoot, entity, newParent);
     }
-} // namespace Ame::Ecs
+}

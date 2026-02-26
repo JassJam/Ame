@@ -23,4 +23,4 @@ namespace Ame::Editor
     private:
         Ptr<IProject> m_CurrentProject;
     };
-} // namespace Ame::Editor
+}

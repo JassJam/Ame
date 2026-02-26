@@ -40,8 +40,10 @@ namespace Ame::Editor
             return;
         }
 
-        auto message =
-            std::format("[{0:%F} {0:%T}] [T: {1}] {2}", logData.Timepoint, logData.ThreadId, logData.Message);
+        auto message = std::format("[{0:%F} {0:%T}] [T: {1}] {2}",
+                                   logData.Timepoint,
+                                   logData.ThreadId,
+                                   logData.Message);
         m_Logs.insert(m_Logs.end(), { std::move(message), logData.Level });
         m_ActiveLogsDirty = true;
     }
@@ -67,20 +69,13 @@ namespace Ame::Editor
     {
         switch (level)
         {
-        case Log::LogLevel::Trace:
-            return Colors::c_GhostWhite;
-        case Log::LogLevel::Debug:
-            return Colors::c_Green;
-        case Log::LogLevel::Info:
-            return Colors::c_Cyan;
-        case Log::LogLevel::Warning:
-            return Colors::c_Yellow;
-        case Log::LogLevel::Error:
-            return Colors::c_Crimson;
-        case Log::LogLevel::Fatal:
-            return Colors::c_Red;
-        default:
-            std::unreachable();
+        case Log::LogLevel::Trace  : return Colors::c_GhostWhite;
+        case Log::LogLevel::Debug  : return Colors::c_Green;
+        case Log::LogLevel::Info   : return Colors::c_Cyan;
+        case Log::LogLevel::Warning: return Colors::c_Yellow;
+        case Log::LogLevel::Error  : return Colors::c_Crimson;
+        case Log::LogLevel::Fatal  : return Colors::c_Red;
+        default                    : std::unreachable();
         }
     }
 
@@ -151,4 +146,4 @@ namespace Ame::Editor
             m_LevelMaskString = "None";
         }
     }
-} // namespace Ame::Editor
+}

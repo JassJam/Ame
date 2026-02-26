@@ -18,7 +18,8 @@ namespace Ame::Gfx
         void OnBuild(Rg::Resolver& resolver)
         {
             constexpr uint8_t bufferSize =
-                Rhi::c_InputVertexAttributes[std::to_underlying(Rhi::VertexInputFlags::Count)].Offset;
+                Rhi::c_InputVertexAttributes[std::to_underlying(Rhi::VertexInputFlags::Count)]
+                    .Offset;
             constexpr Dg::BufferDesc bufferDesc{
 #ifndef AME_DIST
                 "_EEVB",
@@ -43,4 +44,4 @@ namespace Ame::Gfx
             resolver.CreateBuffer(c_RGEntityEmptyVertexBuffers, initData, bufferDesc);
         }
     };
-} // namespace Ame::Gfx
+}

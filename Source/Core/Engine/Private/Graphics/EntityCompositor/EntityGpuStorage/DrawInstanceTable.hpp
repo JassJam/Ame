@@ -28,7 +28,8 @@ namespace Ame::Gfx
 
         static auto observer_create(Ecs::WorldRef world)
         {
-            return world.CreateObserver<const Ecs::IBaseRenderableComponent, const EntityTransform_EcsId>()
+            return world
+                .CreateObserver<const Ecs::IBaseRenderableComponent, const EntityTransform_EcsId>()
                 .with<Ecs::ActiveSceneEntityTag>()
                 .event(flecs::OnRemove)
                 .event(flecs::OnSet);
@@ -36,4 +37,4 @@ namespace Ame::Gfx
     };
 
     using EntityDrawInstanceGpuStorage = EntityGpuStorage<EntityGpuStorageTraits_DrawInstance>;
-} // namespace Ame::Gfx
+}

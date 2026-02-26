@@ -6,7 +6,7 @@
 namespace spdlog::sinks
 {
     class sink;
-} // namespace spdlog::sinks
+}
 
 namespace Ame::Log
 {
@@ -27,13 +27,16 @@ namespace Ame::Log
         void SetPattern(String pattern);
         void SetLevel(LogLevel level);
 
-        [[nodiscard]] const String& GetPattern() const noexcept;
-        [[nodiscard]] LogLevel      GetLevel() const;
+        [[nodiscard]]
+        const String& GetPattern() const noexcept;
+        [[nodiscard]]
+        LogLevel GetLevel() const;
 
-        [[nodiscard]] const SharedPtr<spdlog::sinks::sink>& GetSink() const noexcept;
+        [[nodiscard]]
+        const SharedPtr<spdlog::sinks::sink>& GetSink() const noexcept;
 
     protected:
         String                         m_Pattern;
         SharedPtr<spdlog::sinks::sink> m_Sink;
     };
-} // namespace Ame::Log
+}

@@ -60,7 +60,10 @@ namespace Ame::Math
         {
         case CameraType::Perspective:
         {
-            return Matrix4x4::PerspectiveFov(Util::DegToRad(FieldOfView), AspectRatio(), NearPlane, FarPlane);
+            return Matrix4x4::PerspectiveFov(Util::DegToRad(FieldOfView),
+                                             AspectRatio(),
+                                             NearPlane,
+                                             FarPlane);
         }
         case CameraType::Orthographic:
         {
@@ -73,11 +76,12 @@ namespace Ame::Math
             }
 
             float halfSize = OrthographicSize / 2.f;
-            return Matrix4x4::Orthographic(
-                Width * xAxisMultiplier * halfSize, Height * yAxisMultiplier * halfSize, NearPlane, FarPlane);
+            return Matrix4x4::Orthographic(Width * xAxisMultiplier * halfSize,
+                                           Height * yAxisMultiplier * halfSize,
+                                           NearPlane,
+                                           FarPlane);
         }
-        default:
-            std::unreachable();
+        default: std::unreachable();
         }
     }
 
@@ -94,4 +98,4 @@ namespace Ame::Math
     {
         return { m_Viewport.Width, m_Viewport.Height };
     }
-} // namespace Ame::Math
+}

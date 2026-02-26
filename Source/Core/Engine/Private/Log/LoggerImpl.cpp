@@ -25,8 +25,8 @@ namespace Ame::Log
         return AmeCreate(LoggerImpl, std::move(name));
     }
 
-    LoggerImpl::LoggerImpl(IReferenceCounters* counters, String loggerName) :
-        ILogger(counters), m_Logger(std::move(loggerName))
+    LoggerImpl::LoggerImpl(IReferenceCounters* counters, String loggerName)
+        : ILogger(counters), m_Logger(std::move(loggerName))
     {
 #if defined AME_DEBUG
         SetLevel(LogLevel::Trace);
@@ -74,4 +74,4 @@ namespace Ame::Log
     {
         m_Logger.set_level(GetSpdlogLevel(level));
     }
-} // namespace Ame::Log
+}

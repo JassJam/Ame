@@ -5,8 +5,8 @@ typedef struct Ame_AbstractStorage_Key_t   Ame_AbstractStorage_Key_t;
 typedef struct Ame_AbstractStorage_Value_t Ame_AbstractStorage_Value_t;
 
 // Storage interface for key-value pairs
-// Designed to be used mostly for scripting languages where we must persist native pointer aswell as managed object
-// This is a simple key-value storage that can be used to store any type of data
+// Designed to be used mostly for scripting languages where we must persist native pointer aswell as
+// managed object This is a simple key-value storage that can be used to store any type of data
 
 // clang-format off
 extern "C"

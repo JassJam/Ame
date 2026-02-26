@@ -2,7 +2,7 @@
 
 - [x] xmake format the codebase
 - [ ] revisit the code base structure
-- [ ] remove `// namespace XXX` at the end of namespace scope
+- [x] remove `// namespace XXX` at the end of namespace scope
 - [ ] use camelCase for all variables and functions
 - [ ] use PascalCase for all classes and namespaces
 - [ ] remove all unused code and files

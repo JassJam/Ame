@@ -2,17 +2,20 @@
 
 namespace Ame
 {
-    template<typename Ty> struct StlAllocator
+    template<typename Ty>
+    struct StlAllocator
     {
         using value_type                  = Ty;
         static constexpr size_t alignment = alignof(Ty);
 
         StlAllocator() noexcept = default;
-        template<typename OTy> constexpr StlAllocator(const StlAllocator<OTy>&) noexcept
+        template<typename OTy>
+        constexpr StlAllocator(const StlAllocator<OTy>&) noexcept
         {
         }
 
-        [[nodiscard]] Ty* allocate(size_t n) const
+        [[nodiscard]]
+        Ty* allocate(size_t n) const
         {
             if (n == 0)
             {
@@ -29,13 +32,15 @@ namespace Ame
         {
             mi_free_aligned(p, alignment);
         }
-        [[nodiscard]] bool operator==(const StlAllocator&) const noexcept
+        [[nodiscard]]
+        bool operator==(const StlAllocator&) const noexcept
         {
             return true;
         }
-        [[nodiscard]] bool operator!=(const StlAllocator&) const noexcept
+        [[nodiscard]]
+        bool operator!=(const StlAllocator&) const noexcept
         {
             return false;
         }
     };
-} // namespace Ame
+}

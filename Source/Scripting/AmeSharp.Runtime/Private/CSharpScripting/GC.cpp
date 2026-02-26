@@ -2,10 +2,11 @@
 
 namespace Ame::Scripting
 {
-    static constexpr const char* ClassName = "AmeSharp.RuntimeHost.Runtime.GCBridge, AmeSharp.RuntimeHost";
+    static constexpr const char* ClassName =
+        "AmeSharp.RuntimeHost.Runtime.GCBridge, AmeSharp.RuntimeHost";
 
-    CSGarbageCollector::CSGarbageCollector(IReferenceCounters* counters, const CLRRuntime& runtime) :
-        IGarbageCollector(counters)
+    CSGarbageCollector::CSGarbageCollector(IReferenceCounters* counters, const CLRRuntime& runtime)
+        : IGarbageCollector(counters)
     {
         m_CollectAll = runtime.GetFunction<CollectAllFn>(ClassName, "CollectAll");
         m_Collect    = runtime.GetFunction<CollectFn>(ClassName, "Collect");
@@ -18,7 +19,10 @@ namespace Ame::Scripting
         m_CollectAll();
     }
 
-    void CSGarbageCollector::Collect(int generation, GCCollectionMode mode, bool blocking, bool compacting)
+    void CSGarbageCollector::Collect(int              generation,
+                                     GCCollectionMode mode,
+                                     bool             blocking,
+                                     bool             compacting)
     {
         m_Collect(generation, static_cast<char>(mode), blocking, compacting);
     }
@@ -27,4 +31,4 @@ namespace Ame::Scripting
     {
         m_WaitForPendingFinalizers();
     }
-} // namespace Ame::Scripting
+}

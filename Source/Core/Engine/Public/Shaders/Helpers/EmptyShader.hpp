@@ -12,4 +12,4 @@ namespace Ame::Rhi
             Setup({ "Empty Shader", Dg::SHADER_TYPE_UNKNOWN }, "");
         }
     };
-} // namespace Ame::Rhi
+}

@@ -27,4 +27,4 @@ namespace Ame::Rg
     {
         m_Levels = std::move(levels);
     }
-} // namespace Ame::Rg
+}

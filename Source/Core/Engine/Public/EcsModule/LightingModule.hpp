@@ -16,4 +16,4 @@ namespace Ame::Ecs
     public:
         LightingEcsModule(WorldRef world);
     };
-} // namespace Ame::Ecs
+}

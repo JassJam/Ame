@@ -12,11 +12,13 @@ namespace Ame::Gfx
         EntityCompositor(Rhi::IRhiDevice* rhiDevice, Ecs::World* world);
 
         void Update();
-        void RenderGraph(Rg::Graph& renderGraph, const Math::Camera& camera, const Math::TransformMatrix& transform);
+        void RenderGraph(Rg::Graph&                   renderGraph,
+                         const Math::Camera&          camera,
+                         const Math::TransformMatrix& transform);
 
     private:
         EntityStorage   m_Storage;
         EntityCollector m_Collector;
         EntityDrawer    m_Drawer;
     };
-} // namespace Ame::Gfx
+}

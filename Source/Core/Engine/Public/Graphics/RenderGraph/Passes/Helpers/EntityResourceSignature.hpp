@@ -37,24 +37,37 @@ namespace Ame::Gfx
             auto renderInstances = storage.GetResource(c_RGRenderInstanceTable)->AsBuffer();
             auto lightInstances  = storage.GetResource(c_RGLightInstanceTable)->AsBuffer();
 
-            Rhi::BindAllInSrb(
-                m_Srb, ShaderFlags, "AllTransforms", transforms->GetDefaultView(Dg::BUFFER_VIEW_SHADER_RESOURCE));
-            Rhi::BindAllInSrb(m_Srb, ShaderFlags, "AllRenderInstances",
+            Rhi::BindAllInSrb(m_Srb,
+                              ShaderFlags,
+                              "AllTransforms",
+                              transforms->GetDefaultView(Dg::BUFFER_VIEW_SHADER_RESOURCE));
+            Rhi::BindAllInSrb(m_Srb,
+                              ShaderFlags,
+                              "AllRenderInstances",
                               renderInstances->GetDefaultView(Dg::BUFFER_VIEW_SHADER_RESOURCE));
-            Rhi::BindAllInSrb(m_Srb, ShaderFlags, "AllLightInstances",
+            Rhi::BindAllInSrb(m_Srb,
+                              ShaderFlags,
+                              "AllLightInstances",
                               lightInstances->GetDefaultView(Dg::BUFFER_VIEW_SHADER_RESOURCE));
         }
 
     private:
-        [[nodiscard]] static Ptr<Dg::IPipelineResourceSignature> CreateResourceSignature(
+        [[nodiscard]]
+        static Ptr<Dg::IPipelineResourceSignature> CreateResourceSignature(
             Dg::IRenderDevice* renderDevice)
         {
             constexpr std::array resources{
-                Dg::PipelineResourceDesc{ ShaderFlags, "AllTransforms", Dg::SHADER_RESOURCE_TYPE_BUFFER_SRV,
+                Dg::PipelineResourceDesc{ ShaderFlags,
+                                          "AllTransforms",
+                                          Dg::SHADER_RESOURCE_TYPE_BUFFER_SRV,
                                           Dg::SHADER_RESOURCE_VARIABLE_TYPE_DYNAMIC },
-                Dg::PipelineResourceDesc{ ShaderFlags, "AllRenderInstances", Dg::SHADER_RESOURCE_TYPE_BUFFER_SRV,
+                Dg::PipelineResourceDesc{ ShaderFlags,
+                                          "AllRenderInstances",
+                                          Dg::SHADER_RESOURCE_TYPE_BUFFER_SRV,
                                           Dg::SHADER_RESOURCE_VARIABLE_TYPE_DYNAMIC },
-                Dg::PipelineResourceDesc{ ShaderFlags, "AllLightInstances", Dg::SHADER_RESOURCE_TYPE_BUFFER_SRV,
+                Dg::PipelineResourceDesc{ ShaderFlags,
+                                          "AllLightInstances",
+                                          Dg::SHADER_RESOURCE_TYPE_BUFFER_SRV,
                                           Dg::SHADER_RESOURCE_VARIABLE_TYPE_DYNAMIC },
             };
 
@@ -76,7 +89,8 @@ namespace Ame::Gfx
     //
 
     class AME_ENGINE_API EntityResourceSignature_GraphicsPass final
-        : public EntityResourceSignaturePass<EntityResourceSignature_GraphicsPass, Dg::SHADER_TYPE_ALL_GRAPHICS>
+        : public EntityResourceSignaturePass<EntityResourceSignature_GraphicsPass,
+                                             Dg::SHADER_TYPE_ALL_GRAPHICS>
     {
     public:
         EntityResourceSignature_GraphicsPass()
@@ -84,14 +98,16 @@ namespace Ame::Gfx
             Name("Initialize Entity Resource Signature (Graphics)");
         }
 
-        [[nodiscard]] static const auto& RGSignature() noexcept
+        [[nodiscard]]
+        static const auto& RGSignature() noexcept
         {
             return c_RGEntityResourceSignature_Graphics;
         }
     };
 
     class AME_ENGINE_API EntityResourceSignature_ComputePass final
-        : public EntityResourceSignaturePass<EntityResourceSignature_ComputePass, Dg::SHADER_TYPE_COMPUTE>
+        : public EntityResourceSignaturePass<EntityResourceSignature_ComputePass,
+                                             Dg::SHADER_TYPE_COMPUTE>
     {
     public:
         EntityResourceSignature_ComputePass()
@@ -99,9 +115,10 @@ namespace Ame::Gfx
             Name("Initialize Entity Resource Signature (Compute)");
         }
 
-        [[nodiscard]] static const auto& RGSignature() noexcept
+        [[nodiscard]]
+        static const auto& RGSignature() noexcept
         {
             return c_RGEntityResourceSignature_Compute;
         }
     };
-} // namespace Ame::Gfx
+}

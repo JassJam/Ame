@@ -6,4 +6,4 @@ namespace Ame
     {
         return std::make_unique<ModuleRegistryImpl>();
     }
-} // namespace Ame
+}

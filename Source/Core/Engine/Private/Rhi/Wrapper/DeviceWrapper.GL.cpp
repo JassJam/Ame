@@ -1,9 +1,9 @@
 #include <Rhi/Wrapper/DeviceWrapper.Generic.hpp>
 
 #if defined(GL_SUPPORTED) || defined(GLES_SUPPORTED)
-#include <DiligentCore/Platforms/interface/NativeWindow.h>
-#include <DiligentCore/Graphics/GraphicsEngineOpenGL/interface/EngineFactoryOpenGL.h>
-#include <Window/Window.hpp>
+    #include <DiligentCore/Platforms/interface/NativeWindow.h>
+    #include <DiligentCore/Graphics/GraphicsEngineOpenGL/interface/EngineFactoryOpenGL.h>
+    #include <Window/Window.hpp>
 #endif
 
 namespace Ame::Rhi
@@ -20,7 +20,8 @@ namespace Ame::Rhi
             return "GL";
         }
 
-        static diligent_create_info GetCreateInfo(const DeviceCreateDesc& createDesc, const create_struct_type&)
+        static diligent_create_info GetCreateInfo(const DeviceCreateDesc& createDesc,
+                                                  const create_struct_type&)
         {
             auto& surfaceDesc = *createDesc.Surface;
 
@@ -28,10 +29,10 @@ namespace Ame::Rhi
 
             createInfo.Window = GetDiligentNativeWindow(surfaceDesc.Window, true);
 
-#ifdef PLATFORM_EMSCRIPTEN
+    #ifdef PLATFORM_EMSCRIPTEN
             createInfo.WebGLAttribs.Alpha           = false;
             createInfo.WebGLAttribs.PowerPreference = WEBGL_POWER_PREFERENCE_HIGH_PERFORMANCE;
-#endif
+    #endif
 
             return createInfo;
         }
@@ -46,8 +47,9 @@ namespace Ame::Rhi
 
     //
 
-    Opt<DeviceWrapper> DeviceWrapper::CreateImpl([[maybe_unused]] const DeviceCreateDesc&   createDesc,
-                                                 [[maybe_unused]] const DeviceCreateDescGL& createDescDev)
+    Opt<DeviceWrapper> DeviceWrapper::CreateImpl(
+        [[maybe_unused]] const DeviceCreateDesc&   createDesc,
+        [[maybe_unused]] const DeviceCreateDescGL& createDescDev)
     {
         Opt<DeviceWrapper> deviceWrapper;
 
@@ -61,8 +63,9 @@ namespace Ame::Rhi
 
         if (!createDesc.Surface || !createDesc.Surface->Window)
         {
-            AME_LOG_WARNING(std::format(
-                "Failed to create swapchain for {} graphics engine: Surface is null", DeviceCreateTraitsGL::GetName()));
+            AME_LOG_WARNING(
+                std::format("Failed to create swapchain for {} graphics engine: Surface is null",
+                            DeviceCreateTraitsGL::GetName()));
             return deviceWrapper;
         }
 
@@ -73,26 +76,35 @@ namespace Ame::Rhi
         auto factoryDev = DeviceCreateTraitsGL::LoadFactory();
         if (factoryDev)
         {
-            auto swapchainDesc  = CreateDiligentSwapChainDesc(surfaceDesc.Window, surfaceDesc.Swapchain);
-            auto fullscreenDesc = CreateDiligentFullscreenDesc(surfaceDesc.Window, surfaceDesc.FullscreenMode);
+            auto swapchainDesc =
+                CreateDiligentSwapChainDesc(surfaceDesc.Window, surfaceDesc.Swapchain);
+            auto fullscreenDesc =
+                CreateDiligentFullscreenDesc(surfaceDesc.Window, surfaceDesc.FullscreenMode);
 
             createInfo.AdapterId = FindDiligentBestAdapter(factoryDev, createDesc);
-            factoryDev->CreateDeviceAndSwapChainGL(
-                createInfo, &renderDevice, &deviceContext, swapchainDesc, &swapchain);
+            factoryDev->CreateDeviceAndSwapChainGL(createInfo,
+                                                   &renderDevice,
+                                                   &deviceContext,
+                                                   swapchainDesc,
+                                                   &swapchain);
         }
 
         if (!(factoryDev && renderDevice && deviceContext && swapchain))
         {
-            AME_LOG_WARNING(std::format("Failed to load {} graphics engine", DeviceCreateTraitsGL::GetName()));
+            AME_LOG_WARNING(
+                std::format("Failed to load {} graphics engine", DeviceCreateTraitsGL::GetName()));
             return deviceWrapper;
         }
 
         factoryDev->QueryInterface(Dg::IID_EngineFactory, engineFactory.RawDblPtr<Dg::IObject>());
-        auto windowWrapper = std::make_unique<WindowWrapper>(Ptr(surfaceDesc.Window), std::move(swapchain));
+        auto windowWrapper =
+            std::make_unique<WindowWrapper>(Ptr(surfaceDesc.Window), std::move(swapchain));
 
-        deviceWrapper.emplace(
-            std::move(engineFactory), std::move(renderDevice), std::move(deviceContext), std::move(windowWrapper));
+        deviceWrapper.emplace(std::move(engineFactory),
+                              std::move(renderDevice),
+                              std::move(deviceContext),
+                              std::move(windowWrapper));
 #endif
         return deviceWrapper;
     }
-} // namespace Ame::Rhi
+}

@@ -33,12 +33,14 @@ namespace Ame::Rhi
         /// <summary>
         /// Get the window associated with the swapchain.
         /// </summary>
-        [[nodiscard]] Window::IWindow* GetWindow() const;
+        [[nodiscard]]
+        Window::IWindow* GetWindow() const;
 
         /// <summary>
         /// Get the swapchain.
         /// </summary>
-        [[nodiscard]] Dg::ISwapChain* GetSwapchain() const;
+        [[nodiscard]]
+        Dg::ISwapChain* GetSwapchain() const;
 
     private:
         Ptr<Window::IWindow> m_Window;
@@ -48,4 +50,4 @@ namespace Ame::Rhi
 
         bool m_DirtySwapChain = false;
     };
-} // namespace Ame::Rhi
+}

@@ -18,4 +18,4 @@ namespace Ame::Interfaces
 
         void ExposeInterfaces(IModuleRegistry* registry, IPlugin* owner = nullptr) const;
     };
-} // namespace Ame::Interfaces
+}

@@ -15,12 +15,15 @@ namespace Ame::Rhi
         /// <summary>
         /// Create a device wrapper.
         /// </summary>
-        [[nodiscard]] static Opt<DeviceWrapper> Create(const DeviceCreateDesc& createDesc);
+        [[nodiscard]]
+        static Opt<DeviceWrapper> Create(const DeviceCreateDesc& createDesc);
 
     public:
         DeviceWrapper() = default;
-        DeviceWrapper(Ptr<Dg::IEngineFactory> engineFactory, Ptr<Dg::IRenderDevice> renderDevice,
-                      Ptr<Dg::IDeviceContext> deviceContext, UniquePtr<WindowWrapper> windowWrapper);
+        DeviceWrapper(Ptr<Dg::IEngineFactory>  engineFactory,
+                      Ptr<Dg::IRenderDevice>   renderDevice,
+                      Ptr<Dg::IDeviceContext>  deviceContext,
+                      UniquePtr<WindowWrapper> windowWrapper);
 
         DeviceWrapper(const DeviceWrapper&) = delete;
         DeviceWrapper(DeviceWrapper&&)      = default;
@@ -34,52 +37,61 @@ namespace Ame::Rhi
         /// <summary>
         /// Get the engine factory.
         /// </summary>
-        [[nodiscard]] Dg::IEngineFactory* GetFactory() const;
+        [[nodiscard]]
+        Dg::IEngineFactory* GetFactory() const;
 
         /// <summary>
         /// Get the graphics device.
         /// </summary>
-        [[nodiscard]] Dg::IRenderDevice* GetDevice() const;
+        [[nodiscard]]
+        Dg::IRenderDevice* GetDevice() const;
 
         /// <summary>
         /// Get the device immediate context.
         /// </summary>
-        [[nodiscard]] Dg::IDeviceContext* GetImmediateContext() const;
+        [[nodiscard]]
+        Dg::IDeviceContext* GetImmediateContext() const;
 
         /// <summary>
         /// Get the window wrapper.
         /// </summary>
-        [[nodiscard]] const WindowWrapper* GetWindowWrapper() const noexcept;
+        [[nodiscard]]
+        const WindowWrapper* GetWindowWrapper() const noexcept;
 
         /// <summary>
         /// Get the window wrapper.
         /// </summary>
-        [[nodiscard]] WindowWrapper* GetWindowWrapper() noexcept;
+        [[nodiscard]]
+        WindowWrapper* GetWindowWrapper() noexcept;
 
     private:
         /// <summary>
         /// Create a device wrapper for D3D11.
         /// </summary>
-        [[nodiscard]] static Opt<DeviceWrapper> CreateImpl(const DeviceCreateDesc&      createDesc,
-                                                           const DeviceCreateDescD3D11& createDescD3D11);
+        [[nodiscard]]
+        static Opt<DeviceWrapper> CreateImpl(const DeviceCreateDesc&      createDesc,
+                                             const DeviceCreateDescD3D11& createDescD3D11);
 
         /// <summary>
         /// Create a device wrapper for D3D12.
         /// </summary>
-        [[nodiscard]] static Opt<DeviceWrapper> CreateImpl(const DeviceCreateDesc&      createDesc,
-                                                           const DeviceCreateDescD3D12& createDescD3D12);
+        [[nodiscard]]
+        static Opt<DeviceWrapper> CreateImpl(const DeviceCreateDesc&      createDesc,
+                                             const DeviceCreateDescD3D12& createDescD3D12);
 
         /// <summary>
         /// Create a device wrapper for OpenGL.
         /// </summary>
-        [[nodiscard]] static Opt<DeviceWrapper> CreateImpl(const DeviceCreateDesc&   createDesc,
-                                                           const DeviceCreateDescGL& createDescGL);
+        [[nodiscard]]
+        static Opt<DeviceWrapper> CreateImpl(const DeviceCreateDesc&   createDesc,
+                                             const DeviceCreateDescGL& createDescGL);
 
         /// <summary>
         /// Create a device wrapper for Vulkan.
         /// </summary>
-        [[nodiscard]] static Opt<DeviceWrapper> CreateImpl(const DeviceCreateDesc&       createDesc,
-                                                           const DeviceCreateDescVulkan& createDescVK);
+        [[nodiscard]]
+        static Opt<DeviceWrapper> CreateImpl(const DeviceCreateDesc&       createDesc,
+                                             const DeviceCreateDescVulkan& createDescVK);
 
     protected:
         Ptr<Dg::IEngineFactory>  m_EngineFactory;
@@ -87,4 +99,4 @@ namespace Ame::Rhi
         Ptr<Dg::IDeviceContext>  m_ImmediateContext;
         UniquePtr<WindowWrapper> m_WindowWrapper;
     };
-} // namespace Ame::Rhi
+}

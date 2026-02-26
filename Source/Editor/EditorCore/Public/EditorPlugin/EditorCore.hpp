@@ -14,4 +14,4 @@ namespace Ame::Editor
     };
 
     inline EditorCorePlugin* s_ThisPlugin = nullptr;
-} // namespace Ame::Editor
+}

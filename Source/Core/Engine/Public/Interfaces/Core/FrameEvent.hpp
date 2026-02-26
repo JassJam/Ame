@@ -11,14 +11,15 @@ namespace Ame::Signals
     /// Returns true if the application should continue running.
     /// </summary>
     AME_SIGNAL_DECL(OnFrameEnd, bool());
-} // namespace Ame::Signals
+}
 
 namespace Ame::Interfaces
 {
     // {919C726D-72E2-4573-ACC2-98EA5AF1781B}
-    inline constexpr UId IID_FrameEvent{
-        0x919c726d, 0x72e2, 0x4573, { 0xac, 0xc2, 0x98, 0xea, 0x5a, 0xf1, 0x78, 0x1b }
-    };
+    inline constexpr UId IID_FrameEvent{ 0x919c726d,
+                                         0x72e2,
+                                         0x4573,
+                                         { 0xac, 0xc2, 0x98, 0xea, 0x5a, 0xf1, 0x78, 0x1b } };
 
     class AME_ENGINE_API FrameEvent final : public IObjectWithCallback
     {
@@ -35,4 +36,4 @@ namespace Ame::Interfaces
         Signals::OnFrameUpdate_Signal OnFrameUpdate;
         Signals::OnFrameEnd_Signal    OnFrameEnd;
     };
-} // namespace Ame::Interfaces
+}

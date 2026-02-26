@@ -4,5 +4,6 @@
 
 namespace Ame
 {
-    [[nodiscard]] EditorApplicationConfig ParseEditorConfig(int argc, char** argv);
+    [[nodiscard]]
+    EditorApplicationConfig ParseEditorConfig(int argc, char** argv);
 }

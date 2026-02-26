@@ -48,12 +48,17 @@ namespace Ame
         if (str.size() == c_UIdStringLength)
         {
             error = std::from_chars(str.data(), str.data() + 8, uid.Data1, 16).ec != std::errc();
-            error |= std::from_chars(str.data() + 9, str.data() + 13, uid.Data2, 16).ec != std::errc();
-            error |= std::from_chars(str.data() + 14, str.data() + 18, uid.Data3, 16).ec != std::errc();
+            error |=
+                std::from_chars(str.data() + 9, str.data() + 13, uid.Data2, 16).ec != std::errc();
+            error |=
+                std::from_chars(str.data() + 14, str.data() + 18, uid.Data3, 16).ec != std::errc();
             for (size_t i = 0; i < UIdData4Count(); ++i)
             {
-                error |= std::from_chars(str.data() + 19 + i * 2, str.data() + 21 + i * 2, uid.Data4[i], 16).ec !=
-                         std::errc();
+                error |= std::from_chars(str.data() + 19 + i * 2,
+                                         str.data() + 21 + i * 2,
+                                         uid.Data4[i],
+                                         16)
+                             .ec != std::errc();
             }
         }
         else
@@ -70,9 +75,18 @@ namespace Ame
 
     String UIdUtils::ToString(const UId& id)
     {
-        return std::format("{:08x}-{:04x}-{:04x}-{:02x}{:02x}-{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}", id.Data1, id.Data2,
-                           id.Data3, id.Data4[0], id.Data4[1], id.Data4[2], id.Data4[3], id.Data4[4], id.Data4[5],
-                           id.Data4[6], id.Data4[7]);
+        return std::format("{:08x}-{:04x}-{:04x}-{:02x}{:02x}-{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}",
+                           id.Data1,
+                           id.Data2,
+                           id.Data3,
+                           id.Data4[0],
+                           id.Data4[1],
+                           id.Data4[2],
+                           id.Data4[3],
+                           id.Data4[4],
+                           id.Data4[5],
+                           id.Data4[6],
+                           id.Data4[7]);
     }
 
     UId UIdUtils::Generate()
@@ -80,8 +94,8 @@ namespace Ame
         UId uid;
 
         boost::uuids::random_generator generator;
-        static_assert(
-            sizeof(uid) == sizeof(generator()), "UId and boost::uuids::random_generator have different sizes");
+        static_assert(sizeof(uid) == sizeof(generator()),
+                      "UId and boost::uuids::random_generator have different sizes");
         while (true)
         {
             auto rnd    = generator();
@@ -105,4 +119,4 @@ namespace Ame
     {
         return c_NullString;
     }
-} // namespace Ame
+}

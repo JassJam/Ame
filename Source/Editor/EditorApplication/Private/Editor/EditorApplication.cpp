@@ -30,8 +30,8 @@
 
 namespace Ame
 {
-    EditorApplication::EditorApplication(EditorApplicationConfig config) :
-        Base(config.Application), m_ProjectConfig(std::move(config.ProjectConfig))
+    EditorApplication::EditorApplication(EditorApplicationConfig config)
+        : Base(config.Application), m_ProjectConfig(std::move(config.ProjectConfig))
     {
     }
 
@@ -48,11 +48,14 @@ namespace Ame
         }
 
         Ptr<Interfaces::IEditorProjectManager> projectManager;
-        moduleRegistry->RequestInterface(nullptr, Interfaces::IID_ProjectManager, projectManager.DblPtr<IObject>());
+        moduleRegistry->RequestInterface(nullptr,
+                                         Interfaces::IID_ProjectManager,
+                                         projectManager.DblPtr<IObject>());
 
         if (m_ProjectConfig->ShouldCreateNewProject())
         {
-            projectManager->CreateProject(m_ProjectConfig->ProjectName, m_ProjectConfig->ProjectPath);
+            projectManager->CreateProject(m_ProjectConfig->ProjectName,
+                                          m_ProjectConfig->ProjectPath);
         }
         else
         {
@@ -62,13 +65,19 @@ namespace Ame
         //
 
         Ptr<Interfaces::IEntityWorld> entityWorld;
-        moduleRegistry->RequestInterface(nullptr, Interfaces::IID_EntityWorld, entityWorld.DblPtr<IObject>());
+        moduleRegistry->RequestInterface(nullptr,
+                                         Interfaces::IID_EntityWorld,
+                                         entityWorld.DblPtr<IObject>());
 
         Ptr<Interfaces::IRhiDevice> rhiDevice;
-        moduleRegistry->RequestInterface(nullptr, Interfaces::IID_RhiDevice, rhiDevice.DblPtr<IObject>());
+        moduleRegistry->RequestInterface(nullptr,
+                                         Interfaces::IID_RhiDevice,
+                                         rhiDevice.DblPtr<IObject>());
 
         Ptr<Interfaces::IRenderer> renderer;
-        moduleRegistry->RequestInterface(nullptr, Interfaces::IID_Renderer, renderer.DblPtr<IObject>());
+        moduleRegistry->RequestInterface(nullptr,
+                                         Interfaces::IID_Renderer,
+                                         renderer.DblPtr<IObject>());
 
         //
 
@@ -116,7 +125,8 @@ namespace Ame
         Rhi::MaterialCreateDesc materialDesc;
 
         Ptr mdl(Ecs::MeshModelLoader::LoadModelAsync(
-                    { .RhiDevice = rhiDevice, .ModelPath = "Shared/Assets/Models/DamagedHelmet/DamagedHelmet.gltf" })
+                    { .RhiDevice = rhiDevice,
+                      .ModelPath = "Shared/Assets/Models/DamagedHelmet/DamagedHelmet.gltf" })
                     .get());
 
         //
@@ -233,7 +243,8 @@ namespace Ame
                     /// <summary>
                     /// Process the camera keyboard inputs.
                     /// </summary>
-                    auto ProcessCameraKeyboard = [&](float DeltaTime, Ecs::TransformComponent* Transform,
+                    auto ProcessCameraKeyboard = [&](float                    DeltaTime,
+                                                     Ecs::TransformComponent* Transform,
                                                      const Ecs::CameraComponent&) -> bool
                     {
                         float Speed = GetCameraKeyboardSpeed();
@@ -288,21 +299,24 @@ namespace Ame
                     /// <summary>
                     /// Process the camera orbit inputs.
                     /// </summary>
-                    auto ProcessCamera_Orbit = [&](float DeltaTime, Ecs::TransformComponent* Transform) -> bool
+                    auto ProcessCamera_Orbit = [&](float                    DeltaTime,
+                                                   Ecs::TransformComponent* Transform) -> bool
                     {
-                        Math::Quaternion Rotation   = Transform->GetBasis().GetRotationQuat();
-                        float            Speed      = GetCameraMouseSpeed();
-                        auto             MouseDelta = ImGui::GetMouseDragDelta(ImGuiMouseButton_Right);
+                        Math::Quaternion Rotation = Transform->GetBasis().GetRotationQuat();
+                        float            Speed    = GetCameraMouseSpeed();
+                        auto MouseDelta = ImGui::GetMouseDragDelta(ImGuiMouseButton_Right);
 
                         bool Changed = false;
                         if (MouseDelta.x)
                         {
-                            Transform->AppendYaw(Math::Util::DegToRad(MouseDelta.x * Speed * DeltaTime));
+                            Transform->AppendYaw(
+                                Math::Util::DegToRad(MouseDelta.x * Speed * DeltaTime));
                             Changed = true;
                         }
                         if (MouseDelta.y)
                         {
-                            Transform->AppendPitch(Math::Util::DegToRad(MouseDelta.y * Speed * DeltaTime));
+                            Transform->AppendPitch(
+                                Math::Util::DegToRad(MouseDelta.y * Speed * DeltaTime));
                             Changed = true;
                         }
 
@@ -314,18 +328,20 @@ namespace Ame
                     /// <summary>
                     /// Process the camera orbit inputs.
                     /// </summary>
-                    auto ProcessCamera_Zoom = [&](float DeltaTime, Ecs::TransformComponent* Transform) -> bool
+                    auto ProcessCamera_Zoom = [&](float                    DeltaTime,
+                                                  Ecs::TransformComponent* Transform) -> bool
                     {
                         Math::Quaternion Rotation   = Transform->GetBasis().GetRotationQuat();
                         float            Speed      = GetCameraKeyboardSpeed();
                         auto             MouseDelta = ImGui::GetMouseDragDelta();
 
                         bool Changed = false;
-                        if (float Length =
-                                Math::Vector2(MouseDelta.x, MouseDelta.y).Length() * (MouseDelta.x >= 0.f ? 1.f : -1.f))
+                        if (float Length = Math::Vector2(MouseDelta.x, MouseDelta.y).Length() *
+                                           (MouseDelta.x >= 0.f ? 1.f : -1.f))
                         {
                             Transform->SetPosition(Transform->GetPosition() +
-                                                   Transform->GetLookDir() * Length * Speed * DeltaTime);
+                                                   Transform->GetLookDir() * Length * Speed *
+                                                       DeltaTime);
                             Changed = true;
                         }
 
@@ -374,4 +390,4 @@ namespace Ame
     {
         Base::OnUnload();
     }
-} // namespace Ame
+}

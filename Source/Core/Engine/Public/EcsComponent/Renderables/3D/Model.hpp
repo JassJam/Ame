@@ -5,7 +5,10 @@
 namespace Ame::Ecs
 {
     // {E1E74357-EB73-4AF0-BA9D-4D17F7B89CF6}
-    inline constexpr UId IID_Model{ 0xe1e74357, 0xeb73, 0x4af0, { 0xba, 0x9d, 0x4d, 0x17, 0xf7, 0xb8, 0x9c, 0xf6 } };
+    inline constexpr UId IID_Model{ 0xe1e74357,
+                                    0xeb73,
+                                    0x4af0,
+                                    { 0xba, 0x9d, 0x4d, 0x17, 0xf7, 0xb8, 0x9c, 0xf6 } };
 
     struct MeshNode
     {
@@ -54,12 +57,15 @@ namespace Ame::Ecs
         IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_Model, IBaseRenderable3D);
 
     private:
-        IMPLEMENT_INTERFACE_CTOR(MeshModel, CreateDesc desc) :
-            IBaseRenderable3D(counters), m_MeshNodes(std::move(desc.MeshNodes)), m_SubMeshes(std::move(desc.SubMeshes)),
-            m_Materials(std::move(desc.Materials)), m_PositionBuffer(std::move(desc.PositionBuffer)),
-            m_NormalBuffer(std::move(desc.NormalBuffer)), m_TangentBuffer(std::move(desc.TangentBuffer)),
-            m_TexCoordBuffer(std::move(desc.TexCoordBuffer)), m_IndexBuffer(std::move(desc.IndexBuffer)),
-            m_VertexDesc(desc.VertexDesc), m_SmallIndexBuffer(desc.SmallIndexBuffer)
+        IMPLEMENT_INTERFACE_CTOR(MeshModel, CreateDesc desc)
+            : IBaseRenderable3D(counters), m_MeshNodes(std::move(desc.MeshNodes)),
+              m_SubMeshes(std::move(desc.SubMeshes)), m_Materials(std::move(desc.Materials)),
+              m_PositionBuffer(std::move(desc.PositionBuffer)),
+              m_NormalBuffer(std::move(desc.NormalBuffer)),
+              m_TangentBuffer(std::move(desc.TangentBuffer)),
+              m_TexCoordBuffer(std::move(desc.TexCoordBuffer)),
+              m_IndexBuffer(std::move(desc.IndexBuffer)), m_VertexDesc(desc.VertexDesc),
+              m_SmallIndexBuffer(desc.SmallIndexBuffer)
         {
         }
 
@@ -73,46 +79,56 @@ namespace Ame::Ecs
         }
 
     public:
-        [[nodiscard]] Dg::IBuffer* GetPositionBuffer() const noexcept
+        [[nodiscard]]
+        Dg::IBuffer* GetPositionBuffer() const noexcept
         {
             return m_PositionBuffer;
         }
-        [[nodiscard]] Dg::IBuffer* GetNormalBuffer() const noexcept
+        [[nodiscard]]
+        Dg::IBuffer* GetNormalBuffer() const noexcept
         {
             return m_NormalBuffer;
         }
-        [[nodiscard]] Dg::IBuffer* GetTangentBuffer() const noexcept
+        [[nodiscard]]
+        Dg::IBuffer* GetTangentBuffer() const noexcept
         {
             return m_TangentBuffer;
         }
-        [[nodiscard]] Dg::IBuffer* GetTexCoordBuffer() const noexcept
+        [[nodiscard]]
+        Dg::IBuffer* GetTexCoordBuffer() const noexcept
         {
             return m_TexCoordBuffer;
         }
 
-        [[nodiscard]] Dg::IBuffer* GetIndexBuffer() const noexcept
+        [[nodiscard]]
+        Dg::IBuffer* GetIndexBuffer() const noexcept
         {
             return m_IndexBuffer;
         }
-        [[nodiscard]] Dg::VALUE_TYPE GetIndexType() const noexcept
+        [[nodiscard]]
+        Dg::VALUE_TYPE GetIndexType() const noexcept
         {
             return m_SmallIndexBuffer ? Dg::VT_UINT16 : Dg::VT_UINT32;
         }
 
-        [[nodiscard]] const MeshNodeList& GetMeshNodes() const noexcept
+        [[nodiscard]]
+        const MeshNodeList& GetMeshNodes() const noexcept
         {
             return m_MeshNodes;
         }
-        [[nodiscard]] const SubMeshDataList& GetSubMeshes() const noexcept
+        [[nodiscard]]
+        const SubMeshDataList& GetSubMeshes() const noexcept
         {
             return m_SubMeshes;
         }
-        [[nodiscard]] const MaterialList& GetMaterials() const noexcept
+        [[nodiscard]]
+        const MaterialList& GetMaterials() const noexcept
         {
             return m_Materials;
         }
 
-        [[nodiscard]] const Rhi::MaterialVertexDesc& GetVertexInputDesc() const noexcept
+        [[nodiscard]]
+        const Rhi::MaterialVertexDesc& GetVertexInputDesc() const noexcept
         {
             return m_VertexDesc;
         }
@@ -131,4 +147,4 @@ namespace Ame::Ecs
         Rhi::MaterialVertexDesc m_VertexDesc;
         bool                    m_SmallIndexBuffer = false;
     };
-} // namespace Ame::Ecs
+}

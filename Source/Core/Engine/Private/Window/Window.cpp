@@ -19,4 +19,4 @@ namespace Ame::Window
         }
         }
     }
-} // namespace Ame::Window
+}

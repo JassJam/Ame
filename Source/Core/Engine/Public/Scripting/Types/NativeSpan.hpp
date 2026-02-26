@@ -5,7 +5,8 @@
 
 namespace Ame::Scripting
 {
-    template<typename Ty> class NativeSpan
+    template<typename Ty>
+    class NativeSpan
     {
     public:
         NativeSpan() = default;
@@ -28,63 +29,77 @@ namespace Ame::Scripting
         NativeSpan& operator=(NativeSpan&&) = default;
         ~NativeSpan()                       = default;
 
-        [[nodiscard]] Ty* data() const
+        [[nodiscard]]
+        Ty* data() const
         {
             return m_Data;
         }
-        [[nodiscard]] auto begin() const
+        [[nodiscard]]
+        auto begin() const
         {
             return m_Data;
         }
-        [[nodiscard]] auto end() const
+        [[nodiscard]]
+        auto end() const
         {
             return m_Data + m_Size;
         }
-        [[nodiscard]] auto cbegin() const
+        [[nodiscard]]
+        auto cbegin() const
         {
             return m_Data;
         }
-        [[nodiscard]] auto cend() const
+        [[nodiscard]]
+        auto cend() const
         {
             return m_Data + m_Size;
         }
 
-        [[nodiscard]] Ty& operator[](size_t index)
+        [[nodiscard]]
+        Ty& operator[](size_t index)
         {
             return m_Data[index];
         }
-        [[nodiscard]] const Ty& operator[](size_t index) const
+        [[nodiscard]]
+        const Ty& operator[](size_t index) const
         {
             return m_Data[index];
         }
 
-        [[nodiscard]] NativeSpan<Ty> span() const
+        [[nodiscard]]
+        NativeSpan<Ty> span() const
         {
             return NativeSpan<Ty>(m_Data, m_Size);
         }
-        [[nodiscard]] NativeSpan<Ty> span(size_t offset) const
+        [[nodiscard]]
+        NativeSpan<Ty> span(size_t offset) const
         {
             return NativeSpan<Ty>(m_Data + offset, m_Size - offset);
         }
-        [[nodiscard]] NativeSpan<Ty> span(size_t offset, size_t count) const
+        [[nodiscard]]
+        NativeSpan<Ty> span(size_t offset, size_t count) const
         {
             return NativeSpan<Ty>(m_Data + offset, count);
         }
 
-        [[nodiscard]] size_t size() const
+        [[nodiscard]]
+        size_t size() const
         {
             return m_Size;
         }
-        [[nodiscard]] size_t size_bytes() const
+        [[nodiscard]]
+        size_t size_bytes() const
         {
             return m_Size * sizeof(Ty);
         }
-        [[nodiscard]] bool empty() const
+        [[nodiscard]]
+        bool empty() const
         {
             return m_Size == 0;
         }
 
-        [[nodiscard]] size_t hash() const noexcept
+        [[nodiscard]]
+        size_t hash() const noexcept
         {
             size_t hash = 0;
             HashCombine(hash, begin(), end());
@@ -95,4 +110,4 @@ namespace Ame::Scripting
         Ty*    m_Data = nullptr;
         size_t m_Size = 0;
     };
-} // namespace Ame::Scripting
+}

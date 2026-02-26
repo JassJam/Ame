@@ -16,4 +16,4 @@ namespace Ame
 
         void ExposeInterfaces(IModuleRegistry* registry, IPlugin* owner) const;
     };
-} // namespace Ame
+}

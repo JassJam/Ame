@@ -11,14 +11,15 @@ namespace Ame::Ecs
     struct GlobalTransformComponent;
     struct CameraComponent;
     struct CameraOutputComponent;
-} // namespace Ame::Ecs
+}
 
 namespace Ame::Editor
 {
     class SceneViewEditorWindow : public IEditorWindow
     {
     private:
-        using CameraQuery = Ecs::UniqueQuery<const Ecs::CameraComponent, const Ecs::GlobalTransformComponent,
+        using CameraQuery = Ecs::UniqueQuery<const Ecs::CameraComponent,
+                                             const Ecs::GlobalTransformComponent,
                                              const Ecs::CameraOutputComponent>;
 
     public:
@@ -56,7 +57,8 @@ namespace Ame::Editor
         static inline CameraInfo s_NoneCamera;
 
     private:
-        [[nodiscard]] const CameraInfo& GetCurrentCamera() const;
+        [[nodiscard]]
+        const CameraInfo& GetCurrentCamera() const;
 
     private:
         Ptr<Ecs::World> m_World;
@@ -65,4 +67,4 @@ namespace Ame::Editor
         std::vector<CameraInfo> m_CameraList;
         uint32_t                m_CurrentCameraIndex = 0;
     };
-} // namespace Ame::Editor
+}

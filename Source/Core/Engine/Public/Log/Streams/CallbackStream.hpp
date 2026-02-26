@@ -22,4 +22,4 @@ namespace Ame::Log
 
         virtual void OnLog(const LogData& logData) = 0;
     };
-} // namespace Ame::Log
+}

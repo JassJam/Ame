@@ -51,7 +51,8 @@ namespace Ame::Window
     {
         if (m_GlfwDispatcher.get_stop_token().stop_requested()) [[unlikely]]
         {
-            throw concurrencpp::errors::runtime_shutdown("Cannot enqueue task, the worker thread is shutting down");
+            throw concurrencpp::errors::runtime_shutdown(
+                "Cannot enqueue task, the worker thread is shutting down");
         }
 
         {
@@ -73,7 +74,8 @@ namespace Ame::Window
     {
         if (m_GlfwDispatcher.get_stop_token().stop_requested()) [[unlikely]]
         {
-            throw concurrencpp::errors::runtime_shutdown("Cannot enqueue task, the worker thread is shutting down");
+            throw concurrencpp::errors::runtime_shutdown(
+                "Cannot enqueue task, the worker thread is shutting down");
         }
 
         {
@@ -138,7 +140,8 @@ namespace Ame::Window
             Co::task task;
             {
                 std::unique_lock lock(m_TaskMutex);
-                m_TaskNotifier.wait_for(lock, std::chrono::milliseconds(1),
+                m_TaskNotifier.wait_for(lock,
+                                        std::chrono::milliseconds(1),
                                         [&]
                                         {
                                             if (stopToken.stop_requested())
@@ -166,7 +169,8 @@ namespace Ame::Window
             }
             catch (const std::exception& e)
             {
-                AME_LOG_ERROR(std::format("Unhandled exception in GLFW worker thread: {}", e.what()));
+                AME_LOG_ERROR(
+                    std::format("Unhandled exception in GLFW worker thread: {}", e.what()));
             }
 #else
             if (task) [[likely]]
@@ -185,4 +189,4 @@ namespace Ame::Window
     {
         glfwTerminate();
     }
-} // namespace Ame::Window
+}

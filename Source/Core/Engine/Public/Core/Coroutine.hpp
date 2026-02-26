@@ -4,14 +4,15 @@
 #include <Core/Interface.hpp>
 #include <concurrencpp/concurrencpp.h>
 
-#define AME_COROUTINE_INST(Type, Name)                                                                                 \
-public:                                                                                                                \
-    [[nodiscard]] const auto& Name() const                                                                             \
-    {                                                                                                                  \
-        return m_##Name;                                                                                               \
-    }                                                                                                                  \
-                                                                                                                       \
-private:                                                                                                               \
+#define AME_COROUTINE_INST(Type, Name)                                                             \
+public:                                                                                            \
+    [[nodiscard]]                                                                                  \
+    const auto& Name() const                                                                       \
+    {                                                                                              \
+        return m_##Name;                                                                           \
+    }                                                                                              \
+                                                                                                   \
+private:                                                                                           \
     Ame::SharedPtr<Co::Type> m_##Name;
 
 namespace Ame
@@ -19,9 +20,10 @@ namespace Ame
     class AME_ENGINE_API Coroutine
     {
     public:
-        [[nodiscard]] static Co::runtime& Get() noexcept;
+        [[nodiscard]]
+        static Co::runtime& Get() noexcept;
     };
-} // namespace Ame
+}
 
 namespace concurrencpp
 {
@@ -29,7 +31,8 @@ namespace concurrencpp
     /// Convert a generator to a container.
     /// </summary>
     template<template<typename... ArgsTy> typename ContainerTy, typename Ty>
-    [[nodiscard]] auto generator_to_container(generator<Ty> gen)
+    [[nodiscard]]
+    auto generator_to_container(generator<Ty> gen)
     {
         ContainerTy<Ty> container{};
         for (auto v : gen)
@@ -51,10 +54,13 @@ namespace concurrencpp
     }
 
     /// <summary>
-    /// Loop all tasks in the executors per chunk until all executors are empty or loopCount is zero.
+    /// Loop all tasks in the executors per chunk until all executors are empty or loopCount is
+    /// zero.
     /// </summary>
-    inline void manual_executor_loop_distribute(std::span<const std::shared_ptr<manual_executor>> executors,
-                                                size_t maxLoopCount, size_t chunkCount = 1)
+    inline void manual_executor_loop_distribute(
+        std::span<const std::shared_ptr<manual_executor>> executors,
+        size_t                                            maxLoopCount,
+        size_t                                            chunkCount = 1)
     {
         while (true)
         {
@@ -80,8 +86,9 @@ namespace concurrencpp
     /// <summary>
     /// Loop all tasks in the executors until all executors are empty.
     /// </summary>
-    inline void manual_executor_loop_distribute_until_empty(std::span<const std::shared_ptr<manual_executor>> executors,
-                                                            size_t chunkCount = 1)
+    inline void manual_executor_loop_distribute_until_empty(
+        std::span<const std::shared_ptr<manual_executor>> executors,
+        size_t                                            chunkCount = 1)
     {
         while (true)
         {
@@ -96,4 +103,4 @@ namespace concurrencpp
             }
         }
     }
-} // namespace concurrencpp
+}

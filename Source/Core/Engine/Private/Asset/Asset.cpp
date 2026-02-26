@@ -31,4 +31,4 @@ namespace Ame::Asset
     {
         return m_IsDirty;
     }
-} // namespace Ame::Asset
+}

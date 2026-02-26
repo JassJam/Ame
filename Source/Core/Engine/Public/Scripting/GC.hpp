@@ -25,8 +25,10 @@ namespace Ame::Scripting
         using IObjectWithCallback::IObjectWithCallback;
 
         virtual void CollectAll()                     = 0;
-        virtual void Collect(int generation, GCCollectionMode mode = GCCollectionMode::Default, bool blocking = true,
-                             bool compacting = false) = 0;
+        virtual void Collect(int              generation,
+                             GCCollectionMode mode       = GCCollectionMode::Default,
+                             bool             blocking   = true,
+                             bool             compacting = false) = 0;
         virtual void WaitForPendingFinalizers()       = 0;
     };
-} // namespace Ame::Scripting
+}

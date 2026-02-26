@@ -9,7 +9,8 @@ namespace Ame::Rhi
     private:
         static constexpr const char c_SourceCode[] = {
 #include "Operations.static.hlsli.h"
-            , 0x00
+            ,
+            0x00
         };
 
     public:
@@ -20,4 +21,4 @@ namespace Ame::Rhi
             Setup({ "G_Operations", Dg::SHADER_TYPE_UNKNOWN }, c_SourceCode);
         }
     };
-} // namespace Ame::Rhi
+}

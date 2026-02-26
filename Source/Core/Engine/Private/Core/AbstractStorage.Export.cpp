@@ -15,7 +15,8 @@ void Ame_AbstractStorage_Release(Ame_AbstractStorage_t* storage)
     delete std::bit_cast<MapType*>(storage);
 }
 
-void Ame_AbstractStorage_Set(Ame_AbstractStorage_t* storage, const Ame_AbstractStorage_Key_t* key,
+void Ame_AbstractStorage_Set(Ame_AbstractStorage_t*             storage,
+                             const Ame_AbstractStorage_Key_t*   key,
                              const Ame_AbstractStorage_Value_t* value)
 {
     auto* map = std::bit_cast<MapType*>(storage);
@@ -34,7 +35,7 @@ const Ame_AbstractStorage_Value_t* Ame_AbstractStorage_Get(Ame_AbstractStorage_t
     return nullptr;
 }
 
-const Ame_AbstractStorage_Value_t* Ame_AbstractStorage_Remove(Ame_AbstractStorage_t*           storage,
+const Ame_AbstractStorage_Value_t* Ame_AbstractStorage_Remove(Ame_AbstractStorage_t* storage,
                                                               const Ame_AbstractStorage_Key_t* key)
 {
     auto* map  = std::bit_cast<MapType*>(storage);

@@ -9,4 +9,4 @@ namespace Ame::Log
     public:
         MsvcDebugStream();
     };
-} // namespace Ame::Log
+}

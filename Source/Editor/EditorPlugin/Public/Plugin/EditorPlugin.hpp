@@ -17,4 +17,4 @@ namespace Ame::Editor
     };
 
     inline IModuleRegistry* s_ModuleRegistry = nullptr;
-} // namespace Ame::Editor
+}

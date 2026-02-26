@@ -22,4 +22,4 @@ namespace Ame::Editor
         Ptr<Ecs::World> m_World;
         Ecs::Entity     m_EntityToRename;
     };
-} // namespace Ame::Editor
+}

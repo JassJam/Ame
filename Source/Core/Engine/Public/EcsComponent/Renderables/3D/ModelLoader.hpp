@@ -15,10 +15,13 @@ namespace Ame::Ecs
 
         using CreateDesc = MeshModel::CreateDesc;
 
-        [[nodiscard]] static Ptr<MeshModel> CreateModel(CreateDesc desc);
+        [[nodiscard]]
+        static Ptr<MeshModel> CreateModel(CreateDesc desc);
 
-        [[nodiscard]] static Ptr<MeshModel> LoadModel(const ImportDesc& desc);
+        [[nodiscard]]
+        static Ptr<MeshModel> LoadModel(const ImportDesc& desc);
 
-        [[nodiscard]] static Co::result<Ptr<MeshModel>> LoadModelAsync(const ImportDesc& desc);
+        [[nodiscard]]
+        static Co::result<Ptr<MeshModel>> LoadModelAsync(const ImportDesc& desc);
     };
-} // namespace Ame::Ecs
+}

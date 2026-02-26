@@ -8,11 +8,13 @@ namespace Ame::Log
     {
         auto callback = [this](const spdlog::details::log_msg& logMsg)
         {
-            LogData logData{ StringView{ logMsg.payload.data(), logMsg.payload.size() }, logMsg.thread_id, logMsg.time,
+            LogData logData{ StringView{ logMsg.payload.data(), logMsg.payload.size() },
+                             logMsg.thread_id,
+                             logMsg.time,
                              GetLogLevel(logMsg.level) };
             OnLog(logData);
         };
 
         m_Sink = std::make_shared<spdlog::sinks::callback_sink_mt>(callback);
     }
-} // namespace Ame::Log
+}

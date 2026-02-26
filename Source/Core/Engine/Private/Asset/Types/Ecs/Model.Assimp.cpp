@@ -41,7 +41,8 @@ namespace Ame::Ecs
 
             static std::map<String, Log::LogLevel> c_Severities{ { "Warn", Log::LogLevel::Warning },
                                                                  { "Info", Log::LogLevel::Info },
-                                                                 { "Debug", Log::LogLevel::Debug } };
+                                                                 { "Debug",
+                                                                   Log::LogLevel::Debug } };
 
             auto severity = Log::LogLevel::Error;
 
@@ -71,8 +72,9 @@ namespace Ame::Ecs
 #if AME_DEBUG
                                Assimp::DefaultLogger::create("", Assimp::Logger::VERBOSE);
                                Assimp::DefaultLogger::get()->attachStream(
-                                   &s_AssimpLogStream, Assimp::Logger::Debugging | Assimp::Logger::Info |
-                                                           Assimp::Logger::Warn | Assimp::Logger::Err);
+                                   &s_AssimpLogStream,
+                                   Assimp::Logger::Debugging | Assimp::Logger::Info |
+                                       Assimp::Logger::Warn | Assimp::Logger::Err);
 #else
                     Assimp::DefaultLogger::create("", Assimp::Logger::NORMAL);
                     Assimp::DefaultLogger::get()->attachStream(&s_AssimpLogStream, Assimp::Logger::Warn | Assimp::Logger::Err);
@@ -83,18 +85,18 @@ namespace Ame::Ecs
 
     //
 
-    static const uint32_t s_MeshImportFlags = aiProcess_CalcTangentSpace |
-                                              // aiProcess_OptimizeGraph |
-                                              aiProcess_GenNormals | aiProcess_Triangulate | aiProcess_SortByPType |
-                                              aiProcess_MakeLeftHanded | aiProcess_FlipUVs |
-                                              aiProcess_FlipWindingOrder | aiProcess_JoinIdenticalVertices |
-                                              aiProcess_ValidateDataStructure | aiProcess_GlobalScale |
-                                              aiProcess_OptimizeMeshes | aiProcess_RemoveRedundantMaterials;
+    static const uint32_t s_MeshImportFlags =
+        aiProcess_CalcTangentSpace |
+        // aiProcess_OptimizeGraph |
+        aiProcess_GenNormals | aiProcess_Triangulate | aiProcess_SortByPType |
+        aiProcess_MakeLeftHanded | aiProcess_FlipUVs | aiProcess_FlipWindingOrder |
+        aiProcess_JoinIdenticalVertices | aiProcess_ValidateDataStructure | aiProcess_GlobalScale |
+        aiProcess_OptimizeMeshes | aiProcess_RemoveRedundantMaterials;
 
     //
 
-    AssImpModelImporter::AssImpModelImporter(const String& path) :
-        m_ModelRootPath(std::filesystem::path(path).parent_path().string())
+    AssImpModelImporter::AssImpModelImporter(const String& path)
+        : m_ModelRootPath(std::filesystem::path(path).parent_path().string())
     {
         AssimpLogStream::InitializeOnce();
 
@@ -121,22 +123,24 @@ namespace Ame::Ecs
         return createDesc;
     }
 
-    Co::result<MeshModel::CreateDesc> AssImpModelImporter::CreateModelDescAsync(Rhi::IRhiDevice* rhiDevice) const
+    Co::result<MeshModel::CreateDesc> AssImpModelImporter::CreateModelDescAsync(
+        Rhi::IRhiDevice* rhiDevice) const
     {
         MeshModel::CreateDesc createDesc;
 
         if (m_Importer.GetScene())
         {
-            auto bufferTask =
-                Coroutine::Get().background_executor()->submit([&] { CreateBufferResources(createDesc, rhiDevice); });
-            auto materialTask =
-                Coroutine::Get().background_executor()->submit([&] { CreateMaterials(createDesc, rhiDevice); });
+            auto bufferTask = Coroutine::Get().background_executor()->submit(
+                [&] { CreateBufferResources(createDesc, rhiDevice); });
+            auto materialTask = Coroutine::Get().background_executor()->submit(
+                [&] { CreateMaterials(createDesc, rhiDevice); });
 
-            co_await Co::when_all(
-                Coroutine::Get().background_executor(), std::move(bufferTask), std::move(materialTask))
+            co_await Co::when_all(Coroutine::Get().background_executor(),
+                                  std::move(bufferTask),
+                                  std::move(materialTask))
                 .run();
         }
 
         co_return createDesc;
     }
-} // namespace Ame::Ecs
+}

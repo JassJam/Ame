@@ -9,8 +9,8 @@ namespace Ame::Editor
     class IEditorWindow : public IObjectWithCallback
     {
     public:
-        IEditorWindow(IReferenceCounters* counters, String path) :
-            IObjectWithCallback(counters), m_Path(std::move(path))
+        IEditorWindow(IReferenceCounters* counters, String path)
+            : IObjectWithCallback(counters), m_Path(std::move(path))
         {
         }
 
@@ -44,7 +44,8 @@ namespace Ame::Editor
         }
 
     public:
-        [[nodiscard]] const String& GetFullPath() const noexcept
+        [[nodiscard]]
+        const String& GetFullPath() const noexcept
         {
             return m_Path;
         }
@@ -52,9 +53,9 @@ namespace Ame::Editor
     private:
         /// <summary>
         /// Path is combined with window name and groups for toolbar. eg:
-        /// "Scene View##General$Scene View" <- "Scene View" is the window name, "General" is the group, "Scene View" is
-        /// the name inside tool bar.
+        /// "Scene View##General$Scene View" <- "Scene View" is the window name, "General" is the
+        /// group, "Scene View" is the name inside tool bar.
         /// </summary>
         String m_Path;
     };
-} // namespace Ame::Editor
+}

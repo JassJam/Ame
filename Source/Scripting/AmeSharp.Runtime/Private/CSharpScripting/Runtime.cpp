@@ -5,8 +5,8 @@
 
 namespace Ame::Scripting
 {
-    CLRRuntime::CLRRuntime(const CSScriptEngineConfig& config) :
-        m_RuntimePath(Strings::To<NetHostString>(config.GetRuntimePath()))
+    CLRRuntime::CLRRuntime(const CSScriptEngineConfig& config)
+        : m_RuntimePath(Strings::To<NetHostString>(config.GetRuntimePath()))
     {
         auto runtimePath = config.GetRuntimeConfigPath();
         if (!std::filesystem::exists(runtimePath))
@@ -25,8 +25,11 @@ namespace Ame::Scripting
     void* CLRRuntime::GetFunctionPtr(const String& className, const String& functionName) const
     {
         void* function = nullptr;
-        m_GetFunction(m_RuntimePath.c_str(), Strings::To<NetHostString>(className).c_str(),
-                      Strings::To<NetHostString>(functionName).c_str(), NETHOST_UNMANAGED_CALLER_DELEGATE, nullptr,
+        m_GetFunction(m_RuntimePath.c_str(),
+                      Strings::To<NetHostString>(className).c_str(),
+                      Strings::To<NetHostString>(functionName).c_str(),
+                      NETHOST_UNMANAGED_CALLER_DELEGATE,
+                      nullptr,
                       &function);
         AME_LOG_ASSERT(function != nullptr, "Failed to get function pointer");
         return function;
@@ -56,26 +59,33 @@ namespace Ame::Scripting
     void CLRRuntime::LoadHostFxrRuntime()
     {
         auto setErrorWriter =
-            m_HostFxrLibrary.get<std::remove_pointer_t<hostfxr_set_error_writer_fn>>("hostfxr_set_error_writer");
+            m_HostFxrLibrary.get<std::remove_pointer_t<hostfxr_set_error_writer_fn>>(
+                "hostfxr_set_error_writer");
         setErrorWriter([](const char_t* message) { AME_LOG_ERROR(Strings::To<String>(message)); });
     }
 
     void CLRRuntime::Initialize(const String& runtimePath)
     {
-        auto initializeRuntime = m_HostFxrLibrary.get<std::remove_pointer_t<hostfxr_initialize_for_runtime_config_fn>>(
-            "hostfxr_initialize_for_runtime_config");
+        auto initializeRuntime =
+            m_HostFxrLibrary.get<std::remove_pointer_t<hostfxr_initialize_for_runtime_config_fn>>(
+                "hostfxr_initialize_for_runtime_config");
 
-        auto getRuntimeDelegate = m_HostFxrLibrary.get<std::remove_pointer_t<hostfxr_get_runtime_delegate_fn>>(
-            "hostfxr_get_runtime_delegate");
+        auto getRuntimeDelegate =
+            m_HostFxrLibrary.get<std::remove_pointer_t<hostfxr_get_runtime_delegate_fn>>(
+                "hostfxr_get_runtime_delegate");
 
         auto status = static_cast<HostFxError>(
-            initializeRuntime(Strings::To<NetHostString>(runtimePath).c_str(), nullptr, &m_HostHandle));
-        AME_LOG_VALIDATE(status == HostFxError::Success || status == HostFxError::Success_HostAlreadyInitialized,
+            initializeRuntime(Strings::To<NetHostString>(runtimePath).c_str(),
+                              nullptr,
+                              &m_HostHandle));
+        AME_LOG_VALIDATE(status == HostFxError::Success ||
+                             status == HostFxError::Success_HostAlreadyInitialized,
                          "Failed to initialize runtime config");
         AME_LOG_VALIDATE(m_HostHandle != nullptr, "Host handle is null");
 
-        getRuntimeDelegate(
-            m_HostHandle, hdt_load_assembly_and_get_function_pointer, std::bit_cast<void**>(&m_GetFunction));
+        getRuntimeDelegate(m_HostHandle,
+                           hdt_load_assembly_and_get_function_pointer,
+                           std::bit_cast<void**>(&m_GetFunction));
     }
 
     //
@@ -95,4 +105,4 @@ namespace Ame::Scripting
     {
         m_CommonFunctions[std::to_underlying(type)] = function;
     }
-} // namespace Ame::Scripting
+}

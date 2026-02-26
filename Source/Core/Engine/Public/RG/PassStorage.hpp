@@ -15,7 +15,8 @@ namespace Ame::Rg
         using AdjacencyListType       = std::vector<TopologicalSortListType>;
         using DependencyLevelListType = std::vector<DependencyLevel>;
 
-        static constexpr std::chrono::milliseconds s_GraphBuildTime = std::chrono::milliseconds(5'000);
+        static constexpr std::chrono::milliseconds s_GraphBuildTime =
+            std::chrono::milliseconds(5'000);
 
     public:
         PassStorage() = default;
@@ -50,7 +51,9 @@ namespace Ame::Rg
         /// <summary>
         /// Add a render pass to the graph
         /// </summary>
-        template<typename Ty = void> [[nodiscard]] TypedPass<Ty>& NewTypedPass(const String& name)
+        template<typename Ty = void>
+        [[nodiscard]]
+        TypedPass<Ty>& NewTypedPass(const String& name)
         {
             return NewPass<TypedPass<Ty>>(name);
         }
@@ -63,7 +66,8 @@ namespace Ame::Rg
         /// <summary>
         /// Get a render pass from the graph or nullptr if not found
         /// </summary>
-        [[nodiscard]] Pass* GetPass(const String& name) const;
+        [[nodiscard]]
+        Pass* GetPass(const String& name) const;
 
         /// <summary>
         /// Clear all render passes from the graph
@@ -79,7 +83,8 @@ namespace Ame::Rg
         /// <summary>
         /// Check if passes were changed and needs to be rebuilt
         /// </summary>
-        [[nodiscard]] bool NeedsRebuild() const noexcept;
+        [[nodiscard]]
+        bool NeedsRebuild() const noexcept;
 
         /// <summary>
         /// Set rebuild state
@@ -87,16 +92,22 @@ namespace Ame::Rg
         void SetRebuildState(bool state) noexcept;
 
     private:
-        [[nodiscard]] ResolverListType        ResolvePasses(Context& context);
-        [[nodiscard]] DependencyLevelListType BuildPasses(ResolverListType& resolvers);
+        [[nodiscard]]
+        ResolverListType ResolvePasses(Context& context);
+        [[nodiscard]]
+        DependencyLevelListType BuildPasses(ResolverListType& resolvers);
 
     private:
         AdjacencyListType       BuildAdjacencyLists(const ResolverListType& resolvers);
         TopologicalSortListType TopologicalSort(const AdjacencyListType& adjacencyList);
-        void DepthFirstSearch(const AdjacencyListType& adjacencyList, size_t index, std::vector<bool>& visitedList,
-                              std::stack<size_t>& dfsStack);
-        [[nodiscard]] DependencyLevelListType BuildDependencyLevels(
-            const TopologicalSortListType& topologicallySortedList, const AdjacencyListType& adjacencyList);
+        void                    DepthFirstSearch(const AdjacencyListType& adjacencyList,
+                                                 size_t                   index,
+                                                 std::vector<bool>&       visitedList,
+                                                 std::stack<size_t>&      dfsStack);
+        [[nodiscard]]
+        DependencyLevelListType BuildDependencyLevels(
+            const TopologicalSortListType& topologicallySortedList,
+            const AdjacencyListType&       adjacencyList);
 
     private:
         using PassMap      = std::map<String, UniquePtr<Pass>>;
@@ -108,4 +119,4 @@ namespace Ame::Rg
 
         bool m_NeedsRebuild : 1 = false;
     };
-} // namespace Ame::Rg
+}

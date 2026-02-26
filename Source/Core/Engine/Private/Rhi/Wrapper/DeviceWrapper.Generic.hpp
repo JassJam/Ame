@@ -11,7 +11,9 @@
 
 namespace Ame::Rhi
 {
-    template<typename Ty> [[nodiscard]] static void GetOrDefault(Ty& finalValue, const Ty& value) noexcept
+    template<typename Ty>
+    [[nodiscard]]
+    static void GetOrDefault(Ty& finalValue, const Ty& value) noexcept
     {
         if (static_cast<bool>(value))
         {
@@ -28,7 +30,8 @@ namespace Ame::Rhi
         { Ty::GetName() } -> std::same_as<const char*>;
 
         {
-            Ty::GetCreateInfo(std::declval<DeviceCreateDesc>(), std::declval<typename Ty::create_struct_type>())
+            Ty::GetCreateInfo(std::declval<DeviceCreateDesc>(),
+                              std::declval<typename Ty::create_struct_type>())
         } -> std::same_as<typename Ty::diligent_create_info>;
 
         { Ty::LoadFactory() } -> std::same_as<typename Ty::diligent_factory_type*>;
@@ -36,13 +39,17 @@ namespace Ame::Rhi
         {
             Ty::CreateDeviceAndContext(std::declval<typename Ty::diligent_factory_type*>(),
                                        std::declval<typename Ty::diligent_create_info>(),
-                                       std::declval<Dg::IRenderDevice**>(), std::declval<Dg::IDeviceContext**>())
+                                       std::declval<Dg::IRenderDevice**>(),
+                                       std::declval<Dg::IDeviceContext**>())
         };
 
         {
-            Ty::CreateSwapchain(std::declval<typename Ty::diligent_factory_type*>(), std::declval<Dg::IRenderDevice*>(),
-                                std::declval<Dg::IDeviceContext*>(), std::declval<Dg::SwapChainDesc>(),
-                                std::declval<Dg::FullScreenModeDesc>(), std::declval<const Dg::NativeWindow&>(),
+            Ty::CreateSwapchain(std::declval<typename Ty::diligent_factory_type*>(),
+                                std::declval<Dg::IRenderDevice*>(),
+                                std::declval<Dg::IDeviceContext*>(),
+                                std::declval<Dg::SwapChainDesc>(),
+                                std::declval<Dg::FullScreenModeDesc>(),
+                                std::declval<const Dg::NativeWindow&>(),
                                 std::declval<Dg::ISwapChain**>())
         };
     };
@@ -52,21 +59,24 @@ namespace Ame::Rhi
     /// <summary>
     /// Find the best adapter for the Diligent engine
     /// </summary>
-    [[nodiscard]] uint32_t FindDiligentBestAdapter(Dg::IEngineFactory*     engineFactory,
-                                                   const DeviceCreateDesc& createDesc,
-                                                   const Dg::Version&      version = Dg::Version{ 0, 0 });
+    [[nodiscard]]
+    uint32_t FindDiligentBestAdapter(Dg::IEngineFactory*     engineFactory,
+                                     const DeviceCreateDesc& createDesc,
+                                     const Dg::Version&      version = Dg::Version{ 0, 0 });
 
     /// <summary>
     /// Parse the device create description.
     /// </summary>
-    void ParseDiligentEngineCreateDesc(const DeviceCreateDesc& createDesc, Dg::EngineCreateInfo& createInfo);
+    void ParseDiligentEngineCreateDesc(const DeviceCreateDesc& createDesc,
+                                       Dg::EngineCreateInfo&   createInfo);
 
     //
 
     /// <summary>
     /// Create a swapchain description.
     /// </summary>
-    Dg::SwapChainDesc CreateDiligentSwapChainDesc(Window::IWindow* window, const SwapchainDesc& swapchainDesc);
+    Dg::SwapChainDesc CreateDiligentSwapChainDesc(Window::IWindow*     window,
+                                                  const SwapchainDesc& swapchainDesc);
 
     /// <summary>
     /// Create a fullscreen mode description.
@@ -77,7 +87,8 @@ namespace Ame::Rhi
     /// <summary>
     /// Convert a window to a Diligent native window struct
     /// </summary>
-    [[nodiscard]] Dg::NativeWindow GetDiligentNativeWindow(Window::IWindow* window, bool isGL = false);
+    [[nodiscard]]
+    Dg::NativeWindow GetDiligentNativeWindow(Window::IWindow* window, bool isGL = false);
 
     /// <summary>
     /// Set the debug callback for the Diligent engine
@@ -86,14 +97,16 @@ namespace Ame::Rhi
 
     //
 
-    template<DeviceCreateTraits Ty> struct GenericDeviceCreator
+    template<DeviceCreateTraits Ty>
+    struct GenericDeviceCreator
     {
         using traits_type          = Ty;
         using create_struct_type   = typename traits_type::create_struct_type;
         using diligent_create_info = typename traits_type::diligent_create_info;
 
-        [[nodiscard]] static Opt<DeviceWrapper> Create(const DeviceCreateDesc&   createDesc,
-                                                       const create_struct_type& createDescDev)
+        [[nodiscard]]
+        static Opt<DeviceWrapper> Create(const DeviceCreateDesc&   createDesc,
+                                         const create_struct_type& createDescDev)
         {
             using namespace EnumBitOperators;
 
@@ -117,21 +130,28 @@ namespace Ame::Rhi
                 if constexpr (requires { createDescDev.GraphicsAPIVersion; })
                 {
                     createInfo.AdapterId =
-                        FindDiligentBestAdapter(factoryDev, createDesc, createDescDev.GraphicsAPIVersion);
+                        FindDiligentBestAdapter(factoryDev,
+                                                createDesc,
+                                                createDescDev.GraphicsAPIVersion);
                 }
                 else
                 {
                     createInfo.AdapterId = FindDiligentBestAdapter(factoryDev, createDesc);
                 }
-                traits_type::CreateDeviceAndContext(factoryDev, createInfo, &renderDevice, &deviceContext);
+                traits_type::CreateDeviceAndContext(factoryDev,
+                                                    createInfo,
+                                                    &renderDevice,
+                                                    &deviceContext);
             }
 
             if (!(factoryDev && renderDevice && deviceContext))
             {
-                AME_LOG_WARNING(std::format("Failed to load {} graphics engine", traits_type::GetName()));
+                AME_LOG_WARNING(
+                    std::format("Failed to load {} graphics engine", traits_type::GetName()));
                 return deviceWrapper;
             }
-            factoryDev->QueryInterface(Dg::IID_EngineFactory, engineFactory.RawDblPtr<Dg::IObject>());
+            factoryDev->QueryInterface(Dg::IID_EngineFactory,
+                                       engineFactory.RawDblPtr<Dg::IObject>());
 
             if (createDesc.Surface)
             {
@@ -139,28 +159,39 @@ namespace Ame::Rhi
                 if (!surfaceDesc.Window)
                 {
                     AME_LOG_WARNING(std::format(
-                        "Failed to create swapchain for {} graphics engine: Window is null", traits_type::GetName()));
+                        "Failed to create swapchain for {} graphics engine: Window is null",
+                        traits_type::GetName()));
                     return deviceWrapper;
                 }
 
-                auto swapchainDesc  = CreateDiligentSwapChainDesc(surfaceDesc.Window, surfaceDesc.Swapchain);
-                auto fullscreenDesc = CreateDiligentFullscreenDesc(surfaceDesc.Window, surfaceDesc.FullscreenMode);
+                auto swapchainDesc =
+                    CreateDiligentSwapChainDesc(surfaceDesc.Window, surfaceDesc.Swapchain);
+                auto fullscreenDesc =
+                    CreateDiligentFullscreenDesc(surfaceDesc.Window, surfaceDesc.FullscreenMode);
 
-                traits_type::CreateSwapchain(factoryDev, renderDevice, deviceContext, swapchainDesc, fullscreenDesc,
-                                             GetDiligentNativeWindow(surfaceDesc.Window), &swapchain);
+                traits_type::CreateSwapchain(factoryDev,
+                                             renderDevice,
+                                             deviceContext,
+                                             swapchainDesc,
+                                             fullscreenDesc,
+                                             GetDiligentNativeWindow(surfaceDesc.Window),
+                                             &swapchain);
                 if (!swapchain)
                 {
-                    AME_LOG_WARNING(
-                        std::format("Failed to create swapchain for {} graphics engine", traits_type::GetName()));
+                    AME_LOG_WARNING(std::format("Failed to create swapchain for {} graphics engine",
+                                                traits_type::GetName()));
                     return deviceWrapper;
                 }
 
-                windowWrapper = std::make_unique<WindowWrapper>(Ptr(surfaceDesc.Window), std::move(swapchain));
+                windowWrapper =
+                    std::make_unique<WindowWrapper>(Ptr(surfaceDesc.Window), std::move(swapchain));
             }
 
-            deviceWrapper.emplace(
-                std::move(engineFactory), std::move(renderDevice), std::move(deviceContext), std::move(windowWrapper));
+            deviceWrapper.emplace(std::move(engineFactory),
+                                  std::move(renderDevice),
+                                  std::move(deviceContext),
+                                  std::move(windowWrapper));
             return deviceWrapper;
         }
     };
-} // namespace Ame::Rhi
+}

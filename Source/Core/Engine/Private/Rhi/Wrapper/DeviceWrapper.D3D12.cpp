@@ -1,16 +1,18 @@
 #include <Rhi/Wrapper/DeviceWrapper.Generic.hpp>
 
 #ifdef D3D12_SUPPORTED
-#include <DiligentCore/Platforms/interface/NativeWindow.h>
-#include <DiligentCore/Graphics/GraphicsEngineD3D12/interface/EngineFactoryD3D12.h>
-#include <boost/dll/import.hpp>
+    #include <DiligentCore/Platforms/interface/NativeWindow.h>
+    #include <DiligentCore/Graphics/GraphicsEngineD3D12/interface/EngineFactoryD3D12.h>
+    #include <boost/dll/import.hpp>
 #endif
 
 namespace Ame::Rhi
 {
 #ifdef D3D12_SUPPORTED
-    static void EnableFlagsOnCreateInfo(Dg::EngineD3D12CreateInfo& createInfo, Dg::D3D12_VALIDATION_FLAGS flags,
-                                        DeviceValidationType validationFlags, DeviceValidationType validationType)
+    static void EnableFlagsOnCreateInfo(Dg::EngineD3D12CreateInfo& createInfo,
+                                        Dg::D3D12_VALIDATION_FLAGS flags,
+                                        DeviceValidationType       validationFlags,
+                                        DeviceValidationType       validationType)
     {
         using namespace EnumBitOperators;
         if ((validationFlags & validationType) == validationType)
@@ -37,24 +39,37 @@ namespace Ame::Rhi
 
             createInfo.GraphicsAPIVersion = createDescDev.GraphicsAPIVersion;
 
-            EnableFlagsOnCreateInfo(createInfo, Dg::D3D12_VALIDATION_FLAG_BREAK_ON_ERROR, createDesc.ValidationLayer,
+            EnableFlagsOnCreateInfo(createInfo,
+                                    Dg::D3D12_VALIDATION_FLAG_BREAK_ON_ERROR,
+                                    createDesc.ValidationLayer,
                                     DeviceValidationType::BreakOnError);
-            EnableFlagsOnCreateInfo(createInfo, Dg::D3D12_VALIDATION_FLAG_BREAK_ON_CORRUPTION,
-                                    createDesc.ValidationLayer, DeviceValidationType::BreakOnCorruption);
-            EnableFlagsOnCreateInfo(createInfo, Dg::D3D12_VALIDATION_FLAG_ENABLE_GPU_BASED_VALIDATION,
-                                    createDesc.ValidationLayer, DeviceValidationType::GpuBasedValidation);
+            EnableFlagsOnCreateInfo(createInfo,
+                                    Dg::D3D12_VALIDATION_FLAG_BREAK_ON_CORRUPTION,
+                                    createDesc.ValidationLayer,
+                                    DeviceValidationType::BreakOnCorruption);
+            EnableFlagsOnCreateInfo(createInfo,
+                                    Dg::D3D12_VALIDATION_FLAG_ENABLE_GPU_BASED_VALIDATION,
+                                    createDesc.ValidationLayer,
+                                    DeviceValidationType::GpuBasedValidation);
 
-            GetOrDefault(createInfo.CPUDescriptorHeapAllocationSize[0], createDescDev.CpuDescriptors.MaxResources);
-            GetOrDefault(createInfo.CPUDescriptorHeapAllocationSize[1], createDescDev.CpuDescriptors.MaxSamplers);
-            GetOrDefault(createInfo.CPUDescriptorHeapAllocationSize[2], createDescDev.CpuDescriptors.MaxRenderTargets);
-            GetOrDefault(
-                createInfo.CPUDescriptorHeapAllocationSize[3], createDescDev.CpuDescriptors.MaxDepthStencilViews);
+            GetOrDefault(createInfo.CPUDescriptorHeapAllocationSize[0],
+                         createDescDev.CpuDescriptors.MaxResources);
+            GetOrDefault(createInfo.CPUDescriptorHeapAllocationSize[1],
+                         createDescDev.CpuDescriptors.MaxSamplers);
+            GetOrDefault(createInfo.CPUDescriptorHeapAllocationSize[2],
+                         createDescDev.CpuDescriptors.MaxRenderTargets);
+            GetOrDefault(createInfo.CPUDescriptorHeapAllocationSize[3],
+                         createDescDev.CpuDescriptors.MaxDepthStencilViews);
 
-            GetOrDefault(createInfo.GPUDescriptorHeapSize[0], createDescDev.GpuDescriptors.MaxResources);
-            GetOrDefault(createInfo.GPUDescriptorHeapSize[1], createDescDev.GpuDescriptors.MaxSamplers);
+            GetOrDefault(createInfo.GPUDescriptorHeapSize[0],
+                         createDescDev.GpuDescriptors.MaxResources);
+            GetOrDefault(createInfo.GPUDescriptorHeapSize[1],
+                         createDescDev.GpuDescriptors.MaxSamplers);
 
-            GetOrDefault(createInfo.GPUDescriptorHeapDynamicSize[0], createDescDev.GpuDynamicDescriptors.MaxResources);
-            GetOrDefault(createInfo.GPUDescriptorHeapDynamicSize[1], createDescDev.GpuDynamicDescriptors.MaxSamplers);
+            GetOrDefault(createInfo.GPUDescriptorHeapDynamicSize[0],
+                         createDescDev.GpuDynamicDescriptors.MaxResources);
+            GetOrDefault(createInfo.GPUDescriptorHeapDynamicSize[1],
+                         createDescDev.GpuDynamicDescriptors.MaxSamplers);
 
             GetOrDefault(createInfo.DynamicDescriptorAllocationChunkSize[0],
                          createDescDev.GpuDynamicDescriptorsChunk.MaxResources);
@@ -62,12 +77,15 @@ namespace Ame::Rhi
                          createDescDev.GpuDynamicDescriptorsChunk.MaxSamplers);
 
             GetOrDefault(createInfo.DynamicHeapPageSize, createDescDev.DynamicHeapPageSize);
-            GetOrDefault(createInfo.NumDynamicHeapPagesToReserve, createDescDev.NumDynamicHeapPagesToReserve);
+            GetOrDefault(createInfo.NumDynamicHeapPagesToReserve,
+                         createDescDev.NumDynamicHeapPagesToReserve);
 
             GetOrDefault(createInfo.QueryPoolSizes[1], createDescDev.QueryHeapSizes.Occlusion);
-            GetOrDefault(createInfo.QueryPoolSizes[2], createDescDev.QueryHeapSizes.BinaryOcclusion);
+            GetOrDefault(createInfo.QueryPoolSizes[2],
+                         createDescDev.QueryHeapSizes.BinaryOcclusion);
             GetOrDefault(createInfo.QueryPoolSizes[3], createDescDev.QueryHeapSizes.Timestamp);
-            GetOrDefault(createInfo.QueryPoolSizes[4], createDescDev.QueryHeapSizes.PipelineStatistics);
+            GetOrDefault(createInfo.QueryPoolSizes[4],
+                         createDescDev.QueryHeapSizes.PipelineStatistics);
             GetOrDefault(createInfo.QueryPoolSizes[5], createDescDev.QueryHeapSizes.Duration);
 
             return createInfo;
@@ -88,27 +106,37 @@ namespace Ame::Rhi
             return factory;
         }
 
-        static void CreateDeviceAndContext(diligent_factory_type* factory, diligent_create_info createInfo,
-                                           Dg::IRenderDevice** renderDevice, Dg::IDeviceContext** deviceContext)
+        static void CreateDeviceAndContext(diligent_factory_type* factory,
+                                           diligent_create_info   createInfo,
+                                           Dg::IRenderDevice**    renderDevice,
+                                           Dg::IDeviceContext**   deviceContext)
         {
             factory->CreateDeviceAndContextsD3D12(createInfo, renderDevice, deviceContext);
         }
 
-        static void CreateSwapchain(diligent_factory_type* factory, Dg::IRenderDevice* renderDevice,
-                                    Dg::IDeviceContext* deviceContext, const Dg::SwapChainDesc& swapchainDesc,
-                                    const Dg::FullScreenModeDesc& fullscreenDesc, const Dg::NativeWindow& nativeWindow,
-                                    Dg::ISwapChain** swapchain)
+        static void CreateSwapchain(diligent_factory_type*        factory,
+                                    Dg::IRenderDevice*            renderDevice,
+                                    Dg::IDeviceContext*           deviceContext,
+                                    const Dg::SwapChainDesc&      swapchainDesc,
+                                    const Dg::FullScreenModeDesc& fullscreenDesc,
+                                    const Dg::NativeWindow&       nativeWindow,
+                                    Dg::ISwapChain**              swapchain)
         {
-            factory->CreateSwapChainD3D12(
-                renderDevice, deviceContext, swapchainDesc, fullscreenDesc, nativeWindow, swapchain);
+            factory->CreateSwapChainD3D12(renderDevice,
+                                          deviceContext,
+                                          swapchainDesc,
+                                          fullscreenDesc,
+                                          nativeWindow,
+                                          swapchain);
         }
     };
 #endif
 
     //
 
-    Opt<DeviceWrapper> DeviceWrapper::CreateImpl([[maybe_unused]] const DeviceCreateDesc&      createDesc,
-                                                 [[maybe_unused]] const DeviceCreateDescD3D12& createDescDev)
+    Opt<DeviceWrapper> DeviceWrapper::CreateImpl(
+        [[maybe_unused]] const DeviceCreateDesc&      createDesc,
+        [[maybe_unused]] const DeviceCreateDescD3D12& createDescDev)
     {
 #ifdef D3D12_SUPPORTED
         return GenericDeviceCreator<DeviceCreateTraitsD3D12>::Create(createDesc, createDescDev);
@@ -116,4 +144,4 @@ namespace Ame::Rhi
         return std::nullopt;
 #endif
     }
-} // namespace Ame::Rhi
+}

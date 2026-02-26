@@ -40,25 +40,35 @@ namespace Ame::Rhi
             CreateDesc();
 
             static constexpr auto StdResources = std::array{
-                Dg::PipelineResourceDesc{ Dg::SHADER_TYPE_PIXEL, Names::BaseColorMap,
+                Dg::PipelineResourceDesc{ Dg::SHADER_TYPE_PIXEL,
+                                          Names::BaseColorMap,
                                           Dg::SHADER_RESOURCE_TYPE_TEXTURE_SRV,
                                           Dg::SHADER_RESOURCE_VARIABLE_TYPE_DYNAMIC },
-                Dg::PipelineResourceDesc{ Dg::SHADER_TYPE_PIXEL, Names::NormalMap, Dg::SHADER_RESOURCE_TYPE_TEXTURE_SRV,
-                                          Dg::SHADER_RESOURCE_VARIABLE_TYPE_DYNAMIC },
-                Dg::PipelineResourceDesc{ Dg::SHADER_TYPE_PIXEL, Names::AOMap, Dg::SHADER_RESOURCE_TYPE_TEXTURE_SRV,
-                                          Dg::SHADER_RESOURCE_VARIABLE_TYPE_DYNAMIC },
-                Dg::PipelineResourceDesc{ Dg::SHADER_TYPE_PIXEL, Names::EmissiveMap,
+                Dg::PipelineResourceDesc{ Dg::SHADER_TYPE_PIXEL,
+                                          Names::NormalMap,
                                           Dg::SHADER_RESOURCE_TYPE_TEXTURE_SRV,
                                           Dg::SHADER_RESOURCE_VARIABLE_TYPE_DYNAMIC },
-                Dg::PipelineResourceDesc{ Dg::SHADER_TYPE_PIXEL, Names::SpecularMap,
+                Dg::PipelineResourceDesc{ Dg::SHADER_TYPE_PIXEL,
+                                          Names::AOMap,
                                           Dg::SHADER_RESOURCE_TYPE_TEXTURE_SRV,
                                           Dg::SHADER_RESOURCE_VARIABLE_TYPE_DYNAMIC },
-                Dg::PipelineResourceDesc{ Dg::SHADER_TYPE_PIXEL, Names::Roughness_MetallicMap,
+                Dg::PipelineResourceDesc{ Dg::SHADER_TYPE_PIXEL,
+                                          Names::EmissiveMap,
                                           Dg::SHADER_RESOURCE_TYPE_TEXTURE_SRV,
                                           Dg::SHADER_RESOURCE_VARIABLE_TYPE_DYNAMIC },
-                Dg::PipelineResourceDesc{ Dg::SHADER_TYPE_PIXEL, Names::HeightMap, Dg::SHADER_RESOURCE_TYPE_TEXTURE_SRV,
+                Dg::PipelineResourceDesc{ Dg::SHADER_TYPE_PIXEL,
+                                          Names::SpecularMap,
+                                          Dg::SHADER_RESOURCE_TYPE_TEXTURE_SRV,
+                                          Dg::SHADER_RESOURCE_VARIABLE_TYPE_DYNAMIC },
+                Dg::PipelineResourceDesc{ Dg::SHADER_TYPE_PIXEL,
+                                          Names::Roughness_MetallicMap,
+                                          Dg::SHADER_RESOURCE_TYPE_TEXTURE_SRV,
+                                          Dg::SHADER_RESOURCE_VARIABLE_TYPE_DYNAMIC },
+                Dg::PipelineResourceDesc{ Dg::SHADER_TYPE_PIXEL,
+                                          Names::HeightMap,
+                                          Dg::SHADER_RESOURCE_TYPE_TEXTURE_SRV,
                                           Dg::SHADER_RESOURCE_VARIABLE_TYPE_DYNAMIC },
             };
         };
     };
-} // namespace Ame::Rhi
+}

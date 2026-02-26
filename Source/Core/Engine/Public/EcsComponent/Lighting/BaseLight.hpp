@@ -16,4 +16,4 @@ namespace Ame::Ecs
     struct LightTypeTag
     {
     };
-} // namespace Ame::Ecs
+}

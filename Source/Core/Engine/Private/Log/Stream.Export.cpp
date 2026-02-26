@@ -65,9 +65,12 @@ Ame_LoggerStream_t* Ame_LoggerStream_CreateCallback()
     return std::bit_cast<Ame_LoggerStream_t*>(stream);
 }
 
-void Ame_LoggerStream_UpdateCallback(Ame_LoggerStream_t* stream, Ame_LoggerStream_Callback_t callback, void* userData)
+void Ame_LoggerStream_UpdateCallback(Ame_LoggerStream_t*         stream,
+                                     Ame_LoggerStream_Callback_t callback,
+                                     void*                       userData)
 {
-    auto streamWrapper      = static_cast<CallbackStreamWrapper*>(std::bit_cast<Ame::Log::ILoggerStream*>(stream));
+    auto streamWrapper =
+        static_cast<CallbackStreamWrapper*>(std::bit_cast<Ame::Log::ILoggerStream*>(stream));
     streamWrapper->Callback = callback;
     streamWrapper->UserData = userData;
 }
@@ -96,10 +99,14 @@ Ame_LoggerStream_t* Ame_LoggerStream_CreateNull()
     return std::bit_cast<Ame_LoggerStream_t*>(stream);
 }
 
-Ame_LoggerStream_t* Ame_LoggerStream_CreateRotatingFile(Ame_StringView_t baseFileName, size_t maxSize, size_t maxFiles,
-                                                        bool rotateOnOpen)
+Ame_LoggerStream_t* Ame_LoggerStream_CreateRotatingFile(Ame_StringView_t baseFileName,
+                                                        size_t           maxSize,
+                                                        size_t           maxFiles,
+                                                        bool             rotateOnOpen)
 {
-    auto stream =
-        new Ame::Log::RotatingFileStream({ baseFileName.Data, baseFileName.Size }, maxSize, maxFiles, rotateOnOpen);
+    auto stream = new Ame::Log::RotatingFileStream({ baseFileName.Data, baseFileName.Size },
+                                                   maxSize,
+                                                   maxFiles,
+                                                   rotateOnOpen);
     return std::bit_cast<Ame_LoggerStream_t*>(stream);
 }

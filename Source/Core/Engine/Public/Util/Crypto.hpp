@@ -49,7 +49,8 @@ namespace Ame::Util
     /// Helper function to convert digest to string
     /// </summary>
     template<CryptoAlgorithmType CryptoAlgoTy>
-    [[nodiscard]] inline String DigestStringify(const CryptoDigest<CryptoAlgoTy>& digest)
+    [[nodiscard]]
+    inline String DigestStringify(const CryptoDigest<CryptoAlgoTy>& digest)
     {
         constexpr const char lut[] = "0123456789ABCDEF";
 
@@ -67,7 +68,9 @@ namespace Ame::Util
     /// <summary>
     /// Helper function to finalize digest
     /// </summary>
-    template<CryptoAlgorithmType CryptoAlgoTy> [[nodiscard]] auto FinalizeDigest(CryptoAlgoTy& hasher)
+    template<CryptoAlgorithmType CryptoAlgoTy>
+    [[nodiscard]]
+    auto FinalizeDigest(CryptoAlgoTy& hasher)
     {
         CryptoDigest<CryptoAlgoTy> digest;
         hasher.Final(digest.data());
@@ -77,10 +80,12 @@ namespace Ame::Util
     /// <summary>
     /// Helper function to finalize digest to string
     /// </summary>
-    template<CryptoAlgorithmType CryptoAlgoTy> [[nodiscard]] String FinalizeDigestToString(CryptoAlgoTy& hasher)
+    template<CryptoAlgorithmType CryptoAlgoTy>
+    [[nodiscard]]
+    String FinalizeDigestToString(CryptoAlgoTy& hasher)
     {
         CryptoDigest<CryptoAlgoTy> digest;
         hasher.Final(digest.data());
         return DigestStringify<CryptoAlgoTy>(digest);
     }
-} // namespace Ame::Util
+}

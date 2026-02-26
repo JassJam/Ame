@@ -43,13 +43,18 @@ namespace Ame::Gfx
         }
 
     private:
-        [[nodiscard]] static Ptr<Dg::IPipelineResourceSignature> CreateResourceSignature(
+        [[nodiscard]]
+        static Ptr<Dg::IPipelineResourceSignature> CreateResourceSignature(
             Dg::IRenderDevice* renderDevice)
         {
             constexpr std::array resources{
-                Dg::PipelineResourceDesc{ ShaderFlags, "LinkedLightIndices", Dg::SHADER_RESOURCE_TYPE_BUFFER_SRV,
+                Dg::PipelineResourceDesc{ ShaderFlags,
+                                          "LinkedLightIndices",
+                                          Dg::SHADER_RESOURCE_TYPE_BUFFER_SRV,
                                           Dg::SHADER_RESOURCE_VARIABLE_TYPE_DYNAMIC },
-                Dg::PipelineResourceDesc{ ShaderFlags, "LightGrid", Dg::SHADER_RESOURCE_TYPE_TEXTURE_SRV,
+                Dg::PipelineResourceDesc{ ShaderFlags,
+                                          "LightGrid",
+                                          Dg::SHADER_RESOURCE_TYPE_TEXTURE_SRV,
                                           Dg::SHADER_RESOURCE_VARIABLE_TYPE_DYNAMIC },
             };
 
@@ -70,7 +75,8 @@ namespace Ame::Gfx
     //
 
     class AME_ENGINE_API LightingResourceSignaturePass_GraphicsPass final
-        : public LightingResourceSignaturePass<LightingResourceSignaturePass_GraphicsPass, Dg::SHADER_TYPE_ALL_GRAPHICS>
+        : public LightingResourceSignaturePass<LightingResourceSignaturePass_GraphicsPass,
+                                               Dg::SHADER_TYPE_ALL_GRAPHICS>
     {
     public:
         LightingResourceSignaturePass_GraphicsPass()
@@ -78,14 +84,16 @@ namespace Ame::Gfx
             Name("Initialize Lighting Resource Signature (Graphics)");
         }
 
-        [[nodiscard]] static const auto& RGSignature() noexcept
+        [[nodiscard]]
+        static const auto& RGSignature() noexcept
         {
             return c_RGLightingResourceSignature_Graphics;
         }
     };
 
     class AME_ENGINE_API LightingResourceSignaturePass_ComputePass final
-        : public LightingResourceSignaturePass<LightingResourceSignaturePass_ComputePass, Dg::SHADER_TYPE_COMPUTE>
+        : public LightingResourceSignaturePass<LightingResourceSignaturePass_ComputePass,
+                                               Dg::SHADER_TYPE_COMPUTE>
     {
     public:
         LightingResourceSignaturePass_ComputePass()
@@ -93,9 +101,10 @@ namespace Ame::Gfx
             Name("Initialize Lighting Resource Signature (Compute)");
         }
 
-        [[nodiscard]] static const auto& RGSignature() noexcept
+        [[nodiscard]]
+        static const auto& RGSignature() noexcept
         {
             return c_RGLightingResourceSignature_Compute;
         }
     };
-} // namespace Ame::Gfx
+}

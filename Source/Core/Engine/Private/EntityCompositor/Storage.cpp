@@ -5,9 +5,9 @@
 
 namespace Ame::Gfx
 {
-    EntityStorage::EntityStorage(Rhi::IRhiDevice* rhiDevice, Ecs::World* world) :
-        m_World(world), m_RhiDevice(rhiDevice), m_TransformStorage(*world), m_DrawInstanceStorage(*world),
-        m_LightStorage(*world)
+    EntityStorage::EntityStorage(Rhi::IRhiDevice* rhiDevice, Ecs::World* world)
+        : m_World(world), m_RhiDevice(rhiDevice), m_TransformStorage(*world),
+          m_DrawInstanceStorage(*world), m_LightStorage(*world)
     {
         CreateFrameDataBuffer();
         CreateLightIdBuffer();
@@ -15,7 +15,8 @@ namespace Ame::Gfx
 
     //
 
-    void EntityStorage::UploadToRenderGraph(Rg::Graph& cameraGraph, const CameraFrameDataUpdateDesc& frameData)
+    void EntityStorage::UploadToRenderGraph(Rg::Graph&                       cameraGraph,
+                                            const CameraFrameDataUpdateDesc& frameData)
     {
         UpdateInstances();
         UpdateFrameData(frameData);
@@ -42,7 +43,9 @@ namespace Ame::Gfx
 #else
             nullptr,
 #endif
-            sizeof(CameraFrameData), Dg::BIND_UNIFORM_BUFFER, Dg::USAGE_DEFAULT
+            sizeof(CameraFrameData),
+            Dg::BIND_UNIFORM_BUFFER,
+            Dg::USAGE_DEFAULT
         };
         auto renderDevice = m_RhiDevice->GetRenderDevice();
         renderDevice->CreateBuffer(bufferDesc, nullptr, &m_FrameDataBuffer);
@@ -72,8 +75,11 @@ namespace Ame::Gfx
                                    .FarPlane  = updateDesc.FarPlane,
 
                                    .CameraMask = updateDesc.CameraMask };
-        renderContext->UpdateBuffer(
-            m_FrameDataBuffer, 0, sizeof(frameData), &frameData, Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+        renderContext->UpdateBuffer(m_FrameDataBuffer,
+                                    0,
+                                    sizeof(frameData),
+                                    &frameData,
+                                    Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
     }
 
     void EntityStorage::CreateLightIdBuffer()
@@ -99,7 +105,10 @@ namespace Ame::Gfx
     {
         size_t maxCount      = std::min(lightIds[0] + 1, c_MaxLightConstants);
         auto   renderContext = m_RhiDevice->GetImmediateContext();
-        renderContext->UpdateBuffer(m_LightIdBuffer, 0, sizeof(uint32_t) * maxCount, lightIds.data(),
+        renderContext->UpdateBuffer(m_LightIdBuffer,
+                                    0,
+                                    sizeof(uint32_t) * maxCount,
+                                    lightIds.data(),
                                     Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
     }
 
@@ -127,4 +136,4 @@ namespace Ame::Gfx
     {
         return m_World;
     }
-} // namespace Ame::Gfx
+}

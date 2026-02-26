@@ -64,17 +64,23 @@ namespace Ame::Scripting
         CLRRuntime(const CSScriptEngineConfig& config);
 
     public:
-        template<typename Ty> [[nodiscard]] Ty GetFunction(const String& className, const String& functionName) const
+        template<typename Ty>
+        [[nodiscard]]
+        Ty GetFunction(const String& className, const String& functionName) const
         {
             return std::bit_cast<Ty>(GetFunctionPtr(className, functionName));
         }
-        template<typename Ty> [[nodiscard]] Ty GetCommonFunction(Functions type) const
+        template<typename Ty>
+        [[nodiscard]]
+        Ty GetCommonFunction(Functions type) const
         {
             return std::bit_cast<Ty>(GetCommonFunctionPtr(type));
         }
 
-        [[nodiscard]] void* GetFunctionPtr(const String& className, const String& functionName) const;
-        [[nodiscard]] void* GetCommonFunctionPtr(Functions type) const;
+        [[nodiscard]]
+        void* GetFunctionPtr(const String& className, const String& functionName) const;
+        [[nodiscard]]
+        void* GetCommonFunctionPtr(Functions type) const;
 
     private:
         void LoadHostFxrLibrary();
@@ -101,4 +107,4 @@ namespace Ame::Scripting
 
         void* m_CommonFunctions[static_cast<size_t>(Functions::Count)]{};
     };
-} // namespace Ame::Scripting
+}

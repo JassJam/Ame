@@ -17,15 +17,15 @@ namespace Ame::Rhi
         {
         }
 
-        Image(const Image& image) noexcept :
-            m_BitmapData(image.m_BitmapData), m_Format(image.m_Format), m_ReferenceType(image.m_ReferenceType),
-            m_OwnsBitmapData(false)
+        Image(const Image& image) noexcept
+            : m_BitmapData(image.m_BitmapData), m_Format(image.m_Format),
+              m_ReferenceType(image.m_ReferenceType), m_OwnsBitmapData(false)
         {
         }
 
-        Image(Image&& image) noexcept :
-            m_BitmapData(std::exchange(image.m_BitmapData, nullptr)), m_Format(image.m_Format),
-            m_ReferenceType(image.m_ReferenceType), m_OwnsBitmapData(image.m_OwnsBitmapData)
+        Image(Image&& image) noexcept
+            : m_BitmapData(std::exchange(image.m_BitmapData, nullptr)), m_Format(image.m_Format),
+              m_ReferenceType(image.m_ReferenceType), m_OwnsBitmapData(image.m_OwnsBitmapData)
         {
             image.m_OwnsBitmapData = false;
         }
@@ -73,38 +73,63 @@ namespace Ame::Rhi
         }
 
     public:
-        [[nodiscard]] ImageReferenceType GetType() const noexcept;
+        [[nodiscard]]
+        ImageReferenceType GetType() const noexcept;
 
-        [[nodiscard]] Dg::TextureSubResData GetSubresource() const;
-
-    public:
-        [[nodiscard]] ImageFormat      GetFormat() const;
-        [[nodiscard]] Math::Vector2U   GetSize() const;
-        [[nodiscard]] uint32_t         GetLine() const;
-        [[nodiscard]] uint32_t         GetPitch() const;
-        [[nodiscard]] std::byte*       GetPixels();
-        [[nodiscard]] const std::byte* GetPixels() const;
-        [[nodiscard]] uint32_t         GetMemorySize() const;
+        [[nodiscard]]
+        Dg::TextureSubResData GetSubresource() const;
 
     public:
-        [[nodiscard]] Image Clone() const;
-        [[nodiscard]] Image Clone(const Math::RectI& rect) const;
-        bool                Paste(const Image& srcImage, const Math::RectI& rect);
-        [[nodiscard]] Image Rescale(const Math::Vector2U size, ImageFilterType filter = ImageFilterType::Catmullrom);
-        [[nodiscard]] Image View(const Math::RectI& rect) const;
+        [[nodiscard]]
+        ImageFormat GetFormat() const;
+        [[nodiscard]]
+        Math::Vector2U GetSize() const;
+        [[nodiscard]]
+        uint32_t GetLine() const;
+        [[nodiscard]]
+        uint32_t GetPitch() const;
+        [[nodiscard]]
+        std::byte* GetPixels();
+        [[nodiscard]]
+        const std::byte* GetPixels() const;
+        [[nodiscard]]
+        uint32_t GetMemorySize() const;
 
     public:
-        [[nodiscard]] ImageDataType GetDataType() const;
-        [[nodiscard]] Image         ConvertTo(ImageDataType dataType) const;
-        [[nodiscard]] Image         ConvertTo4Bits() const;
-        [[nodiscard]] Image         ConvertTo8Bits() const;
-        [[nodiscard]] Image         ConvertToGreyscale() const;
-        [[nodiscard]] Image         ConvertTo16Bits555() const;
-        [[nodiscard]] Image         ConvertTo16Bits565() const;
-        [[nodiscard]] Image         ConvertTo24Bits() const;
-        [[nodiscard]] Image         ConvertTo32Bits() const;
-        [[nodiscard]] Image         Threshold(uint8_t value) const;
-        [[nodiscard]] Image         Dither(ImageDitherType algorithm) const;
+        [[nodiscard]]
+        Image Clone() const;
+        [[nodiscard]]
+        Image Clone(const Math::RectI& rect) const;
+        bool  Paste(const Image& srcImage, const Math::RectI& rect);
+        [[nodiscard]]
+        Image Rescale(const Math::Vector2U size,
+                      ImageFilterType      filter = ImageFilterType::Catmullrom);
+        [[nodiscard]]
+        Image View(const Math::RectI& rect) const;
+
+    public:
+        [[nodiscard]]
+        ImageDataType GetDataType() const;
+        [[nodiscard]]
+        Image ConvertTo(ImageDataType dataType) const;
+        [[nodiscard]]
+        Image ConvertTo4Bits() const;
+        [[nodiscard]]
+        Image ConvertTo8Bits() const;
+        [[nodiscard]]
+        Image ConvertToGreyscale() const;
+        [[nodiscard]]
+        Image ConvertTo16Bits555() const;
+        [[nodiscard]]
+        Image ConvertTo16Bits565() const;
+        [[nodiscard]]
+        Image ConvertTo24Bits() const;
+        [[nodiscard]]
+        Image ConvertTo32Bits() const;
+        [[nodiscard]]
+        Image Threshold(uint8_t value) const;
+        [[nodiscard]]
+        Image Dither(ImageDitherType algorithm) const;
 
     public:
         bool FlipHorizontal();
@@ -116,22 +141,32 @@ namespace Ame::Rhi
         void Add(uint32_t page, const Image& image);
         void Remove(uint32_t page);
 
-        [[nodiscard]] Image Lock(int page) const;
-        void                Unlock(const Image& image, bool changed = false) const;
+        [[nodiscard]]
+        Image Lock(int page) const;
+        void  Unlock(const Image& image, bool changed = false) const;
 
-        bool              Move(int srcPage, int dstPage);
-        [[nodiscard]] int GetPagesCount() const;
+        bool Move(int srcPage, int dstPage);
+        [[nodiscard]]
+        int GetPagesCount() const;
 
     private:
-        Image(void* bitmap, ImageFormat format, ImageReferenceType referenceType, bool ownsBitmapData) :
-            m_BitmapData(bitmap), m_Format(format), m_ReferenceType(referenceType), m_OwnsBitmapData(ownsBitmapData)
+        Image(void*              bitmap,
+              ImageFormat        format,
+              ImageReferenceType referenceType,
+              bool               ownsBitmapData)
+            : m_BitmapData(bitmap), m_Format(format), m_ReferenceType(referenceType),
+              m_OwnsBitmapData(ownsBitmapData)
         {
         }
 
     public:
-        [[nodiscard]] void*        GetBitmap() const;
-        [[nodiscard]] static Image Wrap(void* bitmap, ImageFormat format, ImageReferenceType referenceType,
-                                        bool ownsBitmapData)
+        [[nodiscard]]
+        void* GetBitmap() const;
+        [[nodiscard]]
+        static Image Wrap(void*              bitmap,
+                          ImageFormat        format,
+                          ImageReferenceType referenceType,
+                          bool               ownsBitmapData)
         {
             return Image(bitmap, format, referenceType, ownsBitmapData);
         }
@@ -151,14 +186,18 @@ namespace Ame::Rhi
     public:
         ImageMemory() = default;
 
-        [[nodiscard]] static ImageMemory Wrap(void* memory, void* bitmap, ImageFormat format)
+        [[nodiscard]]
+        static ImageMemory Wrap(void* memory, void* bitmap, ImageFormat format)
         {
             return ImageMemory(memory, bitmap, format);
         }
 
-        [[nodiscard]] const Image& GetMemory() const noexcept;
-        [[nodiscard]] const Image& GetImage() const noexcept;
-        [[nodiscard]] Image&       GetImage() noexcept;
+        [[nodiscard]]
+        const Image& GetMemory() const noexcept;
+        [[nodiscard]]
+        const Image& GetImage() const noexcept;
+        [[nodiscard]]
+        Image& GetImage() noexcept;
 
     private:
         ImageMemory(void* memory, void* bitmap, ImageFormat format);
@@ -173,19 +212,26 @@ namespace Ame::Rhi
     public:
         ImageMipChain() = default;
 
-        ImageMipChain(Image image, uint32_t maxMipCount = 0, ImageFilterType filter = ImageFilterType::Catmullrom);
+        ImageMipChain(Image           image,
+                      uint32_t        maxMipCount = 0,
+                      ImageFilterType filter      = ImageFilterType::Catmullrom);
 
     public:
-        [[nodiscard]] const Image& GetMip(uint32_t level) const noexcept;
+        [[nodiscard]]
+        const Image& GetMip(uint32_t level) const noexcept;
 
-        [[nodiscard]] uint32_t GetMipCount() const noexcept;
+        [[nodiscard]]
+        uint32_t GetMipCount() const noexcept;
 
-        [[nodiscard]] uint32_t GetMemorySize() const;
+        [[nodiscard]]
+        uint32_t GetMemorySize() const;
 
-        [[nodiscard]] const std::span<const Image>       GetMips() const noexcept;
-        [[nodiscard]] std::vector<Dg::TextureSubResData> GetSubresource() const;
+        [[nodiscard]]
+        const std::span<const Image> GetMips() const noexcept;
+        [[nodiscard]]
+        std::vector<Dg::TextureSubResData> GetSubresource() const;
 
     private:
         std::vector<Image> m_Images;
     };
-} // namespace Ame::Rhi
+}

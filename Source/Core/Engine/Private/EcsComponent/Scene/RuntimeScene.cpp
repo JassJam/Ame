@@ -7,16 +7,18 @@ namespace Ame::Ecs
 {
     /// <summary>
     /// Sander:
-    /// I looked a bit more into it, turns out it's a bit of a difficult problem to address generically without
-    /// complicating the APIs or hurting performance
+    /// I looked a bit more into it, turns out it's a bit of a difficult problem to address
+    /// generically without complicating the APIs or hurting performance
     // One quick workaround is to give the Root entity a name, for example: world.entity("Root")
     // The reason for that is that:
-    // during world cleanup root entities are cleaned up first, which should have cleaned up Root before the query
-    // entity however, because the Root entity is empty, it's not stored in any archetype, which makes it really hard to
-    // find in the cleanup code By adding a name (or any other component) to it, it's no longer empty and the cleanup
-    // works as expected I'll add a note to the docs for now, until I come up with a better way to address this
+    // during world cleanup root entities are cleaned up first, which should have cleaned up Root
+    // before the query entity however, because the Root entity is empty, it's not stored in any
+    // archetype, which makes it really hard to find in the cleanup code By adding a name (or any
+    // other component) to it, it's no longer empty and the cleanup works as expected I'll add a
+    // note to the docs for now, until I come up with a better way to address this
     /// </summary>
-    [[nodiscard]] static String RandomUIdName()
+    [[nodiscard]]
+    static String RandomUIdName()
     {
         auto uid = UIdUtils::ToString(UIdUtils::Generate());
         Strings::ReplaceAll(uid, "-", "");
@@ -25,8 +27,8 @@ namespace Ame::Ecs
 
     //
 
-    RuntimeScene::RuntimeScene(IReferenceCounters* counters, Ecs::World* world) :
-        ISerializable(counters), m_World(world), m_Root(world->CreateEntity())
+    RuntimeScene::RuntimeScene(IReferenceCounters* counters, Ecs::World* world)
+        : ISerializable(counters), m_World(world), m_Root(world->CreateEntity())
     {
         auto flecsRoot = m_Root->GetFlecsEntity();
         flecsRoot.set_name(RandomUIdName().c_str());
@@ -98,8 +100,7 @@ namespace Ame::Ecs
             m_Root->RemoveAllChildren();
             break;
         }
-        default:
-            std::unreachable();
+        default: std::unreachable();
         }
     }
 
@@ -137,4 +138,4 @@ namespace Ame::Ecs
             SetCurrent(world, this);
         }
     }
-} // namespace Ame::Ecs
+}

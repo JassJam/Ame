@@ -11,14 +11,15 @@
 namespace Ame::Rhi
 {
     class IRhiDevice;
-} // namespace Ame::Rhi
+}
 
 namespace Ame::Ecs
 {
     // {FB443EB9-0F56-4640-B724-DE48E737BB9C}
-    inline constexpr UId IID_EntityWorld{
-        0xfb443eb9, 0xf56, 0x4640, { 0xb7, 0x24, 0xde, 0x48, 0xe7, 0x37, 0xbb, 0x9c }
-    };
+    inline constexpr UId IID_EntityWorld{ 0xfb443eb9,
+                                          0xf56,
+                                          0x4640,
+                                          { 0xb7, 0x24, 0xde, 0x48, 0xe7, 0x37, 0xbb, 0x9c } };
 
     class AME_ENGINE_API World : public IObjectWithCallback
     {
@@ -40,20 +41,24 @@ namespace Ame::Ecs
     public:
         /// <summary>
         /// Create a new entity in the world.
-        /// If the entity's name is already in use, Name will be modified to be unique using 'CreateUniqueEntityName'.
+        /// If the entity's name is already in use, Name will be modified to be unique using
+        /// 'CreateUniqueEntityName'.
         /// </summary>
         Entity CreateEntity(StringView name = "", const Entity& parent = {});
 
         /// <summary>
         /// Get entity from its id.
         /// </summary>
-        [[nodiscard]] Entity GetEntityById(const EntityId id) const;
+        [[nodiscard]]
+        Entity GetEntityById(const EntityId id) const;
 
     public:
         /// <summary>
         /// Create a new query in the world for querying entities.
         /// </summary>
-        template<typename... ArgsTy> [[nodiscard]] QueryBuilder<ArgsTy...> CreateQuery()
+        template<typename... ArgsTy>
+        [[nodiscard]]
+        QueryBuilder<ArgsTy...> CreateQuery()
         {
             return m_World->query_builder<ArgsTy...>();
         }
@@ -62,7 +67,9 @@ namespace Ame::Ecs
         /// <summary>
         /// Create a new system in the world for processing entities.
         /// </summary>
-        template<typename... ArgsTy> [[nodiscard]] SystemBuilder<ArgsTy...> CreateSystem()
+        template<typename... ArgsTy>
+        [[nodiscard]]
+        SystemBuilder<ArgsTy...> CreateSystem()
         {
             return m_World->system<ArgsTy...>();
         }
@@ -71,23 +78,28 @@ namespace Ame::Ecs
         /// <summary>
         /// Create a new observer in the world for tracking entities.
         /// </summary>
-        template<typename... ArgsTy> [[nodiscard]] ObserverBuilder<ArgsTy...> CreateObserver()
+        template<typename... ArgsTy>
+        [[nodiscard]]
+        ObserverBuilder<ArgsTy...> CreateObserver()
         {
             return m_World->observer<ArgsTy...>();
         }
 
     public:
-        [[nodiscard]] auto operator->() const noexcept
+        [[nodiscard]]
+        auto operator->() const noexcept
         {
             return m_World.get();
         }
 
-        [[nodiscard]] auto& operator*()
+        [[nodiscard]]
+        auto& operator*()
         {
             return *m_World;
         }
 
-        [[nodiscard]] auto GetFlecsWorld() const noexcept
+        [[nodiscard]]
+        auto GetFlecsWorld() const noexcept
         {
             return m_World.get();
         }
@@ -97,19 +109,22 @@ namespace Ame::Ecs
         /// Progress the world.
         /// </summary>
         /// <returns>True if the world is still running, false if the world has stopped.</returns>
-        [[nodiscard]] bool Progress(double deltaTime);
+        [[nodiscard]]
+        bool Progress(double deltaTime);
 
     public:
         /// <summary>
         /// Register a new module in the world.
         /// </summary>
-        template<typename Ty> auto ImportModule()
+        template<typename Ty>
+        auto ImportModule()
         {
             return m_World->import <Ty>();
         }
 
     public:
-        [[nodiscard]] auto& GetRhiDevice() const noexcept
+        [[nodiscard]]
+        auto& GetRhiDevice() const noexcept
         {
             return m_RhiDevice;
         }
@@ -133,12 +148,14 @@ namespace Ame::Ecs
         }
 
     public:
-        [[nodiscard]] World* GetWorld() noexcept
+        [[nodiscard]]
+        World* GetWorld() noexcept
         {
             return m_World.get_mut<World::This>()->world;
         }
 
-        [[nodiscard]] const World* GetWorld() const noexcept
+        [[nodiscard]]
+        const World* GetWorld() const noexcept
         {
             return m_World.get<World::This>()->world;
         }
@@ -146,20 +163,24 @@ namespace Ame::Ecs
     public:
         /// <summary>
         /// Create a new entity in the world.
-        /// If the entity's name is already in use, Name will be modified to be unique using 'CreateUniqueEntityName'.
+        /// If the entity's name is already in use, Name will be modified to be unique using
+        /// 'CreateUniqueEntityName'.
         /// </summary>
         Entity CreateEntity(StringView name, const Entity& parent = {});
 
         /// <summary>
         /// Get entity from its id.
         /// </summary>
-        [[nodiscard]] Entity GetEntityById(const EntityId id) const;
+        [[nodiscard]]
+        Entity GetEntityById(const EntityId id) const;
 
     public:
         /// <summary>
         /// Create a new query in the world for querying entities.
         /// </summary>
-        template<typename... ArgsTy> [[nodiscard]] QueryBuilder<ArgsTy...> CreateQuery()
+        template<typename... ArgsTy>
+        [[nodiscard]]
+        QueryBuilder<ArgsTy...> CreateQuery()
         {
             return m_World.query_builder<ArgsTy...>();
         }
@@ -168,7 +189,9 @@ namespace Ame::Ecs
         /// <summary>
         /// Create a new system in the world for processing entities.
         /// </summary>
-        template<typename... ArgsTy> [[nodiscard]] SystemBuilder<ArgsTy...> CreateSystem()
+        template<typename... ArgsTy>
+        [[nodiscard]]
+        SystemBuilder<ArgsTy...> CreateSystem()
         {
             return m_World.system<ArgsTy...>();
         }
@@ -177,39 +200,47 @@ namespace Ame::Ecs
         /// <summary>
         /// Create a new observer in the world for tracking entities.
         /// </summary>
-        template<typename... ArgsTy> [[nodiscard]] ObserverBuilder<ArgsTy...> CreateObserver()
+        template<typename... ArgsTy>
+        [[nodiscard]]
+        ObserverBuilder<ArgsTy...> CreateObserver()
         {
             return m_World.observer<ArgsTy...>();
         }
 
     public:
-        [[nodiscard]] auto operator->() const noexcept
+        [[nodiscard]]
+        auto operator->() const noexcept
         {
             return &m_World;
         }
 
-        [[nodiscard]] auto& operator*() const noexcept
+        [[nodiscard]]
+        auto& operator*() const noexcept
         {
             return m_World;
         }
 
-        [[nodiscard]] auto& Get() const noexcept
+        [[nodiscard]]
+        auto& Get() const noexcept
         {
             return m_World;
         }
 
     public:
-        [[nodiscard]] auto operator->()
+        [[nodiscard]]
+        auto operator->()
         {
             return &m_World;
         }
 
-        [[nodiscard]] auto& operator*()
+        [[nodiscard]]
+        auto& operator*()
         {
             return m_World;
         }
 
-        [[nodiscard]] auto& Get()
+        [[nodiscard]]
+        auto& Get()
         {
             return m_World;
         }
@@ -218,7 +249,8 @@ namespace Ame::Ecs
         /// <summary>
         /// Register a new module in the world.
         /// </summary>
-        template<typename Ty> void ImportModule()
+        template<typename Ty>
+        void ImportModule()
         {
             m_World.import <Ty>();
         }
@@ -326,4 +358,4 @@ namespace Ame::Ecs
             m_World.defer_end();
         }
     };
-} // namespace Ame::Ecs
+}

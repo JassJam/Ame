@@ -23,8 +23,8 @@ namespace Ame::Ecs
                 {
                     if (parentTransform)
                     {
-                        entity->set(
-                            GlobalTransformComponent{ parentTransform->ToMat4x4() * localTransform.ToMat4x4() });
+                        entity->set(GlobalTransformComponent{ parentTransform->ToMat4x4() *
+                                                              localTransform.ToMat4x4() });
                     }
                     else
                     {
@@ -54,7 +54,8 @@ namespace Ame::Ecs
 
                 if (iter.event() == flecs::OnSet)
                 {
-                    entity->set<TransformedAABBComponent>({ box.ToAABB().Transform(transform.ToMat4x4()) });
+                    entity->set<TransformedAABBComponent>(
+                        { box.ToAABB().Transform(transform.ToMat4x4()) });
                 }
                 else if (iter.event() == flecs::OnRemove)
                 {
@@ -87,4 +88,4 @@ namespace Ame::Ecs
             .yield_existing()
             .run(OnTransformChanged_ChangeAABB);
     }
-} // namespace Ame::Ecs
+}

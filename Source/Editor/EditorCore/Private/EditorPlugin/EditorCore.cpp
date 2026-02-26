@@ -8,15 +8,16 @@
 
 namespace Ame::Editor
 {
-    EditorCorePlugin::EditorCorePlugin() :
-        IEditorPlugin({ "EditorCore", "01Pollux", "Core plugin for the editor", __DATE__ })
+    EditorCorePlugin::EditorCorePlugin()
+        : IEditorPlugin({ "EditorCore", "01Pollux", "Core plugin for the editor", __DATE__ })
     {
         s_ThisPlugin = this;
     }
 
     bool EditorCorePlugin::OnPluginPreLoad(IModuleRegistry* registry)
     {
-        if (!IEditorPlugin::OnPluginPreLoad(registry) || !registry->BindPlugin(this, "AmeSharp.Runtime", true))
+        if (!IEditorPlugin::OnPluginPreLoad(registry) ||
+            !registry->BindPlugin(this, "AmeSharp.Runtime", true))
         {
             return false;
         }
@@ -29,12 +30,15 @@ namespace Ame::Editor
     {
         IEditorPlugin::OnPluginLoad(registry);
 
-        AME_LOG_ASSERT(registry->ExposeInterface(this, Interfaces::IID_ProjectManager, AmeCreate(ProjectManagerImpl)),
+        AME_LOG_ASSERT(registry->ExposeInterface(this,
+                                                 Interfaces::IID_ProjectManager,
+                                                 AmeCreate(ProjectManagerImpl)),
                        "Failed to expose ProjectManager");
-        AME_LOG_ASSERT(
-            registry->ExposeInterface(this, Interfaces::IID_EditorWindowManager, AmeCreate(EditorWindowManagerImpl)),
-            "Failed to expose EditorWindowManager");
+        AME_LOG_ASSERT(registry->ExposeInterface(this,
+                                                 Interfaces::IID_EditorWindowManager,
+                                                 AmeCreate(EditorWindowManagerImpl)),
+                       "Failed to expose EditorWindowManager");
     }
-} // namespace Ame::Editor
+}
 
 AME_PLUGIN_EXPORT(Ame::Editor::EditorCorePlugin);

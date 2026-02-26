@@ -20,13 +20,14 @@ namespace Ame
     /// </summary>
     template<typename Ty>
     concept StringType =
-        std::is_same_v<Ty, String> || std::is_same_v<Ty, WideString> || std::is_same_v<Ty, StringView> ||
-        std::is_same_v<Ty, WideStringView> || std::is_same_v<Ty, std::string> || std::is_same_v<Ty, std::wstring> ||
+        std::is_same_v<Ty, String> || std::is_same_v<Ty, WideString> ||
+        std::is_same_v<Ty, StringView> || std::is_same_v<Ty, WideStringView> ||
+        std::is_same_v<Ty, std::string> || std::is_same_v<Ty, std::wstring> ||
         std::is_same_v<Ty, std::string_view> || std::is_same_v<Ty, std::wstring_view> ||
         std::is_same_v<std::remove_cv_t<std::remove_pointer_t<std::decay_t<Ty>>>, Char> ||
         std::is_same_v<std::remove_cv_t<std::remove_pointer_t<std::decay_t<Ty>>>, WideChar>;
 
-} // namespace Ame
+}
 
 namespace Ame::Strings
 {
@@ -40,7 +41,9 @@ namespace Ame::Strings
     /// <summary>
     /// Transform string to another type
     /// </summary>
-    template<typename ToTy, typename FromTy> [[nodiscard]] constexpr ToTy To(const FromTy& str) noexcept
+    template<typename ToTy, typename FromTy>
+    [[nodiscard]]
+    constexpr ToTy To(const FromTy& str) noexcept
     {
         // same type
         if constexpr (std::is_same_v<ToTy, FromTy>)
@@ -52,12 +55,14 @@ namespace Ame::Strings
         {
             if (str.empty())
                 return {};
-            // from bigger type to smaller type, eg: wstring to string, u32string to u8string, etc...
+            // from bigger type to smaller type, eg: wstring to string, u32string to u8string,
+            // etc...
             if constexpr (sizeof(typename FromTy::value_type) > sizeof(typename ToTy::value_type))
             {
                 return str |
-                       std::views::transform([](const typename FromTy::value_type c)
-                                             { return static_cast<typename ToTy::value_type>(c); }) |
+                       std::views::transform(
+                           [](const typename FromTy::value_type c)
+                           { return static_cast<typename ToTy::value_type>(c); }) |
                        std::ranges::to<ToTy>();
             }
             // from smaller type to bigger type, eg: string to wstring, etc...
@@ -70,7 +75,8 @@ namespace Ame::Strings
     /// Transform string to another type
     /// </summary>
     template<typename ToTy, typename FromTy, size_t Size>
-    [[nodiscard]] constexpr ToTy Transform(const FromTy (&str)[Size]) noexcept
+    [[nodiscard]]
+    constexpr ToTy Transform(const FromTy (&str)[Size]) noexcept
     {
         if constexpr (std::is_same_v<typename ToTy::value_type, FromTy>)
             return ToTy{ str };
@@ -87,36 +93,46 @@ namespace Ame::Strings
     /// <summary>
     /// Convert string to lower case
     /// </summary>
-    [[nodiscard]] inline String ToLower(StringView str) noexcept
+    [[nodiscard]]
+    inline String ToLower(StringView str) noexcept
     {
-        return str | std::views::transform([](Char c) { return static_cast<Char>(std::tolower(c)); }) |
+        return str |
+               std::views::transform([](Char c) { return static_cast<Char>(std::tolower(c)); }) |
                std::ranges::to<String>();
     }
 
     /// <summary>
     /// Convert string to lower case
     /// </summary>
-    [[nodiscard]] inline WideString ToLower(WideStringView str) noexcept
+    [[nodiscard]]
+    inline WideString ToLower(WideStringView str) noexcept
     {
-        return str | std::views::transform([](WideChar c) { return static_cast<WideChar>(std::tolower(c)); }) |
+        return str |
+               std::views::transform([](WideChar c)
+                                     { return static_cast<WideChar>(std::tolower(c)); }) |
                std::ranges::to<WideString>();
     }
 
     /// <summary>
     /// Convert string to upper case
     /// </summary>
-    [[nodiscard]] inline String ToUpper(StringView str) noexcept
+    [[nodiscard]]
+    inline String ToUpper(StringView str) noexcept
     {
-        return str | std::views::transform([](Char c) { return static_cast<Char>(std::toupper(c)); }) |
+        return str |
+               std::views::transform([](Char c) { return static_cast<Char>(std::toupper(c)); }) |
                std::ranges::to<String>();
     }
 
     /// <summary>
     /// Convert string to upper case
     /// </summary>
-    [[nodiscard]] inline WideString ToUpper(WideStringView str) noexcept
+    [[nodiscard]]
+    inline WideString ToUpper(WideStringView str) noexcept
     {
-        return str | std::views::transform([](WideChar c) { return static_cast<WideChar>(std::toupper(c)); }) |
+        return str |
+               std::views::transform([](WideChar c)
+                                     { return static_cast<WideChar>(std::toupper(c)); }) |
                std::ranges::to<WideString>();
     }
 
@@ -201,7 +217,9 @@ namespace Ame::Strings
     /// <summary>
     /// Hash a string
     /// </summary>
-    template<StringType Ty> [[nodiscard]] constexpr size_t Hash(const Ty& str)
+    template<StringType Ty>
+    [[nodiscard]]
+    constexpr size_t Hash(const Ty& str)
     {
         // https://github.com/elanthis/constexpr-hash-demo/blob/master/test.cpp
         // FNV-1a constants
@@ -217,14 +235,15 @@ namespace Ame::Strings
         }
         return hash;
     }
-} // namespace Ame::Strings
+}
 
 namespace Ame
 {
     struct StringHash
     {
     public:
-        template<StringType Ty> constexpr StringHash(const Ty& str) : StringHash(Strings::Hash(str))
+        template<StringType Ty>
+        constexpr StringHash(const Ty& str) : StringHash(Strings::Hash(str))
         {
         }
 
@@ -232,7 +251,8 @@ namespace Ame
         {
         }
 
-        [[nodiscard]] constexpr operator size_t() const
+        [[nodiscard]]
+        constexpr operator size_t() const
         {
             return m_Hash;
         }
@@ -245,21 +265,24 @@ namespace Ame
 
     namespace Literals
     {
-        [[nodiscard]] constexpr StringHash operator""_hash(const char* str, size_t size)
+        [[nodiscard]]
+        constexpr StringHash operator""_hash(const char* str, size_t size)
         {
             return Strings::Hash(std::string_view(str, size));
         }
 
-        [[nodiscard]] constexpr StringHash operator""_hash(const wchar_t* str, size_t size)
+        [[nodiscard]]
+        constexpr StringHash operator""_hash(const wchar_t* str, size_t size)
         {
             return Strings::Hash(std::wstring_view(str, size));
         }
-    } // namespace Literals
-} // namespace Ame
+    }
+}
 
 namespace std
 {
-    template<> struct hash<Ame::StringView>
+    template<>
+    struct hash<Ame::StringView>
     {
         size_t operator()(const Ame::StringView& str) const
         {
@@ -267,11 +290,12 @@ namespace std
         }
     };
 
-    template<> struct hash<Ame::WideStringView>
+    template<>
+    struct hash<Ame::WideStringView>
     {
         size_t operator()(const Ame::WideStringView& str) const
         {
             return Ame::StringHash{ str };
         }
     };
-} // namespace std
+}

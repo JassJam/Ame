@@ -14,4 +14,4 @@ namespace Ame::Log
         FileCallback  BeforeClose;
         EmptyCallback AfterClose;
     };
-} // namespace Ame::Log
+}

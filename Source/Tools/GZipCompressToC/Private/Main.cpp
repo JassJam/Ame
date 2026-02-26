@@ -29,7 +29,8 @@ std::vector<char> ReadFile(const std::string& inputName)
     std::streampos size = file.tellg();
     file.seekg(0, std::ios::beg);
 
-    return std::vector<char>(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
+    return std::vector<char>(std::istreambuf_iterator<char>(file),
+                             std::istreambuf_iterator<char>());
 }
 
 std::vector<char> CompressBlob(std::span<const char> data)
@@ -44,7 +45,9 @@ std::vector<char> CompressBlob(std::span<const char> data)
     return compressedData;
 }
 
-void CompressAndWriteToFile(const std::string& input, const std::string& variableName, const std::string& outputName,
+void CompressAndWriteToFile(const std::string& input,
+                            const std::string& variableName,
+                            const std::string& outputName,
                             const std::string& namespaceName)
 {
     std::ofstream file(outputName, std::ios::binary);
@@ -78,7 +81,8 @@ void CompressAndWriteToFile(const std::string& input, const std::string& variabl
     std::cout << "File was successfully compressed and written to: " << outputName << std::endl;
 }
 
-// GZipCompressToC --input input.txt [--output output.txt] [--name MyVariable] [--namespace myNamespace]
+// GZipCompressToC --input input.txt [--output output.txt] [--name MyVariable] [--namespace
+// myNamespace]
 int main(int argc, char** argv)
 {
     po::options_description desc("Allowed options");
@@ -112,9 +116,10 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    std::string variableName =
-        vm.count("name") ? vm["name"].as<std::string>() : std::filesystem::path(input).stem().string();
-    std::string output = vm.count("output") ? vm["output"].as<std::string>() : std::format("{}.h", variableName);
+    std::string variableName = vm.count("name") ? vm["name"].as<std::string>()
+                                                : std::filesystem::path(input).stem().string();
+    std::string output =
+        vm.count("output") ? vm["output"].as<std::string>() : std::format("{}.h", variableName);
 
     std::string namespaceName;
     if (vm.count("namespace"))

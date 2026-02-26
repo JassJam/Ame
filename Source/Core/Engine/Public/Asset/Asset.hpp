@@ -25,17 +25,20 @@ namespace Ame::Asset
         /// <summary>
         /// Gets the asset uid.
         /// </summary>
-        [[nodiscard]] const UId& GetUId() const noexcept;
+        [[nodiscard]]
+        const UId& GetUId() const noexcept;
 
         /// <summary>
         /// Sets the asset uid.
         /// </summary>
-        [[nodiscard]] void SetUId(const UId& uid) noexcept;
+        [[nodiscard]]
+        void SetUId(const UId& uid) noexcept;
 
         /// <summary>
         /// Get the asset path.
         /// </summary>
-        [[nodiscard]] const String& GetPath() const noexcept;
+        [[nodiscard]]
+        const String& GetPath() const noexcept;
 
         /// <summary>
         /// Set the asset path.
@@ -45,7 +48,8 @@ namespace Ame::Asset
         /// <summary>
         /// Query if the asset is dirty.
         /// </summary>
-        [[nodiscard]] bool IsDirty() const noexcept;
+        [[nodiscard]]
+        bool IsDirty() const noexcept;
 
         /// <summary>
         /// Marks the asset as dirty.
@@ -108,12 +112,14 @@ namespace Ame::Asset
 
         //
 
-        [[nodiscard]] explicit operator bool() const noexcept
+        [[nodiscard]]
+        explicit operator bool() const noexcept
         {
             return m_Asset.index() != 0;
         }
 
-        [[nodiscard]] auto Get()
+        [[nodiscard]]
+        auto Get()
         {
             Wait();
             return m_Asset.index() == 2 ? std::get<2>(m_Asset) : nullptr;
@@ -127,19 +133,22 @@ namespace Ame::Asset
             }
         }
 
-        [[nodiscard]] auto& operator->()
+        [[nodiscard]]
+        auto& operator->()
         {
             Wait();
             return std::get<2>(m_Asset);
         }
 
-        [[nodiscard]] const Ptr<Ty>& operator*()
+        [[nodiscard]]
+        const Ptr<Ty>& operator*()
         {
             Wait();
             return std::get<2>(m_Asset);
         }
 
-        [[nodiscard]] operator const Ptr<Ty>&()
+        [[nodiscard]]
+        operator const Ptr<Ty>&()
         {
             Wait();
             return std::get<2>(m_Asset);
@@ -151,7 +160,8 @@ namespace Ame::Asset
         }
 
     private:
-        template<typename OTy> void SetFromBase(Ptr<OTy> asset)
+        template<typename OTy>
+        void SetFromBase(Ptr<OTy> asset)
         {
             if constexpr (std::is_same_v<Ty, OTy>)
             {
@@ -166,4 +176,4 @@ namespace Ame::Asset
     private:
         mutable AssetState m_Asset;
     };
-} // namespace Ame::Asset
+}

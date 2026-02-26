@@ -60,8 +60,9 @@ namespace Ame::Rhi
     {
         None = 0,
 
-        // Run-length encoding is a form of lossless data compression in which runs of data are stored as a single
-        // occurrence of that data value and a count of its consecutive occurrences, rather than as the original run.
+        // Run-length encoding is a form of lossless data compression in which runs of data are
+        // stored as a single occurrence of that data value and a count of its consecutive
+        // occurrences, rather than as the original run.
         BitmapRLE = 1 << 0,
 
         // save data as float instead of as half (not recommended)
@@ -76,7 +77,8 @@ namespace Ame::Rhi
         ExrPxr24Compression = 1 << 4,
         // save with lossy 44% float compression - goes to 22% when combined with EXR_LC
         ExrB44Compression = 1 << 5,
-        // save images with one luminance and two chroma channels, rather than as RGB (lossy compression)
+        // save images with one luminance and two chroma channels, rather than as RGB (lossy
+        // compression)
         ExrLC = 1 << 6,
 
         // save with superb quality (100:1)
@@ -137,7 +139,8 @@ namespace Ame::Rhi
         TiffCmyk = 1 << 0,
         // save using PACKBITS compression
         TiffPackBits = 1 << 1,
-        // save using DEFLATE compression (a.k.a. ZLIB compression) - obsolete, will save as TIFF_ADOBE_DEFLATE
+        // save using DEFLATE compression (a.k.a. ZLIB compression) - obsolete, will save as
+        // TIFF_ADOBE_DEFLATE
         TiffDeflate = 1 << 2,
         // save using ADOBE DEFLATE compression
         TiffAdobeDeflate = 1 << 3,
@@ -171,7 +174,8 @@ namespace Ame::Rhi
 
         // load the image as a 256 color image with ununsed palette entries, if it's 16 or 2 color
         GifLoad256 = 1 << 1,
-        // 'Play' the GIF to generate each frame (as 32bpp) instead of returning raw frame data when loading
+        // 'Play' the GIF to generate each frame (as 32bpp) instead of returning raw frame data when
+        // loading
         GifPlayback = 1 << 2,
 
         // convert to 32bpp and create an alpha channel from the AND-mask when loading
@@ -282,4 +286,4 @@ namespace Ame::Rhi
 
     class Image;
     class ImageStorge;
-} // namespace Ame::Rhi
+}

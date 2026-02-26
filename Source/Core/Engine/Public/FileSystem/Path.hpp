@@ -19,7 +19,8 @@ namespace Ame::FileSystem
     /// <summary>
     /// Convert the path to a unix path.
     /// </summary>
-    [[nodiscard]] inline std::filesystem::path ConvertToUnixPath(const std::filesystem::path& path)
+    [[nodiscard]]
+    inline std::filesystem::path ConvertToUnixPath(const std::filesystem::path& path)
     {
 #if AME_PLATFORM_WINDOWS
         auto copy = path;
@@ -29,4 +30,4 @@ namespace Ame::FileSystem
         return path;
 #endif
     }
-} // namespace Ame::FileSystem
+}

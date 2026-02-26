@@ -14,7 +14,8 @@ namespace Ame::Math
 
     public:
         TransformMatrix(const Matrix3x3& basis    = Matrix3x3::Constants::Identity,
-                        const Vector3&   position = Vector3::Constants::Zero) : m_Basis(basis), m_Position(position)
+                        const Vector3&   position = Vector3::Constants::Zero)
+            : m_Basis(basis), m_Position(position)
         {
         }
 
@@ -26,7 +27,8 @@ namespace Ame::Math
         /// <summary>
         /// Get basis of transform
         /// </summary>
-        [[nodiscard]] Matrix3x3 GetBasisNormalized() const noexcept
+        [[nodiscard]]
+        Matrix3x3 GetBasisNormalized() const noexcept
         {
             auto basis = m_Basis;
 
@@ -40,7 +42,8 @@ namespace Ame::Math
         /// <summary>
         /// Get basis of transform
         /// </summary>
-        [[nodiscard]] const Matrix3x3& GetBasis() const noexcept
+        [[nodiscard]]
+        const Matrix3x3& GetBasis() const noexcept
         {
             return m_Basis;
         }
@@ -48,7 +51,8 @@ namespace Ame::Math
         /// <summary>
         /// Get basis of transform
         /// </summary>
-        [[nodiscard]] Matrix3x3& GetBasis() noexcept
+        [[nodiscard]]
+        Matrix3x3& GetBasis() noexcept
         {
             return m_Basis;
         }
@@ -65,7 +69,8 @@ namespace Ame::Math
         /// <summary>
         /// Get right direction of transform
         /// </summary>
-        [[nodiscard]] Vector3 GetRightDir() const noexcept
+        [[nodiscard]]
+        Vector3 GetRightDir() const noexcept
         {
             auto right = GetBasis()(RightDirIndex);
             right.Normalize();
@@ -75,7 +80,8 @@ namespace Ame::Math
         /// <summary>
         /// Get right direction of transform
         /// </summary>
-        [[nodiscard]] Vector3 GetUpDir() const noexcept
+        [[nodiscard]]
+        Vector3 GetUpDir() const noexcept
         {
             auto up = GetBasis()(UpDirIndex);
             up.Normalize();
@@ -85,7 +91,8 @@ namespace Ame::Math
         /// <summary>
         /// Get right direction of transform
         /// </summary>
-        [[nodiscard]] Vector3 GetLookDir() const noexcept
+        [[nodiscard]]
+        Vector3 GetLookDir() const noexcept
         {
             auto look = GetBasis()(LookDirIndex);
             look.Normalize();
@@ -143,7 +150,8 @@ namespace Ame::Math
         /// <summary>
         /// Get position of transform
         /// </summary>
-        [[nodiscard]] const Vector3& GetPosition() const noexcept
+        [[nodiscard]]
+        const Vector3& GetPosition() const noexcept
         {
             return m_Position;
         }
@@ -151,7 +159,8 @@ namespace Ame::Math
         /// <summary>
         /// Get position of transform
         /// </summary>
-        [[nodiscard]] Vector3& GetPosition() noexcept
+        [[nodiscard]]
+        Vector3& GetPosition() noexcept
         {
             return m_Position;
         }
@@ -168,15 +177,20 @@ namespace Ame::Math
         /// <summary>
         /// Convert transform to matrix
         /// </summary>
-        [[nodiscard]] Matrix4x4 ToMat4x4() const noexcept
+        [[nodiscard]]
+        Matrix4x4 ToMat4x4() const noexcept
         {
-            return { m_Basis(0), m_Basis(1), m_Basis(2), Vector4(m_Position.x(), m_Position.y(), m_Position.z(), 1.f) };
+            return { m_Basis(0),
+                     m_Basis(1),
+                     m_Basis(2),
+                     Vector4(m_Position.x(), m_Position.y(), m_Position.z(), 1.f) };
         }
 
         /// <summary>
         /// Convert transform to matrix
         /// </summary>
-        [[nodiscard]] Matrix4x4 ToMat4x4Transposed() const noexcept
+        [[nodiscard]]
+        Matrix4x4 ToMat4x4Transposed() const noexcept
         {
             return { { m_Basis(0).x(), m_Basis(1).x(), m_Basis(2).x(), m_Position.x() },
                      { m_Basis(0).y(), m_Basis(1).y(), m_Basis(2).y(), m_Position.y() },
@@ -185,9 +199,11 @@ namespace Ame::Math
         }
 
     public:
-        [[nodiscard]] TransformMatrix operator*(const TransformMatrix& other) const noexcept
+        [[nodiscard]]
+        TransformMatrix operator*(const TransformMatrix& other) const noexcept
         {
-            return TransformMatrix(GetBasis() * other.GetBasis(), GetPosition() + other.GetPosition());
+            return TransformMatrix(GetBasis() * other.GetBasis(),
+                                   GetPosition() + other.GetPosition());
         }
 
         TransformMatrix& operator*=(const TransformMatrix& other) noexcept
@@ -201,4 +217,4 @@ namespace Ame::Math
         Matrix3x3 m_Basis;
         Vector3   m_Position;
     };
-} // namespace Ame::Math
+}

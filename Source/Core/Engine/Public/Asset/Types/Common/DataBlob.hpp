@@ -21,7 +21,8 @@ namespace Ame::Asset::Common
             IAsset::Serialize(ar);
 
             ar(m_Blob->GetSize());
-            ar(cereal::binary_data(std::bit_cast<const std::byte*>(m_Blob->GetConstDataPtr()), m_Blob->GetSize()));
+            ar(cereal::binary_data(std::bit_cast<const std::byte*>(m_Blob->GetConstDataPtr()),
+                                   m_Blob->GetSize()));
         }
 
         void Deserialize(BinaryIArchiver& ar) override
@@ -31,14 +32,16 @@ namespace Ame::Asset::Common
             size_t size;
             ar(size);
             m_Blob->Resize(size);
-            ar(cereal::binary_data(std::bit_cast<std::byte*>(m_Blob->GetDataPtr()), m_Blob->GetSize()));
+            ar(cereal::binary_data(std::bit_cast<std::byte*>(m_Blob->GetDataPtr()),
+                                   m_Blob->GetSize()));
         }
 
     public:
         /// <summary>
         /// Get data of the buffer
         /// </summary>
-        [[nodiscard]] IDataBlob* Get() const noexcept
+        [[nodiscard]]
+        IDataBlob* Get() const noexcept
         {
             return m_Blob;
         }
@@ -54,4 +57,4 @@ namespace Ame::Asset::Common
     private:
         Ptr<IDataBlob> m_Blob;
     };
-} // namespace Ame::Asset::Common
+}

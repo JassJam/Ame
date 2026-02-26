@@ -26,9 +26,14 @@ namespace Ame::Rhi
     {
     public:
         IMPLEMENT_QUERY_INTERFACE_IN_PLACE_SUBOJECTS(
-            IID_RhiDevice, IRhiDevice, m_Wrapper.GetFactory(), m_Wrapper.GetDevice(), m_Wrapper.GetImmediateContext(),
+            IID_RhiDevice,
+            IRhiDevice,
+            m_Wrapper.GetFactory(),
+            m_Wrapper.GetDevice(),
+            m_Wrapper.GetImmediateContext(),
             m_Wrapper.GetWindowWrapper() ? m_Wrapper.GetWindowWrapper()->GetWindow() : nullptr,
-            m_Wrapper.GetWindowWrapper() ? m_Wrapper.GetWindowWrapper()->GetSwapchain() : nullptr, m_CommonRenderPass,
+            m_Wrapper.GetWindowWrapper() ? m_Wrapper.GetWindowWrapper()->GetSwapchain() : nullptr,
+            m_CommonRenderPass,
             m_RenderStateCache);
 
     private:
@@ -53,4 +58,4 @@ namespace Ame::Rhi
         Ptr<CommonRenderPass>      m_CommonRenderPass;
         Ptr<Dg::IRenderStateCache> m_RenderStateCache;
     };
-} // namespace Ame::Rhi
+}

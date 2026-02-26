@@ -47,16 +47,18 @@ namespace Ame::Rg
     Dg::IBufferView* ResourceStorage::GetBufferView(ResourceViewId viewId) const
     {
         auto iter = m_Resources.find(viewId.GetResourceId());
-        AME_LOG_ASSERT(iter != m_Resources.end(),
-                       std::format("Resource of id '{}' doesn't exists", viewId.GetResourceId().GetId()));
+        AME_LOG_ASSERT(
+            iter != m_Resources.end(),
+            std::format("Resource of id '{}' doesn't exists", viewId.GetResourceId().GetId()));
         return iter->second.GetBufferView(viewId.GetId());
     }
 
     Dg::ITextureView* ResourceStorage::GetTextureView(ResourceViewId viewId) const
     {
         auto iter = m_Resources.find(viewId.GetResourceId());
-        AME_LOG_ASSERT(iter != m_Resources.end(),
-                       std::format("Resource of id '{}' doesn't exists", viewId.GetResourceId().GetId()));
+        AME_LOG_ASSERT(
+            iter != m_Resources.end(),
+            std::format("Resource of id '{}' doesn't exists", viewId.GetResourceId().GetId()));
         return iter->second.GetTextureView(viewId.GetId());
     }
 
@@ -81,19 +83,23 @@ namespace Ame::Rg
 
     //
 
-    void ResourceStorage::DeclareResource(const ResourceId& id, Rhi::BufferInitData* initData,
+    void ResourceStorage::DeclareResource(const ResourceId&     id,
+                                          Rhi::BufferInitData*  initData,
                                           const Dg::BufferDesc& desc)
     {
         CheckLockState(false);
-        AME_LOG_ASSERT(!m_Resources.contains(id), std::format("Resource '{}' already exists", id.GetName()));
+        AME_LOG_ASSERT(!m_Resources.contains(id),
+                       std::format("Resource '{}' already exists", id.GetName()));
         m_Resources[id].SetLocal(initData, desc);
     }
 
-    void ResourceStorage::DeclareResource(const ResourceId& id, Rhi::TextureInitData* initData,
+    void ResourceStorage::DeclareResource(const ResourceId&      id,
+                                          Rhi::TextureInitData*  initData,
                                           const Dg::TextureDesc& desc)
     {
         CheckLockState(false);
-        AME_LOG_ASSERT(!m_Resources.contains(id), std::format("Resource '{}' already exists", id.GetName()));
+        AME_LOG_ASSERT(!m_Resources.contains(id),
+                       std::format("Resource '{}' already exists", id.GetName()));
         m_Resources[id].SetLocal(initData, desc);
     }
 
@@ -142,21 +148,25 @@ namespace Ame::Rg
         std::erase_if(m_Resources, [](const auto& pair) { return !pair.second.IsImported(); });
     }
 
-    ResourceViewId ResourceStorage::DeclareBufferView(const ResourceId& id, const BufferResourceViewDesc& desc)
+    ResourceViewId ResourceStorage::DeclareBufferView(const ResourceId&             id,
+                                                      const BufferResourceViewDesc& desc)
     {
         CheckLockState(false);
 
         auto iter = m_Resources.find(id);
-        AME_LOG_ASSERT(iter != m_Resources.end(), std::format("Resource '{}' doesn't exists", id.GetName()));
+        AME_LOG_ASSERT(iter != m_Resources.end(),
+                       std::format("Resource '{}' doesn't exists", id.GetName()));
         return ResourceViewId(id, iter->second.CreateView(desc));
     }
 
-    ResourceViewId ResourceStorage::DeclareTextureView(const ResourceId& id, const TextureResourceViewDesc& desc)
+    ResourceViewId ResourceStorage::DeclareTextureView(const ResourceId&              id,
+                                                       const TextureResourceViewDesc& desc)
     {
         CheckLockState(false);
 
         auto iter = m_Resources.find(id);
-        AME_LOG_ASSERT(iter != m_Resources.end(), std::format("Resource '{}' doesn't exists", id.GetName()));
+        AME_LOG_ASSERT(iter != m_Resources.end(),
+                       std::format("Resource '{}' doesn't exists", id.GetName()));
         return ResourceViewId(id, iter->second.CreateView(desc));
     }
 
@@ -179,7 +189,8 @@ namespace Ame::Rg
     void ResourceStorage::CheckLockState([[maybe_unused]] bool locked) const
     {
 #ifndef AME_DIST
-        AME_LOG_ASSERT(m_Locked == locked, std::format("ResourceStorage is{} locked", locked ? "" : "n't"));
+        AME_LOG_ASSERT(m_Locked == locked,
+                       std::format("ResourceStorage is{} locked", locked ? "" : "n't"));
 #endif
     }
 
@@ -194,4 +205,4 @@ namespace Ame::Rg
     {
         m_NeedRebuild = state;
     }
-} // namespace Ame::Rg
+}

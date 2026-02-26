@@ -70,12 +70,14 @@ namespace Ame::Math
             /// <summary>
             /// Get the aspect ratio of the viewport.
             /// </summary>
-            [[nodiscard]] float AspectRatio() const;
+            [[nodiscard]]
+            float AspectRatio() const;
 
             /// <summary>
             /// Get the projection matrix of the viewport.
             /// </summary>
-            [[nodiscard]] Math::Matrix4x4 ProjectionMatrix(CameraType type) const;
+            [[nodiscard]]
+            Math::Matrix4x4 ProjectionMatrix(CameraType type) const;
         };
 
         Camera(CameraType Type = CameraType::Perspective) noexcept;
@@ -85,14 +87,17 @@ namespace Ame::Math
 
         void SetType(CameraType type) noexcept;
 
-        [[nodiscard]] const Viewport& GetViewport() const noexcept;
+        [[nodiscard]]
+        const Viewport& GetViewport() const noexcept;
 
         /// <summary>
         /// Get viewport without marking it changed, if the viewport has changed, call MarkChanged.
         /// </summary>
-        [[nodiscard]] Viewport& GetViewport() noexcept;
+        [[nodiscard]]
+        Viewport& GetViewport() noexcept;
 
-        [[nodiscard]] CameraType GetType() const noexcept;
+        [[nodiscard]]
+        CameraType GetType() const noexcept;
 
         void MarkChanged() noexcept;
 
@@ -100,12 +105,14 @@ namespace Ame::Math
         /// <summary>
         /// Get the projection matrix of the viewport.
         /// </summary>
-        [[nodiscard]] const Math::Matrix4x4& GetProjectionMatrix() const;
+        [[nodiscard]]
+        const Math::Matrix4x4& GetProjectionMatrix() const;
 
         /// <summary>
         /// Get viewport size.
         /// </summary>
-        [[nodiscard]] Math::Vector2 GetViewporSize() const noexcept;
+        [[nodiscard]]
+        Math::Vector2 GetViewporSize() const noexcept;
 
     private:
         /// <summary>
@@ -120,4 +127,4 @@ namespace Ame::Math
         /// </summary>
         CameraType m_Type = CameraType::Perspective;
     };
-} // namespace Ame::Math
+}

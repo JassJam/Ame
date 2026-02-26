@@ -18,7 +18,8 @@ namespace Ame::Rhi
         ImGuiFrameContext(const ImGuiFrameContext&)            = delete;
         ImGuiFrameContext& operator=(const ImGuiFrameContext&) = delete;
 
-        ImGuiFrameContext(ImGuiFrameContext&& other) noexcept : m_Renderer(std::exchange(other.m_Renderer, nullptr))
+        ImGuiFrameContext(ImGuiFrameContext&& other) noexcept
+            : m_Renderer(std::exchange(other.m_Renderer, nullptr))
         {
         }
         ImGuiFrameContext& operator=(ImGuiFrameContext&& other) noexcept
@@ -58,4 +59,4 @@ namespace Ame::Rhi
     private:
         IImGuiRenderer* m_Renderer = nullptr;
     };
-} // namespace Ame::Rhi
+}

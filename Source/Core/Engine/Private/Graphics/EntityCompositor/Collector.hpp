@@ -13,7 +13,9 @@ namespace Ame::Gfx
 
     private:
         void ResetCommands();
-        void AddEntity(DrawInstanceType type, Ecs::IBaseRenderable* renderable, uint32_t instanceId);
+        void AddEntity(DrawInstanceType      type,
+                       Ecs::IBaseRenderable* renderable,
+                       uint32_t              instanceId);
         void UpdateLights(std::span<const uint32_t> lightIds);
 
     private:
@@ -22,12 +24,14 @@ namespace Ame::Gfx
         void Reset();
 
     private:
-        [[nodiscard]] Rhi::IRhiDevice* GetRenderDevice();
-        [[nodiscard]] Ecs::World*      GetWorld();
+        [[nodiscard]]
+        Rhi::IRhiDevice* GetRenderDevice();
+        [[nodiscard]]
+        Ecs::World* GetWorld();
 
     private:
         Ref<EntityStorage> m_Storage;
 
         EntityDrawCommandsCategory m_DrawCommands;
     };
-} // namespace Ame::Gfx
+}

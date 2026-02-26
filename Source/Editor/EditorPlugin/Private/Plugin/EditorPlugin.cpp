@@ -9,7 +9,9 @@ namespace Ame::Editor
     {
         Ptr<Interfaces::IImGuiRenderer> imguiRenderer;
         if (!IPlugin::OnPluginPreLoad(registry) ||
-            !registry->RequestInterface(this, Interfaces::IID_ImGuiRenderer, imguiRenderer.DblPtr<IObject>()))
+            !registry->RequestInterface(this,
+                                        Interfaces::IID_ImGuiRenderer,
+                                        imguiRenderer.DblPtr<IObject>()))
         {
             return false;
         }
@@ -17,4 +19,4 @@ namespace Ame::Editor
         s_ModuleRegistry = registry;
         return true;
     }
-} // namespace Ame::Editor
+}

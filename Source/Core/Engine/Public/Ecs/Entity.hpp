@@ -18,21 +18,29 @@ namespace Ame::Ecs
         /// <summary>
         /// Get the underlying flecs entity id
         /// </summary>
-        [[nodiscard]] EntityId GetId() const;
+        [[nodiscard]]
+        EntityId GetId() const;
 
         /// <summary>
         /// Get the underlying flecs entity
         /// </summary>
-        [[nodiscard]] const flecs::entity& GetFlecsEntity() const;
+        [[nodiscard]]
+        const flecs::entity& GetFlecsEntity() const;
 
-        [[nodiscard]] const flecs::entity* operator->() const;
-        [[nodiscard]] flecs::entity*       operator->();
-        [[nodiscard]] const flecs::entity& operator*() const;
-        [[nodiscard]] flecs::entity&       operator*();
+        [[nodiscard]]
+        const flecs::entity* operator->() const;
+        [[nodiscard]]
+        flecs::entity* operator->();
+        [[nodiscard]]
+        const flecs::entity& operator*() const;
+        [[nodiscard]]
+        flecs::entity& operator*();
 
-        [[nodiscard]] bool operator==(const Entity& other) const;
+        [[nodiscard]]
+        bool operator==(const Entity& other) const;
 
-        [[nodiscard]] explicit operator bool() const noexcept;
+        [[nodiscard]]
+        explicit operator bool() const noexcept;
 
     public:
         /// <summary>
@@ -46,9 +54,12 @@ namespace Ame::Ecs
         void RemoveAllChildren() const;
 
     public:
-        [[nodiscard]] auto GetChildren(bool allowDisabled = true) const -> std::vector<Entity>;
-        [[nodiscard]] auto GetParent() const -> Entity;
-        [[nodiscard]] auto GetName() const -> const String&;
+        [[nodiscard]]
+        auto GetChildren(bool allowDisabled = true) const -> std::vector<Entity>;
+        [[nodiscard]]
+        auto GetParent() const -> Entity;
+        [[nodiscard]]
+        auto GetName() const -> const String&;
 
         void SetName(String name) const;
 
@@ -63,4 +74,4 @@ namespace Ame::Ecs
     };
 
     using UniqueEntity = Unique<Entity>;
-} // namespace Ame::Ecs
+}

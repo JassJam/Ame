@@ -16,4 +16,4 @@ namespace Ame::Ecs
         /// </summary>
         float Attenuation = 1.f;
     };
-} // namespace Ame::Ecs
+}

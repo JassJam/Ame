@@ -12,4 +12,4 @@ namespace Ame::Log
         m_Sink = std::make_shared<spdlog::sinks::null_sink_mt>();
 #endif
     }
-} // namespace Ame::Log
+}

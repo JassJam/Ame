@@ -25,4 +25,4 @@ namespace Ame
 
         m_IsPaused = paused;
     }
-} // namespace Ame
+}

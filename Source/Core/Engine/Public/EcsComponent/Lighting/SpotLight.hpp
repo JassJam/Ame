@@ -26,4 +26,4 @@ namespace Ame::Ecs
         /// </summary>
         float AngleAttenuation = 1.f;
     };
-} // namespace Ame::Ecs
+}

@@ -15,7 +15,7 @@
 namespace Ame::Rhi
 {
     class Material;
-} // namespace Ame::Rhi
+}
 
 namespace Ame::Gfx
 {
@@ -71,17 +71,20 @@ namespace Ame::Gfx
             Distance = cameraPosition.DistanceTo({});
         }
 
-        [[nodiscard]] auto operator<=>(const EntityDrawCommand& other) const noexcept
+        [[nodiscard]]
+        auto operator<=>(const EntityDrawCommand& other) const noexcept
         {
             auto& renderableDescA = Renderable->GetRenderableDesc();
             auto& renderableDescB = other.Renderable->GetRenderableDesc();
 
-            return std::tie(renderableDescA, Distance) <=> std::tie(renderableDescB, other.Distance);
+            return std::tie(renderableDescA, Distance) <=>
+                   std::tie(renderableDescB, other.Distance);
         }
     };
 
     //
 
-    using EntityDrawCommandList      = std::vector<EntityDrawCommand>;
-    using EntityDrawCommandsCategory = std::array<EntityDrawCommandList, static_cast<size_t>(DrawInstanceType::Count)>;
-} // namespace Ame::Gfx
+    using EntityDrawCommandList = std::vector<EntityDrawCommand>;
+    using EntityDrawCommandsCategory =
+        std::array<EntityDrawCommandList, static_cast<size_t>(DrawInstanceType::Count)>;
+}

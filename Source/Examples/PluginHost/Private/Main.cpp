@@ -7,8 +7,12 @@ using namespace Ame;
 class ExamplePluginHost : public IPlugin
 {
 public:
-    ExamplePluginHost() :
-        IPlugin({ "ExamplePluginHost", "JassJam", "A simple example plugin host", "8/30/2024", { 1, 0, 0, 1 } })
+    ExamplePluginHost()
+        : IPlugin({ "ExamplePluginHost",
+                    "JassJam",
+                    "A simple example plugin host",
+                    "8/30/2024",
+                    { 1, 0, 0, 1 } })
     {
     }
 

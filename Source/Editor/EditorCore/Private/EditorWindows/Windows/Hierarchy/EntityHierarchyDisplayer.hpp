@@ -24,7 +24,9 @@ namespace Ame::Editor
         void DisplayAdd(const Ecs::Entity& entity = {});
 
     private:
-        void DisplayEdit(const Ecs::Entity& selectedEntity, const Ecs::Entity& parentEntity, bool editable);
+        void DisplayEdit(const Ecs::Entity& selectedEntity,
+                         const Ecs::Entity& parentEntity,
+                         bool               editable);
 
     private:
         void PushTask(std::move_only_function<void()> task);
@@ -40,4 +42,4 @@ namespace Ame::Editor
         Ecs::Entity&                    m_EntityToRename;
         std::move_only_function<void()> m_DeferredTask;
     };
-} // namespace Ame::Editor
+}

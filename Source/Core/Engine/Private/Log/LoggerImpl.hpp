@@ -28,4 +28,4 @@ namespace Ame::Log
     private:
         spdlog::logger m_Logger;
     };
-} // namespace Ame::Log
+}

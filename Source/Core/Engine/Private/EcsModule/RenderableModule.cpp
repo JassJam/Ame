@@ -10,4 +10,4 @@ namespace Ame::Ecs
 
         flecsWorld.component<IBaseRenderableComponent>();
     }
-} // namespace Ame::Ecs
+}

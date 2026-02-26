@@ -20,4 +20,4 @@ namespace Ame::Ecs
 
         RegisterSceneObservers(world);
     }
-} // namespace Ame::Ecs
+}

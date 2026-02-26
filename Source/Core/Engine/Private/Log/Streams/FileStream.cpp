@@ -31,6 +31,6 @@ namespace Ame::Log
 
         FileSystem::EnsureDirectoryExists(fileName);
         auto handlers = GetSpdlogFileEventHandlers(std::move(events));
-        m_Sink        = std::make_shared<spdlog::sinks::basic_file_sink_mt>(fileName, truncate, handlers);
+        m_Sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(fileName, truncate, handlers);
     }
-} // namespace Ame::Log
+}

@@ -16,4 +16,4 @@ namespace Ame::Ecs
     {
         using TransformMatrix::TransformMatrix;
     };
-} // namespace Ame::Ecs
+}

@@ -7,4 +7,4 @@ namespace Ame::Geometry
     struct Sphere : Math::Util::BoundingSphere
     {
     };
-} // namespace Ame::Geometry
+}

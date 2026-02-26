@@ -77,12 +77,16 @@ namespace Ame::Math
         return XMMatrixRotationAxis(axis, angle);
     }
 
-    Matrix4x4 Matrix4x4::LookAt(const Vector3& eyePosition, const Vector3& focusPosition, const Vector3& upDirection)
+    Matrix4x4 Matrix4x4::LookAt(const Vector3& eyePosition,
+                                const Vector3& focusPosition,
+                                const Vector3& upDirection)
     {
         return XMMatrixLookAtLH(eyePosition, focusPosition, upDirection);
     }
 
-    Matrix4x4 Matrix4x4::LookTo(const Vector3& eyePosition, const Vector3& eyeDirection, const Vector3& upDirection)
+    Matrix4x4 Matrix4x4::LookTo(const Vector3& eyePosition,
+                                const Vector3& eyeDirection,
+                                const Vector3& upDirection)
     {
         return XMMatrixLookToLH(eyePosition, eyeDirection, upDirection);
     }
@@ -102,7 +106,9 @@ namespace Ame::Math
         return XMMatrixOrthographicLH(viewWidth, viewHeight, nearZ, farZ);
     }
 
-    Matrix4x4 Matrix4x4::SRT(const Matrix4x4& scale, const Matrix4x4& rotation, const Matrix4x4& translation)
+    Matrix4x4 Matrix4x4::SRT(const Matrix4x4& scale,
+                             const Matrix4x4& rotation,
+                             const Matrix4x4& translation)
     {
         return scale * rotation * translation;
     }
@@ -350,4 +356,4 @@ namespace Ame::Math
         *this = XMMatrixMultiply(*this, other);
         return *this;
     }
-} // namespace Ame::Math
+}

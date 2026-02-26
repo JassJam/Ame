@@ -36,12 +36,16 @@ namespace Ame::Rg
         m_Storage.get().ImportTexture(id, texture);
     }
 
-    void Resolver::CreateBuffer(const ResourceId& id, Rhi::BufferInitData* initData, const Dg::BufferDesc& desc)
+    void Resolver::CreateBuffer(const ResourceId&     id,
+                                Rhi::BufferInitData*  initData,
+                                const Dg::BufferDesc& desc)
     {
         m_Storage.get().DeclareResource(id, initData, desc);
     }
 
-    void Resolver::CreateTexture(const ResourceId& id, Rhi::TextureInitData* initData, const Dg::TextureDesc& desc)
+    void Resolver::CreateTexture(const ResourceId&      id,
+                                 Rhi::TextureInitData*  initData,
+                                 const Dg::TextureDesc& desc)
     {
         m_Storage.get().DeclareResource(id, initData, desc);
     }
@@ -79,14 +83,16 @@ namespace Ame::Rg
         m_Storage.get().SetUserData(id, userData);
     }
 
-    ResourceViewId Resolver::WriteBuffer(const ResourceId& id, Dg::BIND_FLAGS bindFlags,
+    ResourceViewId Resolver::WriteBuffer(const ResourceId&             id,
+                                         Dg::BIND_FLAGS                bindFlags,
                                          const BufferResourceViewDesc& viewDesc)
     {
         WriteResource(id);
         return DeclareView(id, bindFlags, viewDesc);
     }
 
-    ResourceViewId Resolver::WriteTexture(const ResourceId& id, Dg::BIND_FLAGS bindFlags,
+    ResourceViewId Resolver::WriteTexture(const ResourceId&              id,
+                                          Dg::BIND_FLAGS                 bindFlags,
                                           const TextureResourceViewDesc& viewDesc)
     {
         WriteResource(id);
@@ -105,14 +111,16 @@ namespace Ame::Rg
         m_ResourcesRead.emplace(id);
     }
 
-    ResourceViewId Resolver::ReadBuffer(const ResourceId& id, Dg::BIND_FLAGS bindFlags,
+    ResourceViewId Resolver::ReadBuffer(const ResourceId&             id,
+                                        Dg::BIND_FLAGS                bindFlags,
                                         const BufferResourceViewDesc& viewDesc)
     {
         ReadResource(id);
         return DeclareView(id, bindFlags, viewDesc);
     }
 
-    ResourceViewId Resolver::ReadTexture(const ResourceId& id, Dg::BIND_FLAGS bindFlags,
+    ResourceViewId Resolver::ReadTexture(const ResourceId&              id,
+                                         Dg::BIND_FLAGS                 bindFlags,
                                          const TextureResourceViewDesc& viewDesc)
     {
         ReadResource(id);
@@ -121,7 +129,8 @@ namespace Ame::Rg
 
     //
 
-    ResourceViewId Resolver::DeclareView(const ResourceId& id, Dg::BIND_FLAGS bindFlags,
+    ResourceViewId Resolver::DeclareView(const ResourceId&             id,
+                                         Dg::BIND_FLAGS                bindFlags,
                                          const BufferResourceViewDesc& viewDesc)
     {
         auto viewId = m_Storage.get().DeclareBufferView(id, viewDesc);
@@ -134,7 +143,8 @@ namespace Ame::Rg
         return viewId;
     }
 
-    ResourceViewId Resolver::DeclareView(const ResourceId& id, Dg::BIND_FLAGS bindFlags,
+    ResourceViewId Resolver::DeclareView(const ResourceId&              id,
+                                         Dg::BIND_FLAGS                 bindFlags,
                                          const TextureResourceViewDesc& viewDesc)
     {
         auto viewId = m_Storage.get().DeclareTextureView(id, viewDesc);
@@ -146,4 +156,4 @@ namespace Ame::Rg
         }
         return viewId;
     }
-} // namespace Ame::Rg
+}

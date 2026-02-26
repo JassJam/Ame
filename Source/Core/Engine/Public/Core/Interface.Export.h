@@ -2,8 +2,9 @@
 
 typedef struct Ame_IBaseObject_t Ame_IBaseObject_t;
 typedef struct Ame_UID_t         Ame_UID_t;
-typedef Ame_IBaseObject_t*(AME_CDECL* Ame_BaseObject_QueryInterface_t)(Ame_IBaseObject_t* objectHandle,
-                                                                       const Ame_UID_t*   iidHandle);
+typedef Ame_IBaseObject_t*(AME_CDECL* Ame_BaseObject_QueryInterface_t)(
+    Ame_IBaseObject_t* objectHandle,
+    const Ame_UID_t*   iidHandle);
 
 // clang-format off
 extern "C"

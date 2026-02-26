@@ -13,9 +13,11 @@ namespace Ame
 
     using IReferenceCounters = Dg::IReferenceCounters;
 
-    template<typename Ty> using Ptr = Dg::RefCntAutoPtr<Ty>;
+    template<typename Ty>
+    using Ptr = Dg::RefCntAutoPtr<Ty>;
 
-    template<typename Ty> using WPtr = Dg::RefCntWeakPtr<Ty>;
+    template<typename Ty>
+    using WPtr = Dg::RefCntWeakPtr<Ty>;
 
     inline constexpr UId IID_Unknown = Dg::IID_Unknown;
 
@@ -31,15 +33,16 @@ namespace Ame
         void  Free(void* ptr) override;
     };
 
-    template<typename Ty> class ObjectAllocator : public Dg::MakeNewRCObj<Ty, ObjectMemoryAllocator>
+    template<typename Ty>
+    class ObjectAllocator : public Dg::MakeNewRCObj<Ty, ObjectMemoryAllocator>
     {
     public:
         using Base = Dg::MakeNewRCObj<Ty, ObjectMemoryAllocator>;
 
         ObjectAllocator(const char* sourceName = std::source_location::current().function_name(),
                         const char* fileName   = std::source_location::current().file_name(),
-                        int         lineNumber = std::source_location::current().line()) noexcept :
-            Base(ObjectMemoryAllocator::Instance(), sourceName, fileName, lineNumber)
+                        int         lineNumber = std::source_location::current().line()) noexcept
+            : Base(ObjectMemoryAllocator::Instance(), sourceName, fileName, lineNumber)
         {
         }
 
@@ -53,7 +56,7 @@ namespace Ame
     class IObjectWithCallback : public Dg::ObjectBase<IObject>
     {
     public:
-        using QueryCallback = IObject*(AME_CDECL*)(IObject * objectHandle, const UId* iidHandle);
+        using QueryCallback = IObject*(AME_CDECL*) (IObject * objectHandle, const UId* iidHandle);
 
         IMPLEMENT_INTERFACE_CTOR(IObjectWithCallback) : ObjectBase(counters)
         {
@@ -86,4 +89,4 @@ namespace Ame
     public:
         QueryCallback QueryInterfaceCallback = nullptr;
     };
-} // namespace Ame
+}

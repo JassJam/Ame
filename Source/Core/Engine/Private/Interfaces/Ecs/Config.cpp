@@ -10,4 +10,4 @@ namespace Ame::Interfaces
         registry->RequestInterface(owner, IID_RhiDevice, rhiDevice.DblPtr<IObject>());
         registry->ExposeInterface(owner, IID_EntityWorld, CreateEntityWorld(rhiDevice, WorldDesc));
     }
-} // namespace Ame::Interfaces
+}

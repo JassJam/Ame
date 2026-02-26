@@ -9,7 +9,8 @@ namespace Ame::Rhi
         Blit(deviceContext, parameters);
     }
 
-    void BlitRenderPass::Blit(Dg::IDeviceContext* deviceContext, const BlitDrawParameters& parameters)
+    void BlitRenderPass::Blit(Dg::IDeviceContext*       deviceContext,
+                              const BlitDrawParameters& parameters)
     {
         auto& [pso, srb] = GetPipelineState(parameters);
 
@@ -23,4 +24,4 @@ namespace Ame::Rhi
 
         deviceContext->Draw(Dg::DrawAttribs{ 4, Dg::DRAW_FLAGS::DRAW_FLAG_VERIFY_ALL });
     }
-} // namespace Ame::Rhi
+}

@@ -8,7 +8,8 @@
 
 namespace Ame::Gfx
 {
-    using StdLightDrawPropCategories = std::array<LightingDrawProp, std::to_underlying(DrawInstanceType::Count)>;
+    using StdLightDrawPropCategories =
+        std::array<LightingDrawProp, std::to_underlying(DrawInstanceType::Count)>;
     struct StdRenderObjectDesc
     {
         Ecs::World*                            World;
@@ -35,21 +36,25 @@ namespace Ame::Gfx
 
                 //
 
-                Dg::DrawIndexedAttribs drawAttribs{ renderableDesc.Indices.Count,
-                                                    renderableDesc.Indices.Type,
-                                                    Dg::DRAW_FLAG_VERIFY_ALL |
-                                                        Dg::DRAW_FLAG_DYNAMIC_RESOURCE_BUFFERS_INTACT,
-                                                    1,
-                                                    renderableDesc.Indices.Offset,
-                                                    renderableDesc.Vertices.Offset,
-                                                    row.InstanceOffset };
+                Dg::DrawIndexedAttribs drawAttribs{
+                    renderableDesc.Indices.Count,
+                    renderableDesc.Indices.Type,
+                    Dg::DRAW_FLAG_VERIFY_ALL | Dg::DRAW_FLAG_DYNAMIC_RESOURCE_BUFFERS_INTACT,
+                    1,
+                    renderableDesc.Indices.Offset,
+                    renderableDesc.Vertices.Offset,
+                    row.InstanceOffset
+                };
 
-                Dg::IBuffer* vertexBuffers[]{ renderableVertices.Position.Buffer, renderableVertices.Normal.Buffer,
-                                              renderableVertices.TexCoord.Buffer, renderableVertices.Tangent.Buffer };
+                Dg::IBuffer* vertexBuffers[]{ renderableVertices.Position.Buffer,
+                                              renderableVertices.Normal.Buffer,
+                                              renderableVertices.TexCoord.Buffer,
+                                              renderableVertices.Tangent.Buffer };
 
                 //
 
-                auto pso = desc.Technique->GetPipelineState(renderableDesc.Vertices.Desc, renderableDesc.Material);
+                auto pso = desc.Technique->GetPipelineState(renderableDesc.Vertices.Desc,
+                                                            renderableDesc.Material);
                 if (cachePso != pso)
                 {
                     cachePso = pso;
@@ -62,25 +67,35 @@ namespace Ame::Gfx
                     cacheMaterialSrb = matSrb;
                     for (auto srb : desc.Srbs)
                     {
-                        desc.DeviceContext->CommitShaderResources(srb, Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+                        desc.DeviceContext->CommitShaderResources(
+                            srb,
+                            Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
                     }
                     if (desc.LightSrb)
                     {
                         LightingResourceSignaturePass_GraphicsPass::Bind(
-                            desc.LightSrb, desc.LightDrawProps[std::to_underlying(group.GetType())]);
+                            desc.LightSrb,
+                            desc.LightDrawProps[std::to_underlying(group.GetType())]);
                         desc.DeviceContext->CommitShaderResources(
-                            desc.LightSrb, Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+                            desc.LightSrb,
+                            Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
                     }
-                    desc.DeviceContext->CommitShaderResources(matSrb, Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+                    desc.DeviceContext->CommitShaderResources(
+                        matSrb,
+                        Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
                 }
 
-                desc.DeviceContext->SetVertexBuffers(0, Rhi::Count32(vertexBuffers), vertexBuffers, nullptr,
+                desc.DeviceContext->SetVertexBuffers(0,
+                                                     Rhi::Count32(vertexBuffers),
+                                                     vertexBuffers,
+                                                     nullptr,
                                                      Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION,
                                                      Dg::SET_VERTEX_BUFFERS_FLAG_RESET);
-                desc.DeviceContext->SetIndexBuffer(
-                    renderableDesc.Indices.Buffer, 0, Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+                desc.DeviceContext->SetIndexBuffer(renderableDesc.Indices.Buffer,
+                                                   0,
+                                                   Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
                 desc.DeviceContext->DrawIndexed(drawAttribs);
             }
         }
     }
-} // namespace Ame::Gfx
+}

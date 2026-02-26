@@ -24,7 +24,8 @@ namespace Ame::Asset
         /// </summary>
         template<typename Ty, typename ArchiveTy>
             requires std::is_base_of_v<IAsset, Ty>
-        [[nodiscard]] Ptr<Ty> ReadOne(ArchiveTy& archive) const
+        [[nodiscard]]
+        Ptr<Ty> ReadOne(ArchiveTy& archive) const
         {
             UId uid;
             archive >> uid;
@@ -44,7 +45,8 @@ namespace Ame::Asset
         /// </summary>
         template<typename Ty = IAsset, typename ArchiveTy>
             requires std::is_base_of_v<IAsset, Ty>
-        [[nodiscard]] auto ReadMany(ArchiveTy& archive) const
+        [[nodiscard]]
+        auto ReadMany(ArchiveTy& archive) const
         {
             std::vector<UId> guids;
             archive >> guids;
@@ -112,7 +114,8 @@ namespace Ame::Asset
         /// <summary>
         /// Read the dependencies of an asset.
         /// </summary>
-        template<typename ArchiveTy, typename Ty> void WriteMany(ArchiveTy& archive, const Ty& assets)
+        template<typename ArchiveTy, typename Ty>
+        void WriteMany(ArchiveTy& archive, const Ty& assets)
         {
             std::vector<UId> handles;
             for (auto& asset : assets)
@@ -180,43 +183,46 @@ namespace Ame::Asset
         /// <summary>
         /// Load the asset from an input stream.
         /// </summary>
-        [[nodiscard]] virtual Co::result<Ptr<IAsset>> Load(AssetHandlerLoadDesc& desc) = 0;
+        [[nodiscard]]
+        virtual Co::result<Ptr<IAsset>> Load(AssetHandlerLoadDesc& desc) = 0;
 
         /// <summary>
         /// Save the asset to an output stream.
         /// </summary>
-        [[nodiscard]] virtual Co::result<void> Save(AssetHandlerSaveDesc& desc) = 0;
+        [[nodiscard]]
+        virtual Co::result<void> Save(AssetHandlerSaveDesc& desc) = 0;
     };
 
     //
 
-#define AME_STANDARD_ASSET_HANDLER_BODY                                                                                \
-    bool CanHandle(IAsset* asset) override;                                                                            \
-                                                                                                                       \
-    Co::result<Ptr<IAsset>> Load(AssetHandlerLoadDesc& loadDesc) override;                                             \
-                                                                                                                       \
+#define AME_STANDARD_ASSET_HANDLER_BODY                                                            \
+    bool CanHandle(IAsset* asset) override;                                                        \
+                                                                                                   \
+    Co::result<Ptr<IAsset>> Load(AssetHandlerLoadDesc& loadDesc) override;                         \
+                                                                                                   \
     Co::result<void> Save(AssetHandlerSaveDesc& saveDesc) override
 
-#define AME_STANDARD_ASSET_HANDLER(Name, ID)                                                                           \
-    class Name : public IAssetHandler                                                                                  \
-    {                                                                                                                  \
-    public:                                                                                                            \
-        static inline const UId& UID = ID;                                                                             \
-                                                                                                                       \
-        IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(UID, IID_BaseAssetHandler, IAssetHandler);                                 \
-                                                                                                                       \
-    private:                                                                                                           \
-        IMPLEMENT_INTERFACE_CTOR(Name) : IAssetHandler(counters)                                                       \
-        {                                                                                                              \
-        }                                                                                                              \
-                                                                                                                       \
-    public:                                                                                                            \
-        AME_STANDARD_ASSET_HANDLER_BODY;                                                                               \
+#define AME_STANDARD_ASSET_HANDLER(Name, ID)                                                       \
+    class Name : public IAssetHandler                                                              \
+    {                                                                                              \
+    public:                                                                                        \
+        static inline const UId& UID = ID;                                                         \
+                                                                                                   \
+        IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(UID, IID_BaseAssetHandler, IAssetHandler);             \
+                                                                                                   \
+    private:                                                                                       \
+        IMPLEMENT_INTERFACE_CTOR(Name) : IAssetHandler(counters)                                   \
+        {                                                                                          \
+        }                                                                                          \
+                                                                                                   \
+    public:                                                                                        \
+        AME_STANDARD_ASSET_HANDLER_BODY;                                                           \
     };
 
     //
 
-    template<typename Ty, UId ID> class DefaultAssetHandler : public IAssetHandler
+    template<typename Ty, UId ID>
+    class DefaultAssetHandler : public IAssetHandler
     {
     public:
         static inline UId UID = ID;
@@ -258,4 +264,4 @@ namespace Ame::Asset
             saveDesc.Asset->Serialize(archiver);
         }
     };
-} // namespace Ame::Asset
+}

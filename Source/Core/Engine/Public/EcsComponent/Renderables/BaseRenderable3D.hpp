@@ -14,4 +14,4 @@ namespace Ame::Ecs
     /// Automatically set when a renderable is added to an entity.
     /// </summary>
     AME_ECS_WRAP_COMPONENT_REF(IBaseRenderable3D);
-} // namespace Ame::Ecs
+}

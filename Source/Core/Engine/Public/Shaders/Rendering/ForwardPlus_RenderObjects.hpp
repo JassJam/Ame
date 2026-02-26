@@ -24,7 +24,8 @@ namespace Ame::Rhi
     private:
         static constexpr const char c_SourceCode[] = {
 #include "ForwardPlus_RenderObjects_VS.static.hlsli.h"
-            , 0x00
+            ,
+            0x00
         };
 
     public:
@@ -47,8 +48,10 @@ namespace Ame::Rhi
             m_LinkedShaders = Dg::CreateMemoryShaderSourceFactory(
                 {
                     { transformStruct.GetMemoryShaderSourceFileInfo(transformStruct.Name) },
-                    { renderInstanceStruct.GetMemoryShaderSourceFileInfo(renderInstanceStruct.Name) },
-                    { cameraFrameDataStruct.GetMemoryShaderSourceFileInfo(cameraFrameDataStruct.Name) },
+                    { renderInstanceStruct.GetMemoryShaderSourceFileInfo(
+                        renderInstanceStruct.Name) },
+                    { cameraFrameDataStruct.GetMemoryShaderSourceFileInfo(
+                        cameraFrameDataStruct.Name) },
                     { vertexInputStruct.GetMemoryShaderSourceFileInfo(vertexInputStruct.Name) },
                     { vertexOutputStruct.GetMemoryShaderSourceFileInfo(vertexOutputStruct.Name) },
                 },
@@ -65,7 +68,8 @@ namespace Ame::Rhi
     private:
         static constexpr const char c_SourceCode[] = {
 #include "ForwardPlus_RenderObjects_PS.static.hlsli.h"
-            , 0x00
+            ,
+            0x00
         };
 
     public:
@@ -93,14 +97,18 @@ namespace Ame::Rhi
                 {
                     { transformStruct.GetMemoryShaderSourceFileInfo(transformStruct.Name) },
                     { lightStruct.GetMemoryShaderSourceFileInfo(lightStruct.Name) },
-                    { cameraFrameDataStruct.GetMemoryShaderSourceFileInfo(cameraFrameDataStruct.Name) },
+                    { cameraFrameDataStruct.GetMemoryShaderSourceFileInfo(
+                        cameraFrameDataStruct.Name) },
 
                     { pixelInputStruct.GetMemoryShaderSourceFileInfo(pixelInputStruct.Name) },
-                    { materialOutputStruct.GetMemoryShaderSourceFileInfo(materialOutputStruct.Name) },
+                    { materialOutputStruct.GetMemoryShaderSourceFileInfo(
+                        materialOutputStruct.Name) },
                     { pixelOutputStruct.GetMemoryShaderSourceFileInfo(pixelOutputStruct.Name) },
 
-                    { lightingResultStruct.GetMemoryShaderSourceFileInfo(lightingResultStruct.Name) },
-                    { lightingOperationsStruct.GetMemoryShaderSourceFileInfo(lightingOperationsStruct.Name) },
+                    { lightingResultStruct.GetMemoryShaderSourceFileInfo(
+                        lightingResultStruct.Name) },
+                    { lightingOperationsStruct.GetMemoryShaderSourceFileInfo(
+                        lightingOperationsStruct.Name) },
                 },
                 true);
             m_CreateInfo.pShaderSourceStreamFactory = m_LinkedShaders;
@@ -109,4 +117,4 @@ namespace Ame::Rhi
     private:
         Ptr<Dg::IShaderSourceInputStreamFactory> m_LinkedShaders;
     };
-} // namespace Ame::Rhi
+}

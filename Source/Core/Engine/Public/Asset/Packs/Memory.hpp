@@ -7,15 +7,19 @@ namespace Ame::Asset
     class MemoryAssetPackage : public IAssetPackage
     {
     public:
-        IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(IID_MemoryAssetPackage, IID_BaseAssetPackage, IAssetPackage);
+        IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(IID_MemoryAssetPackage,
+                                            IID_BaseAssetPackage,
+                                            IAssetPackage);
 
     private:
-        IMPLEMENT_INTERFACE_CTOR(MemoryAssetPackage, Storage& assetStorage) : IAssetPackage(counters, assetStorage)
+        IMPLEMENT_INTERFACE_CTOR(MemoryAssetPackage, Storage& assetStorage)
+            : IAssetPackage(counters, assetStorage)
         {
         }
 
     public:
-        [[nodiscard]] Co::generator<UId> GetAssets() override;
+        [[nodiscard]]
+        Co::generator<UId> GetAssets() override;
 
         bool ContainsAsset(const UId& uid) const override;
 
@@ -36,4 +40,4 @@ namespace Ame::Asset
 
         bool UnloadAsset(const UId& uid, bool force) override;
     };
-} // namespace Ame::Asset
+}

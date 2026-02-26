@@ -20,4 +20,4 @@ namespace Ame::Rhi
         uint32_t BaseVertex;
         uint32_t FirstInstanceLocation;
     };
-} // namespace Ame::Rhi
+}

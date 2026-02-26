@@ -6,17 +6,17 @@
 
 namespace Ame::Rg
 {
-    Graph::Graph(IReferenceCounters* counter, Rhi::IRhiDevice* rhiDevice) :
-        IObjectWithCallback(counter), m_Context(rhiDevice)
+    Graph::Graph(IReferenceCounters* counter, Rhi::IRhiDevice* rhiDevice)
+        : IObjectWithCallback(counter), m_Context(rhiDevice)
     {
         auto window = rhiDevice->GetWindow();
         if (window)
         {
             auto& eventListener   = window->GetEventListener();
-            m_OnWindowSizeChanged = { eventListener.OnWindowSizeChanged.Connect([this, window](const Math::Size2I&)
-                                                                                { MarkDirty(); }) };
+            m_OnWindowSizeChanged = { eventListener.OnWindowSizeChanged.Connect(
+                [this, window](const Math::Size2I&) { MarkDirty(); }) };
         }
-    } // namespace Ame::Rg
+    }
 
     void Graph::Execute()
     {
@@ -62,4 +62,4 @@ namespace Ame::Rg
     {
         return m_Context.GetStorage();
     }
-} // namespace Ame::Rg
+}

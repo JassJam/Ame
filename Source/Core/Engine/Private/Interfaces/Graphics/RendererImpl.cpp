@@ -5,14 +5,16 @@
 
 namespace Ame::Interfaces
 {
-    RendererImpl::RendererImpl(IReferenceCounters* counters, Rhi::IRhiDevice* rhiDevice, Ecs::World* world,
-                               Rhi::IImGuiRenderer* imguiRenderer) :
-        IRenderer(counters), m_RhiDevice(rhiDevice), m_CommonRenderPass(rhiDevice->GetCommonRenderPass()),
-        m_World(world),
+    RendererImpl::RendererImpl(IReferenceCounters*  counters,
+                               Rhi::IRhiDevice*     rhiDevice,
+                               Ecs::World*          world,
+                               Rhi::IImGuiRenderer* imguiRenderer)
+        : IRenderer(counters), m_RhiDevice(rhiDevice),
+          m_CommonRenderPass(rhiDevice->GetCommonRenderPass()), m_World(world),
 #ifndef AME_NO_IMGUI
-        m_ImGuiRenderer(imguiRenderer),
+          m_ImGuiRenderer(imguiRenderer),
 #endif
-        m_EntityCompositor(rhiDevice, world)
+          m_EntityCompositor(rhiDevice, world)
     {
         CreateCameraQuery();
     }
@@ -55,14 +57,20 @@ namespace Ame::Interfaces
         Dg::ITextureView* renderTarget = swapchain->GetCurrentBackBufferRTV();
         Dg::ITextureView* depthStencil = swapchain->GetDepthBufferDSV();
 
-        immediateContext->SetRenderTargets(
-            1, &renderTarget, depthStencil, Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
-        immediateContext->ClearRenderTarget(
-            renderTarget, m_ClearColor.data(), Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+        immediateContext->SetRenderTargets(1,
+                                           &renderTarget,
+                                           depthStencil,
+                                           Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+        immediateContext->ClearRenderTarget(renderTarget,
+                                            m_ClearColor.data(),
+                                            Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
         if (depthStencil)
         {
-            immediateContext->ClearDepthStencil(depthStencil, Dg::CLEAR_DEPTH_FLAG | Dg::CLEAR_STENCIL_FLAG, 1.0f, 0,
+            immediateContext->ClearDepthStencil(depthStencil,
+                                                Dg::CLEAR_DEPTH_FLAG | Dg::CLEAR_STENCIL_FLAG,
+                                                1.0f,
+                                                0,
                                                 Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
         }
     }
-} // namespace Ame::Interfaces
+}

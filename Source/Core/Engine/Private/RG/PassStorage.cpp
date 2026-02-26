@@ -13,7 +13,8 @@ namespace Ame::Rg
 
     Pass* PassStorage::AddPass(const String& name, UniquePtr<Pass> pass)
     {
-        AME_LOG_ASSERT(!m_NamedPasses.contains(name), std::format("Pass with name '{}' already exists", name));
+        AME_LOG_ASSERT(!m_NamedPasses.contains(name),
+                       std::format("Pass with name '{}' already exists", name));
 
         auto iter = m_NamedPasses.emplace(name, std::move(pass)).first;
         m_Passes.emplace_back(iter);
@@ -111,8 +112,8 @@ namespace Ame::Rg
             for (size_t j = i + 1; j < m_Passes.size(); j++)
             {
                 auto& otherResolver = resolvers[j];
-                for (auto& resource :
-                     boost::range::join(otherResolver.m_ResourcesRead, otherResolver.m_ResourcesWritten))
+                for (auto& resource : boost::range::join(otherResolver.m_ResourcesRead,
+                                                         otherResolver.m_ResourcesWritten))
                 {
                     if (resolver.m_ResourcesWritten.contains(resource))
                     {
@@ -128,7 +129,8 @@ namespace Ame::Rg
 
     //
 
-    auto PassStorage::TopologicalSort(const AdjacencyListType& adjacencyList) -> TopologicalSortListType
+    auto PassStorage::TopologicalSort(const AdjacencyListType& adjacencyList)
+        -> TopologicalSortListType
     {
         std::stack<size_t> dfsStack{};
         std::vector<bool>  visitedList(m_Passes.size(), false);
@@ -155,8 +157,10 @@ namespace Ame::Rg
 
     //
 
-    void PassStorage::DepthFirstSearch(const AdjacencyListType& adjacencyList, size_t index,
-                                       std::vector<bool>& visitedList, std::stack<size_t>& dfsStack)
+    void PassStorage::DepthFirstSearch(const AdjacencyListType& adjacencyList,
+                                       size_t                   index,
+                                       std::vector<bool>&       visitedList,
+                                       std::stack<size_t>&      dfsStack)
     {
         visitedList[index] = true;
         for (size_t adjIndex : adjacencyList[index])
@@ -172,7 +176,8 @@ namespace Ame::Rg
     //
 
     auto PassStorage::BuildDependencyLevels(const TopologicalSortListType& topologicallySortedList,
-                                            const AdjacencyListType&       adjacencyList) -> DependencyLevelListType
+                                            const AdjacencyListType&       adjacencyList)
+        -> DependencyLevelListType
     {
         std::vector<size_t> distances(topologicallySortedList.size());
         for (size_t d = 0; d < distances.size(); d++)
@@ -198,4 +203,4 @@ namespace Ame::Rg
 
         return Dependencies;
     }
-} // namespace Ame::Rg
+}

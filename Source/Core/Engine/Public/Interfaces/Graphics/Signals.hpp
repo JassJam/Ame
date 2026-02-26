@@ -12,4 +12,4 @@ namespace Ame::Signals
 
     AME_SIGNAL_DECL(OnImGuiRender, void());
     AME_SIGNAL_DECL(OnImGuiPostRender, void());
-} // namespace Ame::Signals
+}

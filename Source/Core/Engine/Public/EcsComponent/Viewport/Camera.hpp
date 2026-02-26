@@ -20,4 +20,4 @@ namespace Ame::Ecs
 
         Ptr<Rg::Graph> RenderGraph;
     };
-} // namespace Ame::Ecs
+}

@@ -4,26 +4,32 @@
 
 namespace Ame::Scripting
 {
-    static constexpr const char* ClassName = "AmeSharp.RuntimeHost.Runtime.MethodBridge, AmeSharp.RuntimeHost";
+    static constexpr const char* ClassName =
+        "AmeSharp.RuntimeHost.Runtime.MethodBridge, AmeSharp.RuntimeHost";
 
     void CLRRuntime::RegisterCommonFunctions_MethodBridge()
     {
         RegisterCommonFunction(Functions::MethodBridge_Free, GetFunctionPtr(ClassName, "Free"));
-        RegisterCommonFunction(Functions::MethodBridge_IsStatic, GetFunctionPtr(ClassName, "IsStatic"));
-        RegisterCommonFunction(Functions::MethodBridge_GetName, GetFunctionPtr(ClassName, "GetName"));
-        RegisterCommonFunction(Functions::MethodBridge_GetParamTypes, GetFunctionPtr(ClassName, "GetParamTypes"));
-        RegisterCommonFunction(Functions::MethodBridge_GetReturnType, GetFunctionPtr(ClassName, "GetReturnType"));
+        RegisterCommonFunction(Functions::MethodBridge_IsStatic,
+                               GetFunctionPtr(ClassName, "IsStatic"));
+        RegisterCommonFunction(Functions::MethodBridge_GetName,
+                               GetFunctionPtr(ClassName, "GetName"));
+        RegisterCommonFunction(Functions::MethodBridge_GetParamTypes,
+                               GetFunctionPtr(ClassName, "GetParamTypes"));
+        RegisterCommonFunction(Functions::MethodBridge_GetReturnType,
+                               GetFunctionPtr(ClassName, "GetReturnType"));
         RegisterCommonFunction(Functions::MethodBridge_Invoke, GetFunctionPtr(ClassName, "Invoke"));
     }
 
-    CSMethod::CSMethod(IReferenceCounters* counters, CSType* type, void* method) :
-        IMethod(counters), m_Type(type), m_Method(method)
+    CSMethod::CSMethod(IReferenceCounters* counters, CSType* type, void* method)
+        : IMethod(counters), m_Type(type), m_Method(method)
     {
     }
 
     CSMethod::~CSMethod()
     {
-        auto methodFree = GetRuntime().GetCommonFunction<FreeFn>(CLRRuntime::Functions::MethodBridge_Free);
+        auto methodFree =
+            GetRuntime().GetCommonFunction<FreeFn>(CLRRuntime::Functions::MethodBridge_Free);
         methodFree(m_Method);
     }
 
@@ -36,20 +42,22 @@ namespace Ame::Scripting
 
     bool CSMethod::IsStatic() const
     {
-        auto methodIsStatic = GetRuntime().GetCommonFunction<IsStaticFn>(CLRRuntime::Functions::MethodBridge_IsStatic);
+        auto methodIsStatic = GetRuntime().GetCommonFunction<IsStaticFn>(
+            CLRRuntime::Functions::MethodBridge_IsStatic);
         return methodIsStatic(m_Method);
     }
 
     NativeString CSMethod::GetName() const
     {
-        auto methodGetName = GetRuntime().GetCommonFunction<GetNameFn>(CLRRuntime::Functions::MethodBridge_GetName);
+        auto methodGetName =
+            GetRuntime().GetCommonFunction<GetNameFn>(CLRRuntime::Functions::MethodBridge_GetName);
         return methodGetName(m_Method);
     }
 
     Co::generator<Ptr<IType>> CSMethod::GetParamTypes() const
     {
-        auto methodGetParamTypes =
-            GetRuntime().GetCommonFunction<GetParamTypesFn>(CLRRuntime::Functions::MethodBridge_GetParamTypes);
+        auto methodGetParamTypes = GetRuntime().GetCommonFunction<GetParamTypesFn>(
+            CLRRuntime::Functions::MethodBridge_GetParamTypes);
         for (auto type : methodGetParamTypes(m_Method))
         {
             co_yield AmeCreate(CSType, m_Type->GetCSLibrary(), type);
@@ -58,15 +66,18 @@ namespace Ame::Scripting
 
     Ptr<IType> CSMethod::GetReturnType() const
     {
-        auto methodGetReturnType =
-            GetRuntime().GetCommonFunction<GetReturnTypeFn>(CLRRuntime::Functions::MethodBridge_GetReturnType);
+        auto methodGetReturnType = GetRuntime().GetCommonFunction<GetReturnTypeFn>(
+            CLRRuntime::Functions::MethodBridge_GetReturnType);
         auto type = methodGetReturnType(m_Method);
         return type ? AmeCreate(CSType, m_Type->GetCSLibrary(), type) : Ptr<IType>{};
     }
 
-    void CSMethod::InvokeMethod(IInstance* instance, std::span<void* const> arguments, void* returnPtr)
+    void CSMethod::InvokeMethod(IInstance*             instance,
+                                std::span<void* const> arguments,
+                                void*                  returnPtr)
     {
-        auto methodInvoke   = GetRuntime().GetCommonFunction<InvokeFn>(CLRRuntime::Functions::MethodBridge_Invoke);
+        auto methodInvoke =
+            GetRuntime().GetCommonFunction<InvokeFn>(CLRRuntime::Functions::MethodBridge_Invoke);
         auto instanceHandle = instance ? static_cast<CSInstance*>(instance)->GetHandle() : nullptr;
         methodInvoke(m_Method, instanceHandle, arguments.data(), arguments.size(), returnPtr);
     }
@@ -77,4 +88,4 @@ namespace Ame::Scripting
     {
         return m_Type->GetRuntime();
     }
-} // namespace Ame::Scripting
+}

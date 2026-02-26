@@ -22,18 +22,24 @@ namespace Ame::Editor
         void OnLog(const LogData& logData);
 
     public:
-        [[nodiscard]] auto GetLevelMaskString() const noexcept -> const char*;
-        [[nodiscard]] auto GetLevelMask() const noexcept -> uint64_t;
-        [[nodiscard]] auto IsLevelEnabled(Log::LogLevel level) const noexcept -> bool;
-        [[nodiscard]] auto GetLevelColor(Log::LogLevel level) const noexcept -> Math::Color4;
+        [[nodiscard]]
+        auto GetLevelMaskString() const noexcept -> const char*;
+        [[nodiscard]]
+        auto GetLevelMask() const noexcept -> uint64_t;
+        [[nodiscard]]
+        auto IsLevelEnabled(Log::LogLevel level) const noexcept -> bool;
+        [[nodiscard]]
+        auto GetLevelColor(Log::LogLevel level) const noexcept -> Math::Color4;
 
         void SetLevelMask(uint64_t levelMask) noexcept;
         void Clear();
 
     public:
-        void               UpdateActiveLogs();
-        [[nodiscard]] auto GetLogCount() const noexcept -> uint16_t;
-        [[nodiscard]] auto GetLog(uint16_t index) const noexcept -> const LogEntry&;
+        void UpdateActiveLogs();
+        [[nodiscard]]
+        auto GetLogCount() const noexcept -> uint16_t;
+        [[nodiscard]]
+        auto GetLog(uint16_t index) const noexcept -> const LogEntry&;
 
     private:
         void UpdateLevelMaskString();
@@ -46,4 +52,4 @@ namespace Ame::Editor
         std::vector<uint16_t>            m_ActiveLogs;
         bool                             m_ActiveLogsDirty = true;
     };
-} // namespace Ame::Editor
+}

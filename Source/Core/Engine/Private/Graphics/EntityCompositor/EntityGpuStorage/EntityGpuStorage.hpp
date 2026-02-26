@@ -15,12 +15,14 @@ namespace Ame::Gfx
         { T::observer_create(std::declval<Ecs::WorldRef>()) };
     };
 
-    template<EntityGpuStorageTraits Traits> class EntityGpuStorage
+    template<EntityGpuStorageTraits Traits>
+    class EntityGpuStorage
     {
     public:
-        using traits_type            = Traits;
-        using buddy_allocator_type   = Allocator::Buddy<Allocator::BuddyTraits_U32>;
-        using instance_observer_type = Ecs::UniqueQuery<const typename traits_type::id_container_type>;
+        using traits_type          = Traits;
+        using buddy_allocator_type = Allocator::Buddy<Allocator::BuddyTraits_U32>;
+        using instance_observer_type =
+            Ecs::UniqueQuery<const typename traits_type::id_container_type>;
 
         static constexpr uint32_t c_InvalidId = std::numeric_limits<uint32_t>::max();
         static constexpr uint32_t c_ChunkSize = 1024;
@@ -68,7 +70,8 @@ namespace Ame::Gfx
                         }
                     }
                 });
-            m_InstanceQuery = world.CreateQuery<const typename traits_type::id_container_type>().cached().build();
+            m_InstanceQuery =
+                world.CreateQuery<const typename traits_type::id_container_type>().cached().build();
         }
 
     private:
@@ -139,10 +142,12 @@ namespace Ame::Gfx
                         uint32_t bufferOffset = 0;
                         for (auto& [start, count] : result.Ranges)
                         {
-                            renderContext->UpdateBuffer(m_Buffer, start * sizeof(typename traits_type::instance_type),
-                                                        count * sizeof(typename traits_type::instance_type),
-                                                        result.Instances.data() + bufferOffset,
-                                                        Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+                            renderContext->UpdateBuffer(
+                                m_Buffer,
+                                start * sizeof(typename traits_type::instance_type),
+                                count * sizeof(typename traits_type::instance_type),
+                                result.Instances.data() + bufferOffset,
+                                Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
                             bufferOffset += count;
                         }
                     }
@@ -150,42 +155,46 @@ namespace Ame::Gfx
         }
 
     public:
-        [[nodiscard]] size_t GetMaxCount() const noexcept
+        [[nodiscard]]
+        size_t GetMaxCount() const noexcept
         {
             return std::max(m_Allocator.GetMaxSize(), 1u);
         }
 
-        [[nodiscard]] Ptr<Dg::IBuffer> GetBuffer() const noexcept
+        [[nodiscard]]
+        Ptr<Dg::IBuffer> GetBuffer() const noexcept
         {
             return m_Buffer;
         }
 
     private:
         /// <summary>
-        /// Give a list of ids, those ids may or may not be sorted, and their values may or may not be contigious.
-        /// We will transform them into a list of contigious sorted ids.
-        /// [5, 1, 2, 6, 9, 0, 3]
-        /// 1: [0, 3] (0, 1, 2, 3)
-        /// 2: [5, 2] (5, 6)
-        /// 3: [9, 1] (9)
+        /// Give a list of ids, those ids may or may not be sorted, and their values may or may not
+        /// be contigious. We will transform them into a list of contigious sorted ids. [5, 1, 2, 6,
+        /// 9, 0, 3] 1: [0, 3] (0, 1, 2, 3) 2: [5, 2] (5, 6) 3: [9, 1] (9)
         /// </summary>
-        [[nodiscard]] SortedIdRangeResult GroupAndSortIds(Ecs::Iterator& iter, std::span<UnsortedEntityId> ids)
+        [[nodiscard]]
+        SortedIdRangeResult GroupAndSortIds(Ecs::Iterator& iter, std::span<UnsortedEntityId> ids)
         {
             SortedIdRangeResult result;
 
-            std::sort(ids.begin(), ids.end(), [](const auto& a, const auto& b) { return a.InstanceId < b.InstanceId; });
+            std::sort(ids.begin(),
+                      ids.end(),
+                      [](const auto& a, const auto& b) { return a.InstanceId < b.InstanceId; });
             result.Instances.resize(ids.size());
 
             auto     start  = ids[0].InstanceId;
             auto     prevId = start;
             uint32_t count  = 1;
 
-            traits_type::update(flecs::entity{ iter.world(), ids[0].EntityId }, result.Instances[0]);
+            traits_type::update(flecs::entity{ iter.world(), ids[0].EntityId },
+                                result.Instances[0]);
             for (size_t i = 1; i < ids.size(); i++)
             {
                 auto currentId = ids[i].InstanceId;
 
-                traits_type::update(flecs::entity{ iter.world(), ids[i].EntityId }, result.Instances[i]);
+                traits_type::update(flecs::entity{ iter.world(), ids[i].EntityId },
+                                    result.Instances[i]);
                 if (currentId - prevId > 1)
                 {
                     result.Ranges.emplace_back(start, count);
@@ -210,7 +219,8 @@ namespace Ame::Gfx
         /// Add or Update entity state.
         /// Function is not thread safe.
         /// </summary>
-        [[nodiscard]] uint32_t AllocateId()
+        [[nodiscard]]
+        uint32_t AllocateId()
         {
             auto allocation = m_Allocator.Allocate(1);
             if (!allocation)
@@ -225,7 +235,8 @@ namespace Ame::Gfx
         /// Try to grow the buffer to the new size.
         /// Returns true if the buffer was grown, this is used to avoid whole buffer update.
         /// </summary>
-        [[nodiscard]] bool TryGrowBuffer(Dg::IRenderDevice* renderDevice, size_t newSize)
+        [[nodiscard]]
+        bool TryGrowBuffer(Dg::IRenderDevice* renderDevice, size_t newSize)
         {
             const Dg::BufferDesc* oldBufferDesc = nullptr;
             if (m_Buffer)
@@ -262,4 +273,4 @@ namespace Ame::Gfx
         Ecs::UniqueObserver    m_Observer;
         instance_observer_type m_InstanceQuery;
     };
-} // namespace Ame::Gfx
+}

@@ -13,7 +13,8 @@
 
 namespace Ame::Interfaces
 {
-    static void TryOutputToTexture(Rhi::BlitRenderPass* blitPass, const Rg::Graph& renderGraph,
+    static void TryOutputToTexture(Rhi::BlitRenderPass*              blitPass,
+                                   const Rg::Graph&                  renderGraph,
                                    const Ecs::CameraOutputComponent& cameraOutput)
     {
         auto& resourceStorage = renderGraph.GetResourceStorage();
@@ -26,14 +27,18 @@ namespace Ame::Interfaces
         // output to texture if needed
         if (sourceTexture && outputTexture)
         {
-            Rhi::BlitCopyParameters parameters{ sourceTexture, Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION,
-                                                outputTexture, Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION };
+            Rhi::BlitCopyParameters parameters{ sourceTexture,
+                                                Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION,
+                                                outputTexture,
+                                                Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION };
             blitPass->Blit(parameters);
         }
     }
 
-    static void TryOutputToBackbuffer(Dg::ISwapChain* swapChain, Rhi::BlitRenderPass* blitPass,
-                                      const Rg::Graph& renderGraph, const Ecs::CameraOutputComponent& cameraOutput)
+    static void TryOutputToBackbuffer(Dg::ISwapChain*                   swapChain,
+                                      Rhi::BlitRenderPass*              blitPass,
+                                      const Rg::Graph&                  renderGraph,
+                                      const Ecs::CameraOutputComponent& cameraOutput)
     {
         auto& resourceStorage = renderGraph.GetResourceStorage();
 
@@ -49,7 +54,8 @@ namespace Ame::Interfaces
         auto srv = sourceTexture->GetDefaultView(Dg::TEXTURE_VIEW_SHADER_RESOURCE);
         if (srv)
         {
-            Rhi::BlitDrawParameters parameters{ sourceTexture->GetDefaultView(Dg::TEXTURE_VIEW_SHADER_RESOURCE),
+            Rhi::BlitDrawParameters parameters{ sourceTexture->GetDefaultView(
+                                                    Dg::TEXTURE_VIEW_SHADER_RESOURCE),
                                                 Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION,
                                                 swapChain->GetCurrentBackBufferRTV(),
                                                 Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION };
@@ -61,14 +67,15 @@ namespace Ame::Interfaces
 
     void RendererImpl::CreateCameraQuery()
     {
-        m_CameraQuery =
-            m_World
-                ->CreateQuery<const Ecs::GlobalTransformComponent, const Ecs::CameraComponent,
-                              const Ecs::CameraOutputComponent>()
-                .order_by<const Ecs::CameraComponent>([](Ecs::EntityId, auto a, Ecs::EntityId, auto b) -> int
-                                                      { return a->Priority - b->Priority; })
-                .with<Ecs::ActiveSceneEntityTag>()
-                .build();
+        m_CameraQuery = m_World
+                            ->CreateQuery<const Ecs::GlobalTransformComponent,
+                                          const Ecs::CameraComponent,
+                                          const Ecs::CameraOutputComponent>()
+                            .order_by<const Ecs::CameraComponent>(
+                                [](Ecs::EntityId, auto a, Ecs::EntityId, auto b) -> int
+                                { return a->Priority - b->Priority; })
+                            .with<Ecs::ActiveSceneEntityTag>()
+                            .build();
     }
 
     void RendererImpl::RunRenderGraph()
@@ -88,7 +95,9 @@ namespace Ame::Interfaces
                 {
                     if (cameras[i].RenderGraph)
                     {
-                        m_EntityCompositor.RenderGraph(*cameras[i].RenderGraph, cameras[i], transforms[i]);
+                        m_EntityCompositor.RenderGraph(*cameras[i].RenderGraph,
+                                                       cameras[i],
+                                                       transforms[i]);
                         TryOutputToTexture(m_CommonRenderPass, *cameras[i].RenderGraph, outputs[i]);
 
                         lastGraph  = cameras[i].RenderGraph;
@@ -112,7 +121,10 @@ namespace Ame::Interfaces
 #endif
             if (lastOutput)
         {
-            TryOutputToBackbuffer(m_RhiDevice->GetSwapchain(), m_CommonRenderPass, *lastGraph, *lastOutput);
+            TryOutputToBackbuffer(m_RhiDevice->GetSwapchain(),
+                                  m_CommonRenderPass,
+                                  *lastGraph,
+                                  *lastOutput);
         }
     }
-} // namespace Ame::Interfaces
+}

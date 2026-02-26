@@ -15,9 +15,10 @@
 
 namespace Ame::Asset
 {
-    DirectoryAssetPackage::DirectoryAssetPackage(IReferenceCounters* counters, Storage& assetStorage,
-                                                 std::filesystem::path path) :
-        IAssetPackage(counters, assetStorage), m_RootPath(std::move(path))
+    DirectoryAssetPackage::DirectoryAssetPackage(IReferenceCounters*   counters,
+                                                 Storage&              assetStorage,
+                                                 std::filesystem::path path)
+        : IAssetPackage(counters, assetStorage), m_RootPath(std::move(path))
     {
         auto rootPathStr = m_RootPath.generic_string();
         if (rootPathStr.empty() || rootPathStr.starts_with(".."))
@@ -35,7 +36,8 @@ namespace Ame::Asset
 
         if (!std::filesystem::is_directory(m_RootPath))
         {
-            AME_LOG_ERROR(std::format("Trying to create a directory asset package from a file '{}'", rootPathStr));
+            AME_LOG_ERROR(std::format("Trying to create a directory asset package from a file '{}'",
+                                      rootPathStr));
             return;
         }
 
@@ -63,20 +65,23 @@ namespace Ame::Asset
                 if ((m_RootPath / metaData.GetMetaPath()) != metafilePath)
                 {
                     AME_LOG_ERROR(
-                        std::format("Meta file '{}' has a different path than the one in meta file", metafilePath));
+                        std::format("Meta file '{}' has a different path than the one in meta file",
+                                    metafilePath));
                     continue;
                 }
 
                 auto uid = metaData.GetUId();
                 if (UIdUtils::IsNull(uid))
                 {
-                    AME_LOG_ERROR(std::format("Asset", "Meta file '{}' does not have a UId", metafilePath));
+                    AME_LOG_ERROR(
+                        std::format("Asset", "Meta file '{}' does not have a UId", metafilePath));
                     continue;
                 }
 
                 if (m_AssetMeta.contains(uid))
                 {
-                    AME_LOG_ERROR(std::format("Meta file '{}' has a UId that is already in use", metafilePath));
+                    AME_LOG_ERROR(std::format("Meta file '{}' has a UId that is already in use",
+                                              metafilePath));
                     continue;
                 }
 
@@ -85,7 +90,8 @@ namespace Ame::Asset
 
                 if (!file.is_open())
                 {
-                    AME_LOG_ERROR(std::format("Failed to open asset file '{}'", assetPath.string()));
+                    AME_LOG_ERROR(
+                        std::format("Failed to open asset file '{}'", assetPath.string()));
                     continue;
                 }
 
@@ -106,12 +112,14 @@ namespace Ame::Asset
                 {
 #ifndef AME_ASSET_MGR_DISABLE_HASH_VALIDATION
                     AME_LOG_ERROR(std::format(
-                        "Asset file '{}' has a different hash than the one in meta file", assetPath.string()));
+                        "Asset file '{}' has a different hash than the one in meta file",
+                        assetPath.string()));
                     continue;
 #else
                     // Try to correct the hash
                     AME_LOG_WARNING(std::format(
-                        "Asset file '{}' has a different hash than the one in meta file", assetPath.string()));
+                        "Asset file '{}' has a different hash than the one in meta file",
+                        assetPath.string()));
                     metaData.SetHash(currentHash);
                     metaData.SetDirty();
 
@@ -346,7 +354,8 @@ namespace Ame::Asset
                 throw AssetNotFoundException(uid, currentGuid);
             }
 
-            AssetHandlerLoadDesc loadDesc{ .BackgroundExecutor = m_Runtime.get().background_executor(),
+            AssetHandlerLoadDesc loadDesc{ .BackgroundExecutor =
+                                               m_Runtime.get().background_executor(),
                                            .ForegroundExecutor = m_Runtime.get().inline_executor(),
 
                                            .Stream       = assetFile,
@@ -398,10 +407,12 @@ namespace Ame::Asset
                 auto   iter = m_AssetMeta.find(uid);
                 if (iter == m_AssetMeta.end())
                 {
-                    iter = m_AssetMeta.emplace(uid, AssetMetaDataDef(uid, curAsset->GetPath())).first;
+                    iter =
+                        m_AssetMeta.emplace(uid, AssetMetaDataDef(uid, curAsset->GetPath())).first;
                     m_AssetPath.emplace(curAsset->GetPath(), uid);
-                    iter->second.SetMetaPath(
-                        std::format("{}{}", curAsset->GetPath(), AssetMetaDataDef::c_MetaFileExtension));
+                    iter->second.SetMetaPath(std::format("{}{}",
+                                                         curAsset->GetPath(),
+                                                         AssetMetaDataDef::c_MetaFileExtension));
                 }
                 metaData = &iter->second;
             }
@@ -413,14 +424,17 @@ namespace Ame::Asset
             auto [handlerId, handler] = m_Storage.get().GetHandler(curAsset);
             if (!handler)
             {
-                AME_LOG_ERROR(std::format("Failed to get handler for asset '{}'", UIdUtils::ToString(uid)));
+                AME_LOG_ERROR(
+                    std::format("Failed to get handler for asset '{}'", UIdUtils::ToString(uid)));
                 continue;
             }
 
             auto assetPath = m_RootPath / metaData->GetAssetPath();
             std::filesystem::create_directories(assetPath.parent_path());
 
-            std::fstream assetFile(assetPath, std::ios::in | std::ios::out | std::ios::trunc | std::ios::binary);
+            std::fstream assetFile(assetPath,
+                                   std::ios::in | std::ios::out | std::ios::trunc |
+                                       std::ios::binary);
             if (!assetFile.is_open())
             {
                 AME_LOG_ERROR(std::format("Failed to open asset file '{}'", assetPath.string()));
@@ -429,7 +443,8 @@ namespace Ame::Asset
 
             DependencyWriter dependencyWriter;
 
-            AssetHandlerSaveDesc saveDesc{ .BackgroundExecutor = m_Runtime.get().background_executor(),
+            AssetHandlerSaveDesc saveDesc{ .BackgroundExecutor =
+                                               m_Runtime.get().background_executor(),
                                            .ForegroundExecutor = m_Runtime.get().inline_executor(),
 
                                            .Stream       = assetFile,
@@ -474,4 +489,4 @@ namespace Ame::Asset
             metaData->SetDirty();
         }
     }
-} // namespace Ame::Asset
+}

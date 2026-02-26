@@ -11,11 +11,12 @@ namespace Ame::Editor
         IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_GameViewEditorWindow, IEditorWindow);
 
     private:
-        IMPLEMENT_INTERFACE_CTOR(GameViewEditorWindow) : IEditorWindow(counters, GameViewEditorWindowPath)
+        IMPLEMENT_INTERFACE_CTOR(GameViewEditorWindow)
+            : IEditorWindow(counters, GameViewEditorWindowPath)
         {
         }
 
     public:
         void OnDrawVisible() override;
     };
-} // namespace Ame::Editor
+}

@@ -24,4 +24,4 @@ namespace Ame::Ecs
     private:
         Signals::ScopedConnection m_WindowSizeChangedConnection;
     };
-} // namespace Ame::Ecs
+}

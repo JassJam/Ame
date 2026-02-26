@@ -3,7 +3,8 @@
 #include <Core/Signal.Export.h>
 
 typedef struct Ame_FrameEvent_t Ame_FrameEvent_t;
-typedef bool(AME_CDECL* Ame_FrameEvent_SignalSlot_t)(const Ame_SignalConnection_t* /*connection*/, void* /*userData*/);
+typedef bool(AME_CDECL* Ame_FrameEvent_SignalSlot_t)(const Ame_SignalConnection_t* /*connection*/,
+                                                     void* /*userData*/);
 
 // clang-format off
 extern "C"

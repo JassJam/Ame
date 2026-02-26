@@ -21,12 +21,14 @@ namespace Ame::Rg
         /// <summary>
         /// Get the render graph storage
         /// </summary>
-        [[nodiscard]] const ResourceStorage& GetStorage() const;
+        [[nodiscard]]
+        const ResourceStorage& GetStorage() const;
 
         /// <summary>
         /// Get the render graph storage
         /// </summary>
-        [[nodiscard]] ResourceStorage& GetStorage();
+        [[nodiscard]]
+        ResourceStorage& GetStorage();
 
     private:
         /// <summary>
@@ -43,4 +45,4 @@ namespace Ame::Rg
         ResourceStorage              m_Resources;
         std::vector<DependencyLevel> m_Levels;
     };
-} // namespace Ame::Rg
+}

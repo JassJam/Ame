@@ -15,14 +15,16 @@ static_assert(offsetof(Ame_WindowCreateDesc_t, Maximized) == offsetof(Ame::Windo
 static_assert(offsetof(Ame_WindowCreateDesc_t, NoResize) == offsetof(Ame::Window::WindowCreateDesc, NoResize), "WindowCreateDesc NoResize offset mismatch");
 // clang-format on
 
-Ame_IWindow_t* Ame_IWindow_Create(Ame_WindowType_t windowType, const Ame_WindowCreateDesc_t* createDesc)
+Ame_IWindow_t* Ame_IWindow_Create(Ame_WindowType_t              windowType,
+                                  const Ame_WindowCreateDesc_t* createDesc)
 {
     switch (windowType)
     {
     case AME_WINDOW_TYPE_DESKTOP:
     {
-        return std::bit_cast<Ame_IWindow_t*>(AmeCreateRaw(
-            Ame::Window::DesktopWindowImplGlfw, *std::bit_cast<const Ame::Window::WindowCreateDesc*>(createDesc)));
+        return std::bit_cast<Ame_IWindow_t*>(
+            AmeCreateRaw(Ame::Window::DesktopWindowImplGlfw,
+                         *std::bit_cast<const Ame::Window::WindowCreateDesc*>(createDesc)));
     }
     default:
     {

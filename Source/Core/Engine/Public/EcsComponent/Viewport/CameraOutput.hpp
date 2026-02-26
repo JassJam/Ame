@@ -9,4 +9,4 @@ namespace Ame::Ecs
         String            SourceView = "_Image";
         Ptr<Dg::ITexture> OutputTexture;
     };
-} // namespace Ame::Ecs
+}

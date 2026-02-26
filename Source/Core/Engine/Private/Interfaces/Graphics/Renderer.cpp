@@ -4,6 +4,9 @@ namespace Ame::Interfaces
 {
     Ptr<IRenderer> CreateRenderer(const RendererCreateDesc& createDesc)
     {
-        return AmeCreate(RendererImpl, createDesc.RhiDevice, createDesc.World, createDesc.ImguiRenderer);
+        return AmeCreate(RendererImpl,
+                         createDesc.RhiDevice,
+                         createDesc.World,
+                         createDesc.ImguiRenderer);
     }
-} // namespace Ame::Interfaces
+}

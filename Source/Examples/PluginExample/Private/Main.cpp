@@ -5,8 +5,8 @@
 class PluginExampleApplication : public Ame::BaseApplication
 {
 public:
-    explicit PluginExampleApplication(const Ame::ApplicationConfig& applicationConfig) :
-        BaseApplication(applicationConfig)
+    explicit PluginExampleApplication(const Ame::ApplicationConfig& applicationConfig)
+        : BaseApplication(applicationConfig)
     {
     }
 

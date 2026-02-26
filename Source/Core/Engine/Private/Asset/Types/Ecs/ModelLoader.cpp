@@ -19,4 +19,4 @@ namespace Ame::Ecs
         AssImpModelImporter importer(desc.ModelPath);
         co_return CreateModel(co_await importer.CreateModelDescAsync(desc.RhiDevice));
     }
-} // namespace Ame::Ecs
+}

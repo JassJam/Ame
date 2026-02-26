@@ -16,4 +16,4 @@ namespace Ame::Rhi
     {
         return AmeCreate(ImGuiNullRendererImpl);
     }
-} // namespace Ame::Rhi
+}

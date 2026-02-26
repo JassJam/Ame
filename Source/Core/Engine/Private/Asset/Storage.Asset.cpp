@@ -26,8 +26,10 @@ namespace Ame::Asset
 #ifdef AME_DEBUG
         else
         {
-            bool packageFound = std::ranges::find_if(m_Packages, [package](const auto& curPackage)
-                                                     { return curPackage == package; }) != m_Packages.end();
+            bool packageFound =
+                std::ranges::find_if(m_Packages,
+                                     [package](const auto& curPackage)
+                                     { return curPackage == package; }) != m_Packages.end();
             AME_LOG_ASSERT(packageFound, "Package not mounted");
         }
 #endif
@@ -77,7 +79,8 @@ namespace Ame::Asset
         return result;
     }
 
-    auto Storage::FindAssets(const std::regex& pathRegex, const PackageFlags& flags) -> Co::generator<PackageAndAsset>
+    auto Storage::FindAssets(const std::regex& pathRegex, const PackageFlags& flags)
+        -> Co::generator<PackageAndAsset>
     {
         for (auto& package : GetPackages(flags))
         {
@@ -87,4 +90,4 @@ namespace Ame::Asset
             }
         }
     }
-} // namespace Ame::Asset
+}

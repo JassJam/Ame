@@ -11,8 +11,9 @@ namespace Ame::Interfaces
     }
 
     CSharpScriptEngine::CSharpScriptEngine(IReferenceCounters*                    counters,
-                                           const Scripting::CSScriptEngineConfig& config) :
-        IScriptEngine(counters), m_Runtime(config), m_Gc(AmeCreate(Scripting::CSGarbageCollector, m_Runtime))
+                                           const Scripting::CSScriptEngineConfig& config)
+        : IScriptEngine(counters), m_Runtime(config),
+          m_Gc(AmeCreate(Scripting::CSGarbageCollector, m_Runtime))
     {
     }
 
@@ -23,7 +24,8 @@ namespace Ame::Interfaces
         return m_Gc;
     }
 
-    Scripting::ILibraryContext* CSharpScriptEngine::CreateLibraryContext(const Scripting::NativeString& contextName)
+    Scripting::ILibraryContext* CSharpScriptEngine::CreateLibraryContext(
+        const Scripting::NativeString& contextName)
     {
         return GetOrCreateLibraryContext(contextName);
     }
@@ -33,8 +35,9 @@ namespace Ame::Interfaces
         m_LibraryContexts.erase(name.hash());
     }
 
-    Scripting::ILibrary* CSharpScriptEngine::CreateLibrary(const Scripting::NativeString& contextName,
-                                                           const Scripting::NativeString& path)
+    Scripting::ILibrary* CSharpScriptEngine::CreateLibrary(
+        const Scripting::NativeString& contextName,
+        const Scripting::NativeString& path)
     {
         auto context = GetOrCreateLibraryContext(contextName);
         return context->LoadLibrary(path);
@@ -42,13 +45,16 @@ namespace Ame::Interfaces
 
     //
 
-    Scripting::CSLibraryContext* CSharpScriptEngine::GetOrCreateLibraryContext(const Scripting::NativeString& name)
+    Scripting::CSLibraryContext* CSharpScriptEngine::GetOrCreateLibraryContext(
+        const Scripting::NativeString& name)
     {
         auto it = m_LibraryContexts.find(name.hash());
         if (it == m_LibraryContexts.end())
         {
-            it = m_LibraryContexts.emplace(name.hash(), AmeCreate(Scripting::CSLibraryContext, m_Runtime, name)).first;
+            it = m_LibraryContexts
+                     .emplace(name.hash(), AmeCreate(Scripting::CSLibraryContext, m_Runtime, name))
+                     .first;
         }
         return it->second;
     }
-} // namespace Ame::Interfaces
+}

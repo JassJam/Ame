@@ -41,7 +41,8 @@ namespace Ame::Rhi
     {
     }
 
-    auto BlitRenderPass::GetPipelineState(const BlitDrawParameters& parameters) -> const PsoCacheData&
+    auto BlitRenderPass::GetPipelineState(const BlitDrawParameters& parameters)
+        -> const PsoCacheData&
     {
         Dg::TEXTURE_FORMAT format = parameters.TargetView->GetDesc().Format;
 
@@ -63,9 +64,12 @@ namespace Ame::Rhi
             shaderDesc.EntryPoint      = "VS_Main";
             auto vertexShader          = GetShader(shaderDesc);
 
-            Dg::ShaderResourceVariableDesc textures[]{ { Dg::SHADER_TYPE_PIXEL, "_Texture",
-                                                         Dg::SHADER_RESOURCE_VARIABLE_TYPE_DYNAMIC } };
-            Dg::ImmutableSamplerDesc       samplers[]{ { Dg::SHADER_TYPE_PIXEL, "_Sampler", Dg::Sam_LinearClamp } };
+            Dg::ShaderResourceVariableDesc textures[]{
+                { Dg::SHADER_TYPE_PIXEL, "_Texture", Dg::SHADER_RESOURCE_VARIABLE_TYPE_DYNAMIC }
+            };
+            Dg::ImmutableSamplerDesc samplers[]{
+                { Dg::SHADER_TYPE_PIXEL, "_Sampler", Dg::Sam_LinearClamp }
+            };
 
             Dg::GraphicsPipelineStateCreateInfo desc;
 
@@ -80,11 +84,11 @@ namespace Ame::Rhi
             desc.PSODesc.ResourceLayout.ImmutableSamplers    = samplers;
             desc.PSODesc.ResourceLayout.NumImmutableSamplers = std::size(samplers);
 
-            desc.GraphicsPipeline.NumRenderTargets           = 1;
-            desc.GraphicsPipeline.PrimitiveTopology          = Dg::PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP;
-            desc.GraphicsPipeline.RasterizerDesc             = Dg::RS_SolidFillNoCull;
-            desc.GraphicsPipeline.DepthStencilDesc           = Dg::DSS_DisableDepth;
-            desc.GraphicsPipeline.RTVFormats[0]              = format;
+            desc.GraphicsPipeline.NumRenderTargets  = 1;
+            desc.GraphicsPipeline.PrimitiveTopology = Dg::PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP;
+            desc.GraphicsPipeline.RasterizerDesc    = Dg::RS_SolidFillNoCull;
+            desc.GraphicsPipeline.DepthStencilDesc  = Dg::DSS_DisableDepth;
+            desc.GraphicsPipeline.RTVFormats[0]     = format;
             desc.GraphicsPipeline.BlendDesc.RenderTargets[0] = parameters.BlendTarget;
 
             desc.pPS = pixelShader;
@@ -119,4 +123,4 @@ namespace Ame::Rhi
         Dg::HashCombine(hash, other.SwapRBChannels);
         return hash;
     }
-} // namespace Ame::Rhi
+}

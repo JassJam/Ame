@@ -8,9 +8,9 @@
 #include <Core/String.hpp>
 
 #ifdef _WCHAR_T_DEFINED
-#define NETHOST_STR(x) L##x
+    #define NETHOST_STR(x) L##x
 #else
-#define NETHOST_STR(x) x
+    #define NETHOST_STR(x) x
 #endif
 #define NETHOST_UNMANAGED_CALLER_DELEGATE reinterpret_cast<const char_t*>(-1)
 
@@ -72,4 +72,4 @@ namespace Ame::Scripting
         HostApiUnsupportedScenario = 0x800080a6,
         HostFeatureDisabled        = 0x800080a7,
     };
-} // namespace Ame::Scripting
+}

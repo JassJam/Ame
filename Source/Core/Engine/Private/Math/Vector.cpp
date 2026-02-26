@@ -6,134 +6,134 @@ namespace Ame::Math
 
     //
 
-#define AME_IMPL_MATHVEC_DEFINITIONS(Class, Dim, Type, XMType, XMVecReplicateFunc, XMVecGetXFunc)                      \
-    bool Class::IsNan() const noexcept                                                                                 \
-    {                                                                                                                  \
-        auto res = XMVectorSelect(g_XMOne, g_XMZero, XMVectorIsNaN(*this));                                            \
-        return XMVecGetXFunc(res) == 1;                                                                                \
-    }                                                                                                                  \
-                                                                                                                       \
-    void Class::Negate() noexcept                                                                                      \
-    {                                                                                                                  \
-        *this = XMVectorNegate(*this);                                                                                 \
-    }                                                                                                                  \
-                                                                                                                       \
-    Class::value_type Class::Dot(const Class& other) const noexcept                                                    \
-    {                                                                                                                  \
-        auto res = XMVector##Dim##Dot(*this, other);                                                                   \
-        return XMVecGetXFunc(res);                                                                                     \
-    }                                                                                                                  \
-                                                                                                                       \
-    Class::value_type Class::LengthSqr() const noexcept                                                                \
-    {                                                                                                                  \
-        auto res = XMVector##Dim##LengthSq(*this);                                                                     \
-        return XMVecGetXFunc(res);                                                                                     \
-    }                                                                                                                  \
-                                                                                                                       \
-    Class::value_type Class::Length() const noexcept                                                                   \
-    {                                                                                                                  \
-        auto res = XMVector##Dim##Length(*this);                                                                       \
-        return XMVecGetXFunc(res);                                                                                     \
-    }                                                                                                                  \
-                                                                                                                       \
-    bool Class::IsGreaterThan(const Class& other) const noexcept                                                       \
-    {                                                                                                                  \
-        return XMVector##Dim##Greater(*this, other);                                                                   \
-    }                                                                                                                  \
-                                                                                                                       \
-    bool Class::IsLessThan(const Class& other) const noexcept                                                          \
-    {                                                                                                                  \
-        return XMVector##Dim##Less(*this, other);                                                                      \
-    }                                                                                                                  \
-                                                                                                                       \
-    void Class::Normalize() noexcept                                                                                   \
-    {                                                                                                                  \
-        *this = XMVector##Dim##Normalize(*this);                                                                       \
-    }                                                                                                                  \
-                                                                                                                       \
-    bool Class::NearEqual(const Class& other, value_type tolerance) const noexcept                                     \
-    {                                                                                                                  \
-        return XMVector##Dim##NearEqual(*this, other, XMVecReplicateFunc(tolerance));                                  \
-    }                                                                                                                  \
-                                                                                                                       \
-    bool Class::Within(const Class& min, const Class& max) const noexcept                                              \
-    {                                                                                                                  \
-        XMVECTOR vec = *this;                                                                                          \
-        return XMVector##Dim##GreaterOrEqual(vec, min) && XMVector##Dim##LessOrEqual(vec, max);                        \
-    }                                                                                                                  \
-                                                                                                                       \
-    void Class::MultAdd(const Class& a, const Class& b) noexcept                                                       \
-    {                                                                                                                  \
-        *this = XMVectorMultiplyAdd(*this, a, b);                                                                      \
-    }                                                                                                                  \
-                                                                                                                       \
-    Class& Class::operator=(value_type val) noexcept                                                                   \
-    {                                                                                                                  \
-        *this = XMVecReplicateFunc(val);                                                                               \
-        return *this;                                                                                                  \
-    }                                                                                                                  \
-                                                                                                                       \
-    Class Class::operator-() const noexcept                                                                            \
-    {                                                                                                                  \
-        return XMVectorNegate(*this);                                                                                  \
-    }                                                                                                                  \
-                                                                                                                       \
-    Class Class::min(const Class& other) const noexcept                                                                \
-    {                                                                                                                  \
-        return XMVectorMin(*this, other);                                                                              \
-    }                                                                                                                  \
-                                                                                                                       \
-    Class Class::max(const Class& other) const noexcept                                                                \
-    {                                                                                                                  \
-        return XMVectorMax(*this, other);                                                                              \
-    }                                                                                                                  \
-                                                                                                                       \
-    Class& Class::operator+=(const Class& other) noexcept                                                              \
-    {                                                                                                                  \
-        *this = XMVectorAdd(*this, other);                                                                             \
-        return *this;                                                                                                  \
-    }                                                                                                                  \
-                                                                                                                       \
-    Class& Class::operator+=(value_type val) noexcept                                                                  \
-    {                                                                                                                  \
-        *this = XMVectorAdd(*this, XMVecReplicateFunc(val));                                                           \
-        return *this;                                                                                                  \
-    }                                                                                                                  \
-                                                                                                                       \
-    Class& Class::operator-=(const Class& other) noexcept                                                              \
-    {                                                                                                                  \
-        *this = XMVectorSubtract(*this, other);                                                                        \
-        return *this;                                                                                                  \
-    }                                                                                                                  \
-                                                                                                                       \
-    Class& Class::operator-=(value_type val) noexcept                                                                  \
-    {                                                                                                                  \
-        *this = XMVectorSubtract(*this, XMVecReplicateFunc(val));                                                      \
-        return *this;                                                                                                  \
-    }                                                                                                                  \
-                                                                                                                       \
-    Class& Class::operator*=(const Class& other) noexcept                                                              \
-    {                                                                                                                  \
-        *this = XMVectorMultiply(*this, other);                                                                        \
-        return *this;                                                                                                  \
-    }                                                                                                                  \
-                                                                                                                       \
-    Class& Class::operator*=(value_type val) noexcept                                                                  \
-    {                                                                                                                  \
-        *this = XMVectorMultiply(*this, XMVecReplicateFunc(val));                                                      \
-        return *this;                                                                                                  \
-    }                                                                                                                  \
-                                                                                                                       \
-    Class& Class::operator/=(const Class& other) noexcept                                                              \
-    {                                                                                                                  \
-        *this = XMVectorDivide(*this, other);                                                                          \
-        return *this;                                                                                                  \
-    }                                                                                                                  \
-                                                                                                                       \
-    Class& Class::operator/=(value_type val) noexcept                                                                  \
-    {                                                                                                                  \
-        *this = XMVectorDivide(*this, XMVecReplicateFunc(val));                                                        \
-        return *this;                                                                                                  \
+#define AME_IMPL_MATHVEC_DEFINITIONS(Class, Dim, Type, XMType, XMVecReplicateFunc, XMVecGetXFunc)  \
+    bool Class::IsNan() const noexcept                                                             \
+    {                                                                                              \
+        auto res = XMVectorSelect(g_XMOne, g_XMZero, XMVectorIsNaN(*this));                        \
+        return XMVecGetXFunc(res) == 1;                                                            \
+    }                                                                                              \
+                                                                                                   \
+    void Class::Negate() noexcept                                                                  \
+    {                                                                                              \
+        *this = XMVectorNegate(*this);                                                             \
+    }                                                                                              \
+                                                                                                   \
+    Class::value_type Class::Dot(const Class& other) const noexcept                                \
+    {                                                                                              \
+        auto res = XMVector##Dim##Dot(*this, other);                                               \
+        return XMVecGetXFunc(res);                                                                 \
+    }                                                                                              \
+                                                                                                   \
+    Class::value_type Class::LengthSqr() const noexcept                                            \
+    {                                                                                              \
+        auto res = XMVector##Dim##LengthSq(*this);                                                 \
+        return XMVecGetXFunc(res);                                                                 \
+    }                                                                                              \
+                                                                                                   \
+    Class::value_type Class::Length() const noexcept                                               \
+    {                                                                                              \
+        auto res = XMVector##Dim##Length(*this);                                                   \
+        return XMVecGetXFunc(res);                                                                 \
+    }                                                                                              \
+                                                                                                   \
+    bool Class::IsGreaterThan(const Class& other) const noexcept                                   \
+    {                                                                                              \
+        return XMVector##Dim##Greater(*this, other);                                               \
+    }                                                                                              \
+                                                                                                   \
+    bool Class::IsLessThan(const Class& other) const noexcept                                      \
+    {                                                                                              \
+        return XMVector##Dim##Less(*this, other);                                                  \
+    }                                                                                              \
+                                                                                                   \
+    void Class::Normalize() noexcept                                                               \
+    {                                                                                              \
+        *this = XMVector##Dim##Normalize(*this);                                                   \
+    }                                                                                              \
+                                                                                                   \
+    bool Class::NearEqual(const Class& other, value_type tolerance) const noexcept                 \
+    {                                                                                              \
+        return XMVector##Dim##NearEqual(*this, other, XMVecReplicateFunc(tolerance));              \
+    }                                                                                              \
+                                                                                                   \
+    bool Class::Within(const Class& min, const Class& max) const noexcept                          \
+    {                                                                                              \
+        XMVECTOR vec = *this;                                                                      \
+        return XMVector##Dim##GreaterOrEqual(vec, min) && XMVector##Dim##LessOrEqual(vec, max);    \
+    }                                                                                              \
+                                                                                                   \
+    void Class::MultAdd(const Class& a, const Class& b) noexcept                                   \
+    {                                                                                              \
+        *this = XMVectorMultiplyAdd(*this, a, b);                                                  \
+    }                                                                                              \
+                                                                                                   \
+    Class& Class::operator=(value_type val) noexcept                                               \
+    {                                                                                              \
+        *this = XMVecReplicateFunc(val);                                                           \
+        return *this;                                                                              \
+    }                                                                                              \
+                                                                                                   \
+    Class Class::operator-() const noexcept                                                        \
+    {                                                                                              \
+        return XMVectorNegate(*this);                                                              \
+    }                                                                                              \
+                                                                                                   \
+    Class Class::min(const Class& other) const noexcept                                            \
+    {                                                                                              \
+        return XMVectorMin(*this, other);                                                          \
+    }                                                                                              \
+                                                                                                   \
+    Class Class::max(const Class& other) const noexcept                                            \
+    {                                                                                              \
+        return XMVectorMax(*this, other);                                                          \
+    }                                                                                              \
+                                                                                                   \
+    Class& Class::operator+=(const Class& other) noexcept                                          \
+    {                                                                                              \
+        *this = XMVectorAdd(*this, other);                                                         \
+        return *this;                                                                              \
+    }                                                                                              \
+                                                                                                   \
+    Class& Class::operator+=(value_type val) noexcept                                              \
+    {                                                                                              \
+        *this = XMVectorAdd(*this, XMVecReplicateFunc(val));                                       \
+        return *this;                                                                              \
+    }                                                                                              \
+                                                                                                   \
+    Class& Class::operator-=(const Class& other) noexcept                                          \
+    {                                                                                              \
+        *this = XMVectorSubtract(*this, other);                                                    \
+        return *this;                                                                              \
+    }                                                                                              \
+                                                                                                   \
+    Class& Class::operator-=(value_type val) noexcept                                              \
+    {                                                                                              \
+        *this = XMVectorSubtract(*this, XMVecReplicateFunc(val));                                  \
+        return *this;                                                                              \
+    }                                                                                              \
+                                                                                                   \
+    Class& Class::operator*=(const Class& other) noexcept                                          \
+    {                                                                                              \
+        *this = XMVectorMultiply(*this, other);                                                    \
+        return *this;                                                                              \
+    }                                                                                              \
+                                                                                                   \
+    Class& Class::operator*=(value_type val) noexcept                                              \
+    {                                                                                              \
+        *this = XMVectorMultiply(*this, XMVecReplicateFunc(val));                                  \
+        return *this;                                                                              \
+    }                                                                                              \
+                                                                                                   \
+    Class& Class::operator/=(const Class& other) noexcept                                          \
+    {                                                                                              \
+        *this = XMVectorDivide(*this, other);                                                      \
+        return *this;                                                                              \
+    }                                                                                              \
+                                                                                                   \
+    Class& Class::operator/=(value_type val) noexcept                                              \
+    {                                                                                              \
+        *this = XMVectorDivide(*this, XMVecReplicateFunc(val));                                    \
+        return *this;                                                                              \
     }
 
     //
@@ -458,4 +458,4 @@ namespace Ame::Math
         *this = XMVectorDivide(*this, XMVectorReplicate(val));
         return *this;
     }
-} // namespace Ame::Math
+}

@@ -16,4 +16,4 @@ namespace Ame::Geometry
     struct Frustum;
     struct OBB;
     struct Sphere;
-} // namespace Ame::Geometry
+}

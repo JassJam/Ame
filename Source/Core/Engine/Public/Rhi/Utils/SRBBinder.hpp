@@ -12,9 +12,12 @@ namespace Ame::Rhi
     /// Bind all set flags in a shader resource binding
     /// this is used for ALL_GRAPHICS flags etc.
     /// </summary>
-    inline void BindAllStaticInSignature(Dg::IPipelineResourceSignature* signature, Dg::SHADER_TYPE typeFlags,
-                                         const char* name, Dg::IDeviceObject* object,
-                                         Dg::SET_SHADER_RESOURCE_FLAGS setFlags = Dg::SET_SHADER_RESOURCE_FLAG_NONE)
+    inline void BindAllStaticInSignature(
+        Dg::IPipelineResourceSignature* signature,
+        Dg::SHADER_TYPE                 typeFlags,
+        const char*                     name,
+        Dg::IDeviceObject*              object,
+        Dg::SET_SHADER_RESOURCE_FLAGS   setFlags = Dg::SET_SHADER_RESOURCE_FLAG_NONE)
     {
         while (typeFlags)
         {
@@ -31,9 +34,12 @@ namespace Ame::Rhi
     /// Bind all set flags in a shader resource binding
     /// this is used for ALL_GRAPHICS flags etc.
     /// </summary>
-    inline void BindAllStaticInSrb(Dg::IShaderResourceBinding* srb, Dg::SHADER_TYPE typeFlags, const char* name,
-                                   Dg::IDeviceObject*            object,
-                                   Dg::SET_SHADER_RESOURCE_FLAGS setFlags = Dg::SET_SHADER_RESOURCE_FLAG_NONE)
+    inline void BindAllStaticInSrb(
+        Dg::IShaderResourceBinding*   srb,
+        Dg::SHADER_TYPE               typeFlags,
+        const char*                   name,
+        Dg::IDeviceObject*            object,
+        Dg::SET_SHADER_RESOURCE_FLAGS setFlags = Dg::SET_SHADER_RESOURCE_FLAG_NONE)
     {
         auto signature = srb->GetPipelineResourceSignature();
         BindAllStaticInSignature(signature, typeFlags, name, object, setFlags);
@@ -43,9 +49,12 @@ namespace Ame::Rhi
     /// Bind all set flags in a shader resource binding
     /// this is used for ALL_GRAPHICS flags etc.
     /// </summary>
-    inline void BindAllInSrb(Dg::IShaderResourceBinding* srb, Dg::SHADER_TYPE typeFlags, const char* name,
-                             Dg::IDeviceObject*            object,
-                             Dg::SET_SHADER_RESOURCE_FLAGS setFlags = Dg::SET_SHADER_RESOURCE_FLAG_NONE)
+    inline void BindAllInSrb(
+        Dg::IShaderResourceBinding*   srb,
+        Dg::SHADER_TYPE               typeFlags,
+        const char*                   name,
+        Dg::IDeviceObject*            object,
+        Dg::SET_SHADER_RESOURCE_FLAGS setFlags = Dg::SET_SHADER_RESOURCE_FLAG_NONE)
     {
         while (typeFlags)
         {
@@ -61,11 +70,12 @@ namespace Ame::Rhi
     /// <summary>
     /// Copy all resources from one SRB to another
     /// </summary>
-    inline void CopyAllResourcesSrb(Dg::IShaderResourceBinding* src, Dg::IShaderResourceBinding* dst)
+    inline void CopyAllResourcesSrb(Dg::IShaderResourceBinding* src,
+                                    Dg::IShaderResourceBinding* dst)
     {
         auto signature = src->GetPipelineResourceSignature();
-        AME_LOG_ASSERT(
-            signature->IsCompatibleWith(dst->GetPipelineResourceSignature()), "Incompatible resource signatures");
+        AME_LOG_ASSERT(signature->IsCompatibleWith(dst->GetPipelineResourceSignature()),
+                       "Incompatible resource signatures");
         auto& signatureDesc = signature->GetDesc();
 
         std::vector<Dg::IDeviceObject*> objects;
@@ -92,4 +102,4 @@ namespace Ame::Rhi
             }
         }
     }
-} // namespace Ame::Rhi
+}

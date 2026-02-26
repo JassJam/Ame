@@ -15,22 +15,23 @@ namespace Ame::Scripting
 
         NativeString() = default;
         template<size_t N>
-        NativeString(const char_type (&str)[N]) : m_Data(std::make_unique<char_type[]>(N)), m_Size(N - 1)
+        NativeString(const char_type (&str)[N])
+            : m_Data(std::make_unique<char_type[]>(N)), m_Size(N - 1)
         {
             std::copy(str, str + N - 1, data());
         }
-        NativeString(const std_view_type& str) :
-            m_Data(std::make_unique<char_type[]>(str.size() + 1)), m_Size(str.size())
+        NativeString(const std_view_type& str)
+            : m_Data(std::make_unique<char_type[]>(str.size() + 1)), m_Size(str.size())
         {
             std::copy(str.begin(), str.end(), data());
         }
-        NativeString(const char_type* str, size_t count) :
-            m_Data(std::make_unique<char_type[]>(count + 1)), m_Size(count)
+        NativeString(const char_type* str, size_t count)
+            : m_Data(std::make_unique<char_type[]>(count + 1)), m_Size(count)
         {
             std::copy(str, str + count, data());
         }
-        NativeString(const NativeString& other) :
-            m_Data(std::make_unique<char_type[]>(other.size() + 1)), m_Size(other.size())
+        NativeString(const NativeString& other)
+            : m_Data(std::make_unique<char_type[]>(other.size() + 1)), m_Size(other.size())
         {
             std::copy(other.begin(), other.end(), data());
         }
@@ -54,20 +55,24 @@ namespace Ame::Scripting
         ~NativeString()                         = default;
 
     public:
-        [[nodiscard]] std_string_type str() const
+        [[nodiscard]]
+        std_string_type str() const
         {
             return std_string_type(data(), size());
         }
-        [[nodiscard]] std_view_type view() const
+        [[nodiscard]]
+        std_view_type view() const
         {
             return std_view_type(data(), size());
         }
 
-        [[nodiscard]] const char* c_str() const
+        [[nodiscard]]
+        const char* c_str() const
         {
             return data();
         }
-        [[nodiscard]] char_type* data() const noexcept
+        [[nodiscard]]
+        char_type* data() const noexcept
         {
             return m_Data.get();
         }
@@ -122,33 +127,40 @@ namespace Ame::Scripting
             m_Size = size;
         }
 
-        [[nodiscard]] NativeSpan<char_type> span() const noexcept
+        [[nodiscard]]
+        NativeSpan<char_type> span() const noexcept
         {
             return NativeSpan<char_type>(m_Data.get(), m_Size);
         }
-        [[nodiscard]] NativeSpan<char_type> span(size_t offset) const noexcept
+        [[nodiscard]]
+        NativeSpan<char_type> span(size_t offset) const noexcept
         {
             return NativeSpan<char_type>(m_Data.get() + offset, m_Size - offset);
         }
-        [[nodiscard]] NativeSpan<char_type> span(size_t offset, size_t count) const noexcept
+        [[nodiscard]]
+        NativeSpan<char_type> span(size_t offset, size_t count) const noexcept
         {
             return NativeSpan<char_type>(m_Data.get() + offset, count);
         }
 
-        [[nodiscard]] size_t size() const noexcept
+        [[nodiscard]]
+        size_t size() const noexcept
         {
             return m_Size;
         }
-        [[nodiscard]] size_t size_bytes() const noexcept
+        [[nodiscard]]
+        size_t size_bytes() const noexcept
         {
             return m_Size * sizeof(char_type);
         }
-        [[nodiscard]] bool empty() const noexcept
+        [[nodiscard]]
+        bool empty() const noexcept
         {
             return m_Size == 0;
         }
 
-        [[nodiscard]] size_t hash() const noexcept
+        [[nodiscard]]
+        size_t hash() const noexcept
         {
             size_t hash = 0;
             HashCombine(hash, begin(), end());
@@ -160,11 +172,12 @@ namespace Ame::Scripting
         size_t                       m_Size;
     };
 
-    template<StringType Ty> struct NativeConverter<Ty>
+    template<StringType Ty>
+    struct NativeConverter<Ty>
     {
         static NativeString Wrap(const Ty& value)
         {
             return NativeString(StringView(value));
         }
     };
-} // namespace Ame::Scripting
+}

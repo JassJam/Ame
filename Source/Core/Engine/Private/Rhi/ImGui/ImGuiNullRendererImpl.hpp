@@ -7,7 +7,9 @@ namespace Ame::Rhi
     class ImGuiNullRendererImpl final : public IImGuiRenderer
     {
     public:
-        IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(IID_ImGuiNullRenderer, IID_ImGuiRenderer, IImGuiRenderer);
+        IMPLEMENT_QUERY_INTERFACE2_IN_PLACE(IID_ImGuiNullRenderer,
+                                            IID_ImGuiRenderer,
+                                            IImGuiRenderer);
 
     public:
         IMPLEMENT_INTERFACE_CTOR(ImGuiNullRendererImpl) : IImGuiRenderer(counters)
@@ -43,4 +45,4 @@ namespace Ame::Rhi
             return false;
         }
     };
-} // namespace Ame::Rhi
+}

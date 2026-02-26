@@ -28,12 +28,14 @@ namespace Ame
         }
 
     public:
-        [[nodiscard]] IPlugin* GetPlugin()
+        [[nodiscard]]
+        IPlugin* GetPlugin()
         {
             return m_Plugin.get();
         }
 
-        [[nodiscard]] const PluginInfo& GetPluginInfo() const noexcept
+        [[nodiscard]]
+        const PluginInfo& GetPluginInfo() const noexcept
         {
             return m_Plugin->GetPluginInfo();
         }
@@ -43,12 +45,14 @@ namespace Ame
             m_Dependencies.insert(plugin);
         }
 
-        [[nodiscard]] bool HasDependencies() const noexcept
+        [[nodiscard]]
+        bool HasDependencies() const noexcept
         {
             return !m_Dependencies.empty();
         }
 
-        [[nodiscard]] auto& GetDependencies() const noexcept
+        [[nodiscard]]
+        auto& GetDependencies() const noexcept
         {
             return m_Dependencies;
         }
@@ -58,4 +62,4 @@ namespace Ame
         UniquePtr<IPlugin> m_Plugin = nullptr;
         std::set<IPlugin*> m_Dependencies;
     };
-} // namespace Ame
+}

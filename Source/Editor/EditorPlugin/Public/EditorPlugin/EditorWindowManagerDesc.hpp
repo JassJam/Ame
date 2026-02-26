@@ -11,4 +11,4 @@ namespace Ame::Editor
         IEditorWindow* Window         = nullptr;
         bool           DefaultVisible = true;
     };
-} // namespace Ame::Editor
+}

@@ -18,18 +18,24 @@
 
 namespace Ame::Editor
 {
-    EditorWindowManagerImpl::EditorWindowManagerImpl(IReferenceCounters* counters) : IEditorWindowManager(counters)
+    EditorWindowManagerImpl::EditorWindowManagerImpl(IReferenceCounters* counters)
+        : IEditorWindowManager(counters)
     {
         Ptr<Interfaces::IRhiDevice> rhiDevice;
         Ptr<Interfaces::IRenderer>  renderer;
 
-        s_ModuleRegistry->RequestInterface(s_ThisPlugin, Interfaces::IID_RhiDevice, rhiDevice.DblPtr<IObject>());
-        s_ModuleRegistry->RequestInterface(s_ThisPlugin, Interfaces::IID_Renderer, renderer.DblPtr<IObject>());
+        s_ModuleRegistry->RequestInterface(s_ThisPlugin,
+                                           Interfaces::IID_RhiDevice,
+                                           rhiDevice.DblPtr<IObject>());
+        s_ModuleRegistry->RequestInterface(s_ThisPlugin,
+                                           Interfaces::IID_Renderer,
+                                           renderer.DblPtr<IObject>());
 
         rhiDevice->QueryInterface(Window::IID_Window, m_Window.DblPtr<IObject>());
         m_OnWindowTitleHitTest = m_Window->GetEventListener().OnWindowTitleHitTest.Connect(
             [this](const Math::Vector2I&) { return m_IsTitlebarHovered; });
-        m_OnImGuiRender = renderer->OnImGuiRender.Connect(std::bind(&EditorWindowManagerImpl::Render, this));
+        m_OnImGuiRender =
+            renderer->OnImGuiRender.Connect(std::bind(&EditorWindowManagerImpl::Render, this));
 
         ResetDefaultWindows();
     }
@@ -125,4 +131,4 @@ namespace Ame::Editor
     {
         return m_OpenWindows.contains(window);
     }
-} // namespace Ame::Editor
+}

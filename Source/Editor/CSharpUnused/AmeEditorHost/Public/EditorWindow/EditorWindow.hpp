@@ -65,4 +65,4 @@ namespace Ame::Editor
         /// </summary>
         String m_Path;
     };
-} // namespace Ame::Editor
+} 

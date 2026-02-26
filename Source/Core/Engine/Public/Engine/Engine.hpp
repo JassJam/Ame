@@ -29,12 +29,14 @@ namespace Ame
         void RefreshSubmoduleCache();
 
     public:
-        void               Tick();
-        [[nodiscard]] bool IsRunning() const;
-        void               Exit(int exitCode = 0);
+        void Tick();
+        [[nodiscard]]
+        bool IsRunning() const;
+        void Exit(int exitCode = 0);
 
     public:
-        [[nodiscard]] IModuleRegistry* GetRegistry() const noexcept;
+        [[nodiscard]]
+        IModuleRegistry* GetRegistry() const noexcept;
 
     private:
         UniquePtr<IModuleRegistry> m_ModuleRegistery;
@@ -47,4 +49,4 @@ namespace Ame
 
         Opt<int> m_ExitCode;
     };
-} // namespace Ame
+}

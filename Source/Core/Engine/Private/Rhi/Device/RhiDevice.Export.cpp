@@ -6,10 +6,12 @@ using namespace Ame::Rhi;
 
 using StringPoolList = std::vector<std::vector<const char*>>;
 
-static DeviceCreateDesc GetCreateDesc(const Ame_RhiDeviceCreateDesc_t* desc, StringPoolList& stringPools)
+static DeviceCreateDesc GetCreateDesc(const Ame_RhiDeviceCreateDesc_t* desc,
+                                      StringPoolList&                  stringPools)
 {
-    DeviceCreateDesc createDesc{ .Features        = desc->Features,
-                                 .ValidationLayer = static_cast<DeviceValidationType>(desc->ValidationLayer) };
+    DeviceCreateDesc createDesc{ .Features = desc->Features,
+                                 .ValidationLayer =
+                                     static_cast<DeviceValidationType>(desc->ValidationLayer) };
 
     auto typeIter = desc->Types;
     while (typeIter->Type != AME_RHI_DEVICE_CREATE_NONE)
@@ -20,13 +22,15 @@ static DeviceCreateDesc GetCreateDesc(const Ame_RhiDeviceCreateDesc_t* desc, Str
         case AME_RHI_DEVICE_CREATE_D3D11:
         {
             auto d3d11Desc = std::bit_cast<Ame_RhiDeviceCreateDescD3D11_t*>(curDesc);
-            createDesc.Types.emplace_back(DeviceCreateDescD3D11{ .GraphicsAPIVersion = d3d11Desc->GraphicsAPIVersion });
+            createDesc.Types.emplace_back(
+                DeviceCreateDescD3D11{ .GraphicsAPIVersion = d3d11Desc->GraphicsAPIVersion });
             break;
         }
         case AME_RHI_DEVICE_CREATE_D3D12:
         {
             auto  d3d12Desc  = std::bit_cast<Ame_RhiDeviceCreateDescD3D12_t*>(curDesc);
-            auto& targetDesc = std::get<DeviceCreateDescD3D12>(createDesc.Types.emplace_back(DeviceCreateDescD3D12{}));
+            auto& targetDesc = std::get<DeviceCreateDescD3D12>(
+                createDesc.Types.emplace_back(DeviceCreateDescD3D12{}));
             std::memcpy(d3d12Desc, &targetDesc, sizeof(targetDesc));
             break;
         }
@@ -37,13 +41,15 @@ static DeviceCreateDesc GetCreateDesc(const Ame_RhiDeviceCreateDesc_t* desc, Str
         }
         case AME_RHI_DEVICE_CREATE_VULKAN:
         {
-            auto  vkDesc = std::bit_cast<Ame_RhiDeviceCreateDescVulkan_t*>(curDesc);
-            auto& targetDesc =
-                std::get<DeviceCreateDescVulkan>(createDesc.Types.emplace_back(DeviceCreateDescVulkan{}));
+            auto  vkDesc     = std::bit_cast<Ame_RhiDeviceCreateDescVulkan_t*>(curDesc);
+            auto& targetDesc = std::get<DeviceCreateDescVulkan>(
+                createDesc.Types.emplace_back(DeviceCreateDescVulkan{}));
 
-            std::memcpy(
-                &vkDesc->MainDescriptorPool, &targetDesc.MainDescriptorPool, sizeof(vkDesc->MainDescriptorPool));
-            std::memcpy(&vkDesc->DynamicDescriptorPool, &targetDesc.DynamicDescriptorPool,
+            std::memcpy(&vkDesc->MainDescriptorPool,
+                        &targetDesc.MainDescriptorPool,
+                        sizeof(vkDesc->MainDescriptorPool));
+            std::memcpy(&vkDesc->DynamicDescriptorPool,
+                        &targetDesc.DynamicDescriptorPool,
                         sizeof(vkDesc->DynamicDescriptorPool));
 
             auto insertToPool = [&stringPools](const char** list) -> std::span<const char*>
@@ -60,10 +66,11 @@ static DeviceCreateDesc GetCreateDesc(const Ame_RhiDeviceCreateDesc_t* desc, Str
                 return {};
             };
 
-            targetDesc.RequiredLayerExtensions    = insertToPool(vkDesc->RequiredLayerExtensions);
-            targetDesc.RequiredInstanceExtensions = insertToPool(vkDesc->RequiredInstanceExtensions);
-            targetDesc.RequiredDeviceExtensions   = insertToPool(vkDesc->RequiredDeviceExtensions);
-            targetDesc.IgnoredDebugMessageNames   = insertToPool(vkDesc->IgnoredDebugMessageNames);
+            targetDesc.RequiredLayerExtensions = insertToPool(vkDesc->RequiredLayerExtensions);
+            targetDesc.RequiredInstanceExtensions =
+                insertToPool(vkDesc->RequiredInstanceExtensions);
+            targetDesc.RequiredDeviceExtensions = insertToPool(vkDesc->RequiredDeviceExtensions);
+            targetDesc.IgnoredDebugMessageNames = insertToPool(vkDesc->IgnoredDebugMessageNames);
 
             targetDesc.RequiredDeviceFeatures       = vkDesc->RequiredDeviceFeatures;
             targetDesc.DeviceLocalMemoryPageSize    = vkDesc->DeviceLocalMemoryPageSize;
@@ -74,7 +81,9 @@ static DeviceCreateDesc GetCreateDesc(const Ame_RhiDeviceCreateDesc_t* desc, Str
             targetDesc.DynamicHeapSize              = vkDesc->DynamicHeapSize;
             targetDesc.DynamicHeapPageSize          = vkDesc->DynamicHeapPageSize;
 
-            std::memcpy(&vkDesc->QueryHeapSizes, &targetDesc.QueryHeapSizes, sizeof(vkDesc->QueryHeapSizes));
+            std::memcpy(&vkDesc->QueryHeapSizes,
+                        &targetDesc.QueryHeapSizes,
+                        sizeof(vkDesc->QueryHeapSizes));
             break;
         }
         }
@@ -83,10 +92,14 @@ static DeviceCreateDesc GetCreateDesc(const Ame_RhiDeviceCreateDesc_t* desc, Str
 
     if (desc->AdapterCallback)
     {
-        createDesc.AdapterCallback = [desc](std::span<const Dg::GraphicsAdapterInfo> adapters) -> Ame::Opt<uint32_t>
+        createDesc.AdapterCallback =
+            [desc](std::span<const Dg::GraphicsAdapterInfo> adapters) -> Ame::Opt<uint32_t>
         {
-            auto result = desc->AdapterCallback(desc, adapters.data(), static_cast<uint32_t>(adapters.size()));
-            return result != static_cast<uint32_t>(-1) ? Ame::Opt<uint32_t>{ result } : std::nullopt;
+            auto result = desc->AdapterCallback(desc,
+                                                adapters.data(),
+                                                static_cast<uint32_t>(adapters.size()));
+            return result != static_cast<uint32_t>(-1) ? Ame::Opt<uint32_t>{ result }
+                                                       : std::nullopt;
         };
     }
 
@@ -122,7 +135,8 @@ static DeviceCreateDesc GetCreateDesc(const Ame_RhiDeviceCreateDesc_t* desc, Str
 Ame_IRhiDevice_t* Ame_IRhiDevice_Create(const Ame_RhiDeviceCreateDesc_t* createDesc)
 {
     StringPoolList stringPools;
-    return std::bit_cast<Ame_IRhiDevice_t*>(AmeCreateRaw(RhiDeviceImpl, GetCreateDesc(createDesc, stringPools)));
+    return std::bit_cast<Ame_IRhiDevice_t*>(
+        AmeCreateRaw(RhiDeviceImpl, GetCreateDesc(createDesc, stringPools)));
 }
 
 bool Ame_IRhiDevice_BeginFrame(Ame_IRhiDevice_t* rhiDevice)

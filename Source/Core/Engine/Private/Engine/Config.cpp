@@ -18,4 +18,4 @@ namespace Ame
             GraphicsConfig->ExposeInterfaces(registry, owner);
         }
     }
-} // namespace Ame
+}

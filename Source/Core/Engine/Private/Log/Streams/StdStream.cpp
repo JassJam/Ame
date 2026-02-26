@@ -7,4 +7,4 @@ namespace Ame::Log
     {
         m_Sink = std::make_shared<spdlog::sinks::ostream_sink_mt>(os, forceFlush);
     }
-} // namespace Ame::Log
+}

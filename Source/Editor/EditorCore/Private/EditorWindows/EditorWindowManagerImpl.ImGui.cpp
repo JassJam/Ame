@@ -20,12 +20,12 @@ namespace Ame::Editor
 
     bool EditorWindowManagerImpl::BeginEditorSpace()
     {
-        // We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
-        // because it would be confusing to have two docking targets within each others.
+        // We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable
+        // into, because it would be confusing to have two docking targets within each others.
         constexpr ImGuiWindowFlags c_EditorWindowFlags =
             ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse |
-            ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus |
-            ImGuiWindowFlags_NoNavFocus;
+            ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+            ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 
         const ImGuiViewport* viewport = ImGui::GetMainViewport();
 
@@ -37,13 +37,16 @@ namespace Ame::Editor
         // Important: note that we proceed even if Begin() returns false (aka window is collapsed).
         // This is because we want to keep our DockSpace() active. If a DockSpace() is inactive,
         // all active windows docked into it will lose their parent and become undocked.
-        // We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
-        // any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
+        // We cannot preserve the docking relationship between an active window and an inactive
+        // docking, otherwise any change of dockspace/settings would lead to windows being stuck in
+        // limbo and never being visible.
 
         bool editorOpen;
         {
-            imcxx::shared_style overrideStyle(
-                ImGuiStyleVar_WindowPadding, ImVec2{}, ImGuiStyleVar_WindowBorderSize, 0.0f);
+            imcxx::shared_style overrideStyle(ImGuiStyleVar_WindowPadding,
+                                              ImVec2{},
+                                              ImGuiStyleVar_WindowBorderSize,
+                                              0.0f);
             imcxx::shared_color overrideBg(ImGuiCol_MenuBarBg, ImVec4{ 0.0f, 0.0f, 0.0f, 0.0f });
 
             editorOpen = ImGui::Begin("Ame Editor", nullptr, c_EditorWindowFlags);
@@ -51,7 +54,8 @@ namespace Ame::Editor
 
         // Submit the DockSpace
         ImGuiID dockerspaceId = ImGui::GetID("MainDockspace##NEON");
-        if ((ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable) && !ImGui::DockBuilderGetNode(dockerspaceId))
+        if ((ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable) &&
+            !ImGui::DockBuilderGetNode(dockerspaceId))
         {
             // Clear out existing layout
             ImGui::DockBuilderRemoveNode(dockerspaceId);
@@ -65,11 +69,14 @@ namespace Ame::Editor
             // Build dock layout
             ImGuiID center = dockerspaceId;
 
-            ImGuiID topCenter = ImGui::DockBuilderSplitNode(center, ImGuiDir_Up, .75f, nullptr, &center);
-            ImGuiID bottom    = center;
+            ImGuiID topCenter =
+                ImGui::DockBuilderSplitNode(center, ImGuiDir_Up, .75f, nullptr, &center);
+            ImGuiID bottom = center;
 
-            ImGuiID left  = ImGui::DockBuilderSplitNode(topCenter, ImGuiDir_Left, .25f, nullptr, &topCenter);
-            ImGuiID right = ImGui::DockBuilderSplitNode(topCenter, ImGuiDir_Right, .25f, nullptr, &topCenter);
+            ImGuiID left =
+                ImGui::DockBuilderSplitNode(topCenter, ImGuiDir_Left, .25f, nullptr, &topCenter);
+            ImGuiID right =
+                ImGui::DockBuilderSplitNode(topCenter, ImGuiDir_Right, .25f, nullptr, &topCenter);
 
             /**
              *  We want to create a dock space like this:
@@ -121,7 +128,8 @@ namespace Ame::Editor
             displayMenuBar = ImGui::BeginMainMenuBar();
         }
 
-        m_IsTitlebarHovered = ImGui::IsWindowHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem);
+        m_IsTitlebarHovered =
+            ImGui::IsWindowHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem);
 
         if (!displayMenuBar)
         {
@@ -137,8 +145,10 @@ namespace Ame::Editor
             auto buttonSize     = ImVec2(titlebarHeight * 1.4f, titlebarHeight);
 
             imcxx::shared_style OverrideSpacing(ImGuiStyleVar_ItemSpacing, ImVec2{});
-            imcxx::shared_color OverrideColor(ImGuiCol_Button, ImGui::GetColorU32(ImGuiCol_MenuBarBg),
-                                              ImGuiCol_ButtonActive, ImGui::GetColorU32(ImGuiCol_ScrollbarGrabActive),
+            imcxx::shared_color OverrideColor(ImGuiCol_Button,
+                                              ImGui::GetColorU32(ImGuiCol_MenuBarBg),
+                                              ImGuiCol_ButtonActive,
+                                              ImGui::GetColorU32(ImGuiCol_ScrollbarGrabActive),
                                               ImGuiCol_ButtonHovered,
                                               ImGui::GetColorU32(ImGuiCol_ScrollbarGrabHovered));
 
@@ -150,7 +160,8 @@ namespace Ame::Editor
             }
 
             bool IsMaximized = m_Window->IsMaximized();
-            if (ImGui::Button(IsMaximized ? ICON_FA_WINDOW_RESTORE : ICON_FA_WINDOW_MAXIMIZE, buttonSize))
+            if (ImGui::Button(IsMaximized ? ICON_FA_WINDOW_RESTORE : ICON_FA_WINDOW_MAXIMIZE,
+                              buttonSize))
             {
                 if (IsMaximized)
                 {
@@ -267,4 +278,4 @@ namespace Ame::Editor
     {
         ImGui::End();
     }
-} // namespace Ame::Editor
+}

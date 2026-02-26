@@ -33,7 +33,8 @@ namespace Ame::Math
         AME_VECTOR_IMPL_ACCESSOR(1, y);
 
     public:
-        [[nodiscard]] float Cross(const Vector2& other) const noexcept;
+        [[nodiscard]]
+        float Cross(const Vector2& other) const noexcept;
     };
 
     class AME_ENGINE_API Vector2I : public Impl::MVector<int, 2>
@@ -116,7 +117,8 @@ namespace Ame::Math
         AME_VECTOR_IMPL_ACCESSOR(2, b);
 
     public:
-        [[nodiscard]] Vector3 Cross(const Vector3& Other) const noexcept;
+        [[nodiscard]]
+        Vector3 Cross(const Vector3& Other) const noexcept;
     };
 
     class AME_ENGINE_API Vector3I : public Impl::MVector<int, 3>
@@ -188,7 +190,8 @@ namespace Ame::Math
         operator Util::XMFLOAT4() const;
 
     public:
-        [[nodiscard]] Vector4 Cross(const Vector4& Other1, const Vector4& Other2) const noexcept;
+        [[nodiscard]]
+        Vector4 Cross(const Vector4& Other1, const Vector4& Other2) const noexcept;
 
     public:
         AME_VECTOR_IMPL_MATHVEC_DECLARATIONS(Vector4);
@@ -232,7 +235,8 @@ namespace Ame::Math
         using MVector::MVector;
         using Constants = Impl::VectorConstants<Vector4U>;
 
-        constexpr Vector4U(uint32_t x, uint32_t y, uint32_t z, uint32_t w) noexcept : MVector({ x, y, z, w })
+        constexpr Vector4U(uint32_t x, uint32_t y, uint32_t z, uint32_t w) noexcept
+            : MVector({ x, y, z, w })
         {
         }
 
@@ -261,17 +265,23 @@ namespace Ame::Math
         struct Constants;
 
     public:
-        [[nodiscard]] static Quaternion RotationRollPitchYaw(const Vector3& vec);
+        [[nodiscard]]
+        static Quaternion RotationRollPitchYaw(const Vector3& vec);
 
-        [[nodiscard]] static Quaternion RotationAxis(const Vector3& axis, float angle);
+        [[nodiscard]]
+        static Quaternion RotationAxis(const Vector3& axis, float angle);
 
-        [[nodiscard]] static Quaternion RotationNormal(const Vector3& axis, float angle);
+        [[nodiscard]]
+        static Quaternion RotationNormal(const Vector3& axis, float angle);
 
-        [[nodiscard]] static Quaternion RotationMatrix(const Matrix4x4& matrix);
+        [[nodiscard]]
+        static Quaternion RotationMatrix(const Matrix4x4& matrix);
 
-        [[nodiscard]] static Quaternion RotationMatrix(const Matrix3x3& matrix);
+        [[nodiscard]]
+        static Quaternion RotationMatrix(const Matrix3x3& matrix);
 
-        [[nodiscard]] static Quaternion Slerp(const Quaternion& begin, const Quaternion& end, float t);
+        [[nodiscard]]
+        static Quaternion Slerp(const Quaternion& begin, const Quaternion& end, float t);
 
     public:
         AME_VECTOR_IMPL_ACCESSOR(0, x);
@@ -286,7 +296,8 @@ namespace Ame::Math
 
         void Conjugate();
 
-        [[nodiscard]] Vector3 Rotate(const Vector3& vec) const;
+        [[nodiscard]]
+        Vector3 Rotate(const Vector3& vec) const;
 
     public:
         AME_VECTOR_IMPL_MATH_OP(Quaternion, +);
@@ -301,11 +312,12 @@ namespace Ame::Math
     };
 
     template<typename Ty>
-    concept VectorType =
-        std::is_same_v<Ty, Math::Vector2> || std::is_same_v<Ty, Math::Vector2U> || std::is_same_v<Ty, Math::Vector2I> ||
-        std::is_same_v<Ty, Math::Vector3> || std::is_same_v<Ty, Math::Vector3I> || std::is_same_v<Ty, Math::Vector3U> ||
-        std::is_same_v<Ty, Math::Vector4> || std::is_same_v<Ty, Math::Vector4I> || std::is_same_v<Ty, Math::Vector4U>;
+    concept VectorType = std::is_same_v<Ty, Math::Vector2> || std::is_same_v<Ty, Math::Vector2U> ||
+                         std::is_same_v<Ty, Math::Vector2I> || std::is_same_v<Ty, Math::Vector3> ||
+                         std::is_same_v<Ty, Math::Vector3I> || std::is_same_v<Ty, Math::Vector3U> ||
+                         std::is_same_v<Ty, Math::Vector4> || std::is_same_v<Ty, Math::Vector4I> ||
+                         std::is_same_v<Ty, Math::Vector4U>;
 
     template<typename Ty>
     concept QuaternionType = std::is_same_v<Ty, Math::Quaternion>;
-} // namespace Ame::Math
+}

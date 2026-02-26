@@ -20,7 +20,8 @@ namespace Ame::Rhi
     private:
         static constexpr const char c_SourceCode[] = {
 #include "DepthPrepass_VS.static.hlsli.h"
-            , 0x00
+            ,
+            0x00
         };
 
     public:
@@ -43,8 +44,10 @@ namespace Ame::Rhi
             m_LinkedShaders = Dg::CreateMemoryShaderSourceFactory(
                 {
                     { transformStruct.GetMemoryShaderSourceFileInfo(transformStruct.Name) },
-                    { renderInstanceStruct.GetMemoryShaderSourceFileInfo(renderInstanceStruct.Name) },
-                    { cameraFrameDataStruct.GetMemoryShaderSourceFileInfo(cameraFrameDataStruct.Name) },
+                    { renderInstanceStruct.GetMemoryShaderSourceFileInfo(
+                        renderInstanceStruct.Name) },
+                    { cameraFrameDataStruct.GetMemoryShaderSourceFileInfo(
+                        cameraFrameDataStruct.Name) },
                     { vertexInputStruct.GetMemoryShaderSourceFileInfo(vertexInputStruct.Name) },
                     { vertexOutputStruct.GetMemoryShaderSourceFileInfo(vertexOutputStruct.Name) },
                 },
@@ -55,4 +58,4 @@ namespace Ame::Rhi
     private:
         Ptr<Dg::IShaderSourceInputStreamFactory> m_LinkedShaders;
     };
-} // namespace Ame::Rhi
+}

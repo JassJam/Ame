@@ -10,18 +10,21 @@
 
 namespace Ame::Interfaces
 {
-    [[nodiscard]] static Ptr<Rhi::IImGuiRenderer> CreateImGuiRenderer(
-        [[maybe_unused]] Rhi::IRhiDevice* rhiDevice, [[maybe_unused]] const GraphicsModuleImGuiConfig& imguiConfig,
-        [[maybe_unused]] bool enabled)
+    [[nodiscard]]
+    static Ptr<Rhi::IImGuiRenderer> CreateImGuiRenderer(
+        [[maybe_unused]] Rhi::IRhiDevice*                 rhiDevice,
+        [[maybe_unused]] const GraphicsModuleImGuiConfig& imguiConfig,
+        [[maybe_unused]] bool                             enabled)
     {
 #ifndef AME_NO_IMGUI
         if (enabled && imguiConfig.EnableImGuiSubmodule)
         {
-            Rhi::ImGuiRendererCreateDesc imguiCreateDesc{ .RhiDevice = rhiDevice,
-                                                          .InitialVertexBufferSize =
-                                                              imguiConfig.InitialVertexBufferSize,
-                                                          .InitialIndexBufferSize = imguiConfig.InitialIndexBufferSize,
-                                                          .ConversionMode         = imguiConfig.ConversionMode };
+            Rhi::ImGuiRendererCreateDesc imguiCreateDesc{
+                .RhiDevice               = rhiDevice,
+                .InitialVertexBufferSize = imguiConfig.InitialVertexBufferSize,
+                .InitialIndexBufferSize  = imguiConfig.InitialIndexBufferSize,
+                .ConversionMode          = imguiConfig.ConversionMode
+            };
             return Rhi::CreateImGuiRenderer(imguiCreateDesc);
         }
         else
@@ -45,4 +48,4 @@ namespace Ame::Interfaces
         registry->ExposeInterface(owner, IID_RhiDevice, rhiDevice);
         registry->ExposeInterface(owner, IID_ImGuiRenderer, imguiRenderer);
     }
-} // namespace Ame::Interfaces
+}

@@ -21,27 +21,32 @@ namespace Ame
         /// <summary>
         /// Get total elapsed time for the current level
         /// </summary>
-        [[nodiscard]] double GetGameTime() const noexcept;
+        [[nodiscard]]
+        double GetGameTime() const noexcept;
 
         /// <summary>
         /// Get total elapsed time for the current engine
         /// </summary>
-        [[nodiscard]] double GetEngineTime() const noexcept;
+        [[nodiscard]]
+        double GetEngineTime() const noexcept;
 
         /// <summary>
         /// Get delta time
         /// </summary>
-        [[nodiscard]] double GetDeltaTime() const noexcept;
+        [[nodiscard]]
+        double GetDeltaTime() const noexcept;
 
         /// <summary>
         /// Get time scale
         /// </summary>
-        [[nodiscard]] float GetTimeScale() const noexcept;
+        [[nodiscard]]
+        float GetTimeScale() const noexcept;
 
         /// <summary>
         /// Check if game is paused
         /// </summary>
-        [[nodiscard]] bool IsPaused() const noexcept;
+        [[nodiscard]]
+        bool IsPaused() const noexcept;
 
         /// <summary>
         /// Set time scale
@@ -68,4 +73,4 @@ namespace Ame
         time_point m_PrevTime;
         time_point m_CurrTime;
     };
-} // namespace Ame
+}

@@ -19,4 +19,4 @@ namespace Ame::Ecs
     private:
         void RegisterSceneObservers(WorldRef world);
     };
-} // namespace Ame::Ecs
+}

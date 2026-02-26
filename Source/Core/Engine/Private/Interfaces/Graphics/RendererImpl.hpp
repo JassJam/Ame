@@ -15,21 +15,24 @@ namespace Ame::Ecs
     struct GlobalTransformComponent;
     struct CameraComponent;
     struct CameraOutputComponent;
-} // namespace Ame::Ecs
+}
 
 namespace Ame::Interfaces
 {
     class RendererImpl : public IRenderer
     {
     private:
-        using CameraRenderQuery = Ecs::UniqueQuery<const Ecs::GlobalTransformComponent, const Ecs::CameraComponent,
+        using CameraRenderQuery = Ecs::UniqueQuery<const Ecs::GlobalTransformComponent,
+                                                   const Ecs::CameraComponent,
                                                    const Ecs::CameraOutputComponent>;
 
     public:
         IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_Renderer, IRenderer);
 
     private:
-        IMPLEMENT_INTERFACE_CTOR(RendererImpl, Rhi::IRhiDevice* rhiDevice, Ecs::World* world,
+        IMPLEMENT_INTERFACE_CTOR(RendererImpl,
+                                 Rhi::IRhiDevice*     rhiDevice,
+                                 Ecs::World*          world,
                                  Rhi::IImGuiRenderer* imguiRenderer);
 
     public:
@@ -52,4 +55,4 @@ namespace Ame::Interfaces
         Gfx::EntityCompositor m_EntityCompositor;
         CameraRenderQuery     m_CameraQuery;
     };
-} // namespace Ame::Interfaces
+}

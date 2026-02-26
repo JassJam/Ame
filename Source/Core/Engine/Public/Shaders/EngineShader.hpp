@@ -31,18 +31,21 @@ namespace Ame::Rhi
             m_CreateInfo.pShaderSourceStreamFactory = factory;
         }
 
-        [[nodiscard]] const Dg::ShaderCreateInfo& GetCreateInfo() const
+        [[nodiscard]]
+        const Dg::ShaderCreateInfo& GetCreateInfo() const
         {
             return m_CreateInfo;
         }
 
-        [[nodiscard]] Dg::MemoryShaderSourceFileInfo GetMemoryShaderSourceFileInfo(const char* name) const
+        [[nodiscard]]
+        Dg::MemoryShaderSourceFileInfo GetMemoryShaderSourceFileInfo(const char* name) const
         {
             return { name, m_CreateInfo.Source, static_cast<uint32_t>(m_CreateInfo.SourceLength) };
         }
 
     protected:
-        void Setup(const Dg::ShaderDesc& desc, StringView sourceCode,
+        void Setup(const Dg::ShaderDesc&      desc,
+                   StringView                 sourceCode,
                    Dg::SHADER_SOURCE_LANGUAGE lang = Dg::SHADER_SOURCE_LANGUAGE_HLSL)
         {
             m_CreateInfo.SourceLanguage = lang;
@@ -51,14 +54,16 @@ namespace Ame::Rhi
             m_CreateInfo.SourceLength   = sourceCode.size();
         }
 
-        void SetupCompressed(const Dg::ShaderDesc& desc, std::span<const uint8_t> compressedCode,
+        void SetupCompressed(const Dg::ShaderDesc&      desc,
+                             std::span<const uint8_t>   compressedCode,
                              Dg::SHADER_SOURCE_LANGUAGE lang = Dg::SHADER_SOURCE_LANGUAGE_HLSL)
         {
             namespace bio = boost::iostreams;
 
             bio::filtering_istream stream;
             stream.push(bio::gzip_decompressor());
-            stream.push(bio::array_source(std::bit_cast<const char*>(compressedCode.data()), compressedCode.size()));
+            stream.push(bio::array_source(std::bit_cast<const char*>(compressedCode.data()),
+                                          compressedCode.size()));
             bio::copy(stream, std::back_inserter(m_DecompressedCode));
 
             m_CreateInfo.SourceLanguage = lang;
@@ -72,4 +77,4 @@ namespace Ame::Rhi
         std::vector<Dg::ShaderMacro> m_Macros;
         std::vector<char>            m_DecompressedCode;
     };
-} // namespace Ame::Rhi
+}

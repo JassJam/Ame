@@ -10,4 +10,4 @@ namespace Ame::Log
     public:
         StdStream(std::ostream& os, bool forceFlush = false);
     };
-} // namespace Ame::Log
+}

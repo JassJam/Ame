@@ -11,7 +11,8 @@ namespace Ame::Editor
         IMPLEMENT_QUERY_INTERFACE_IN_PLACE(IID_Project, IProject);
 
     private:
-        IMPLEMENT_INTERFACE_CTOR(ProjectImpl, const String& rootPath) : IProject(counters), m_SolutionRootPath(rootPath)
+        IMPLEMENT_INTERFACE_CTOR(ProjectImpl, const String& rootPath)
+            : IProject(counters), m_SolutionRootPath(rootPath)
         {
         }
 
@@ -25,7 +26,8 @@ namespace Ame::Editor
         void Close() override;
 
         auto ResolvePath(ProjectDataPath type) const -> std::filesystem::path override;
-        auto ResolvePath(ProjectDataPath type, const String& path) const -> std::filesystem::path override;
+        auto ResolvePath(ProjectDataPath type, const String& path) const
+            -> std::filesystem::path override;
 
         auto GetProperty(const PropertyPath& name) const -> const PropertyTree* override;
         void SetProperty(const PropertyPath& name, const PropertyTree& value);
@@ -37,4 +39,4 @@ namespace Ame::Editor
         std::filesystem::path       m_SolutionRootPath;
         ProjectEventListener        m_EventListener;
     };
-} // namespace Ame::Editor
+}

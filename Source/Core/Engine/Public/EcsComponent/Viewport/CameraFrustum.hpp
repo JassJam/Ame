@@ -17,4 +17,4 @@ namespace Ame::Ecs
         {
         }
     };
-} // namespace Ame::Ecs
+}

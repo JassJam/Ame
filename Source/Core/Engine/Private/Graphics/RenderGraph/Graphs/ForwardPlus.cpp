@@ -20,13 +20,19 @@ namespace Ame::Gfx
 
         passStorage.NewPass<ForwardPlus_InitializePass>("Forward+::Initialize");
 
-        passStorage.NewPass<EntityResourceSignature_GraphicsPass>("Forward+::Initialize_ERS(Graphics)");
-        passStorage.NewPass<LightingResourceSignaturePass_GraphicsPass>("Forward+::Initialize_LRS(Graphics)");
-        passStorage.NewPass<FrameDataResourceSignature_ComputePass>("Forward+::Initialize_FRS(Graphics)");
+        passStorage.NewPass<EntityResourceSignature_GraphicsPass>(
+            "Forward+::Initialize_ERS(Graphics)");
+        passStorage.NewPass<LightingResourceSignaturePass_GraphicsPass>(
+            "Forward+::Initialize_LRS(Graphics)");
+        passStorage.NewPass<FrameDataResourceSignature_ComputePass>(
+            "Forward+::Initialize_FRS(Graphics)");
 
-        passStorage.NewPass<EntityResourceSignature_ComputePass>("Forward+::Initialize_ERS(Compute)");
-        passStorage.NewPass<LightingResourceSignaturePass_ComputePass>("Forward+::Initialize_LRS(Compute)");
-        passStorage.NewPass<FrameDataResourceSignature_GraphicsPass>("Forward+::Initialize_FRS(Compute)");
+        passStorage.NewPass<EntityResourceSignature_ComputePass>(
+            "Forward+::Initialize_ERS(Compute)");
+        passStorage.NewPass<LightingResourceSignaturePass_ComputePass>(
+            "Forward+::Initialize_LRS(Compute)");
+        passStorage.NewPass<FrameDataResourceSignature_GraphicsPass>(
+            "Forward+::Initialize_FRS(Compute)");
 
         passStorage.NewPass<EntityEmptyVertexBuffersPass>("Forward+::Initialize_EEVB");
 
@@ -34,4 +40,4 @@ namespace Ame::Gfx
         passStorage.NewPass<ComputeLightCullPass>("Forward+::Compute Light Cull");
         passStorage.NewPass<ForwardPlus_RenderObjectsPass>("Forward+::Render Objects", world);
     }
-} // namespace Ame::Gfx
+}

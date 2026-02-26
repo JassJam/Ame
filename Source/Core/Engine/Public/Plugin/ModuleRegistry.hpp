@@ -36,14 +36,15 @@ namespace Ame
         /// <summary>
         /// find and add plugin to caller's dependencies
         /// </summary>
-        /// <param name="bool isRequired">true to immediatly load the plugin if it's not loaded</param>
-        /// <returns>true if the plugin, false otherwise</returns>
+        /// <param name="bool isRequired">true to immediatly load the plugin if it's not
+        /// loaded</param> <returns>true if the plugin, false otherwise</returns>
         virtual IPlugin* BindPlugin(IPlugin* caller, const String& name, bool isRequired) = 0;
 
         /// <summary>
         /// Get plugin host version.
         /// </summary>
-        [[nodiscard]] virtual TVersion GetHostVersion() = 0;
+        [[nodiscard]]
+        virtual TVersion GetHostVersion() = 0;
 
         /// <summary>
         /// Load and init a plugin outside of its host.
@@ -69,4 +70,4 @@ namespace Ame
     /// Create a new module registry.
     /// </summary>
     AME_ENGINE_API UniquePtr<IModuleRegistry> CreateModuleRegistry();
-} // namespace Ame
+}

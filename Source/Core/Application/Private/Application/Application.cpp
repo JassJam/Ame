@@ -5,8 +5,8 @@
 
 namespace Ame
 {
-    BaseApplication::BaseApplication(const ApplicationConfig& applicationConfig) :
-        m_Engine(std::make_unique<AmeEngine>(applicationConfig.Engine))
+    BaseApplication::BaseApplication(const ApplicationConfig& applicationConfig)
+        : m_Engine(std::make_unique<AmeEngine>(applicationConfig.Engine))
     {
     }
 
@@ -50,4 +50,4 @@ namespace Ame
 #endif
         return EXIT_SUCCESS;
     }
-} // namespace Ame
+}

@@ -31,7 +31,8 @@ namespace Ame::Asset
         /// <summary>
         /// Get the asset's UId.
         /// </summary>
-        [[nodiscard]] UId GetUId() const noexcept;
+        [[nodiscard]]
+        UId GetUId() const noexcept;
 
         /// <summary>
         /// Set the asset's GUID.
@@ -41,7 +42,8 @@ namespace Ame::Asset
         /// <summary>
         /// Get the asset's hash.
         /// </summary>
-        [[nodiscard]] String GetHash() const noexcept;
+        [[nodiscard]]
+        String GetHash() const noexcept;
 
         /// <summary>
         /// Set the asset's hash.
@@ -51,7 +53,8 @@ namespace Ame::Asset
         /// <summary>
         /// Get the asset's loader id.
         /// </summary>
-        [[nodiscard]] UId GetLoaderId() const noexcept;
+        [[nodiscard]]
+        UId GetLoaderId() const noexcept;
 
         /// <summary>
         /// Set the asset's loader id.
@@ -61,22 +64,26 @@ namespace Ame::Asset
         /// <summary>
         /// Get the asset's loader data.
         /// </summary>
-        [[nodiscard]] AssetMetaData& GetLoaderData() noexcept;
+        [[nodiscard]]
+        AssetMetaData& GetLoaderData() noexcept;
 
         /// <summary>
         /// Set the asset's loader data.
         /// </summary>
-        [[nodiscard]] const AssetMetaData& GetLoaderData() const noexcept;
+        [[nodiscard]]
+        const AssetMetaData& GetLoaderData() const noexcept;
 
         /// <summary>
         /// Get the asset's path.
         /// </summary>
-        [[nodiscard]] std::filesystem::path GetAssetPath() const;
+        [[nodiscard]]
+        std::filesystem::path GetAssetPath() const;
 
         /// <summary>
         /// Get the asset's metadata path.
         /// </summary>
-        [[nodiscard]] std::filesystem::path GetMetaPath() const;
+        [[nodiscard]]
+        std::filesystem::path GetMetaPath() const;
 
         /// <summary>
         /// Set the asset's metadata path.
@@ -86,7 +93,8 @@ namespace Ame::Asset
         /// <summary>
         /// Query if the asset is dirty.
         /// </summary>
-        [[nodiscard]] bool IsDirty() const noexcept;
+        [[nodiscard]]
+        bool IsDirty() const noexcept;
 
         /// <summary>
         /// Marks the asset as dirty.
@@ -96,7 +104,8 @@ namespace Ame::Asset
         /// <summary>
         /// Get the asset's dependencies.
         /// </summary>
-        [[nodiscard]] Co::generator<UId> GetDependencies() const;
+        [[nodiscard]]
+        Co::generator<UId> GetDependencies() const;
 
         /// <summary>
         /// Set the asset's dependencies.
@@ -107,4 +116,4 @@ namespace Ame::Asset
         AssetMetaData m_MetaData;
         bool          m_IsDirty = false;
     };
-} // namespace Ame::Asset
+}

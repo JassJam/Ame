@@ -58,4 +58,4 @@ namespace Ame::Rg
         auto& resourceStorage = context.GetStorage();
         resourceStorage.Unlock();
     }
-} // namespace Ame::Rg
+}

@@ -21,4 +21,4 @@ namespace Ame::Interfaces
 
         registry->ExposeInterface(owner, IID_Renderer, CreateRenderer(createDesc));
     }
-} // namespace Ame::Interfaces
+}

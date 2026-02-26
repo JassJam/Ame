@@ -1,26 +1,26 @@
 #ifndef AME_NO_IMGUI
 
-#include <mutex>
-#include <ranges>
-#include <mimalloc.h>
+    #include <mutex>
+    #include <ranges>
+    #include <mimalloc.h>
 
-#include <Rhi/ImGui/Fonts/FontAwesome5.hpp>
-#include <imgui_internal.h>
-#include <Math/Matrix.hpp>
+    #include <Rhi/ImGui/Fonts/FontAwesome5.hpp>
+    #include <imgui_internal.h>
+    #include <Math/Matrix.hpp>
 
-#include <Rhi/ImGui/ImGuiDiligentRendererImpl.hpp>
-#include <Rhi/ImGui/ImGuiRendererCreateDesc.hpp>
-#include <Rhi/ImGui/ImGuiGlfwImpl.hpp>
+    #include <Rhi/ImGui/ImGuiDiligentRendererImpl.hpp>
+    #include <Rhi/ImGui/ImGuiRendererCreateDesc.hpp>
+    #include <Rhi/ImGui/ImGuiGlfwImpl.hpp>
 
-#include <DiligentCore/Graphics/GraphicsTools/interface/CommonlyUsedStates.h>
-#include <DiligentCore/Graphics/GraphicsTools/interface/GraphicsUtilities.h>
-#include <DiligentCore/Graphics/GraphicsTools/interface/MapHelper.hpp>
+    #include <DiligentCore/Graphics/GraphicsTools/interface/CommonlyUsedStates.h>
+    #include <DiligentCore/Graphics/GraphicsTools/interface/GraphicsUtilities.h>
+    #include <DiligentCore/Graphics/GraphicsTools/interface/MapHelper.hpp>
 
-#include <Rhi/Device/RhiDevice.hpp>
-#include <Window/GlfwDriver.hpp>
-#include <Shaders/Rendering/ImGuiRenderShader.hpp>
+    #include <Rhi/Device/RhiDevice.hpp>
+    #include <Window/GlfwDriver.hpp>
+    #include <Shaders/Rendering/ImGuiRenderShader.hpp>
 
-#include <Log/Logger.hpp>
+    #include <Log/Logger.hpp>
 
 //
 
@@ -39,20 +39,21 @@ namespace Ame::Rhi
     // Intentionally or not, all imgui examples render everything in sRGB space.
     // Whether imgui expected it or not, the display engine then transforms colors to linear space
     // https://stackoverflow.com/a/66401423/4347276
-    // We, however, (correctly) render everything in linear space letting the GPU to transform colors to sRGB,
-    // so that the display engine then properly shows them.
+    // We, however, (correctly) render everything in linear space letting the GPU to transform
+    // colors to sRGB, so that the display engine then properly shows them.
     //
-    // As a result, there is a problem with alpha-blending: imgui performs blending directly in gamma-space, and
-    // gamma-to-linear conversion is done by the display engine:
+    // As a result, there is a problem with alpha-blending: imgui performs blending directly in
+    // gamma-space, and gamma-to-linear conversion is done by the display engine:
     //
     //   Px_im = GammaToLinear(Src * A + Dst * (1 - A))                     (1)
     //
-    // If we only convert imgui colors from sRGB to linear, we will be performing the following (normally)
-    // correct blending:
+    // If we only convert imgui colors from sRGB to linear, we will be performing the following
+    // (normally) correct blending:
     //
     //   Px_dg = GammaToLinear(Src) * A + GammaToLinear(Dst) * (1 - A)      (2)
     //
-    // However in case of imgui, this produces significantly different colors. Consider black background (Dst = 0):
+    // However in case of imgui, this produces significantly different colors. Consider black
+    // background (Dst = 0):
     //
     //   Px_im = GammaToLinear(Src * A)
     //   Px_dg = GammaToLinear(Src) * A
@@ -61,20 +62,23 @@ namespace Ame::Rhi
     //
     //   Px_dg = GammaToLinear(Src * A) + GammaToLinear(Dst) * GammaToLinear(1 - A)  (3)
     //
-    // Clearly (3) is not quite the same thing as (1), however it works surprisingly well in practice.
-    // Color pickers, in particular look properly.
+    // Clearly (3) is not quite the same thing as (1), however it works surprisingly well in
+    // practice. Color pickers, in particular look properly.
 
-    // Note that approximate gamma-to-linear conversion pow(gamma, 2.2) produces considerably different colors.
-    static constexpr char c_GammaToLinear[] = "((g) < 0.04045 ? (g) / 12.92 : pow(max((g) + 0.055, 0.0) / 1.055, 2.4))";
-    static constexpr char c_SrgbaToLinear[] = "c.r = GAMMA_TO_LINEAR(c.r); c.g = GAMMA_TO_LINEAR(c.g); c.b = "
-                                              "GAMMA_TO_LINEAR(c.b); c.a = 1.0 - GAMMA_TO_LINEAR(1.0 - c.a);";
+    // Note that approximate gamma-to-linear conversion pow(gamma, 2.2) produces considerably
+    // different colors.
+    static constexpr char c_GammaToLinear[] =
+        "((g) < 0.04045 ? (g) / 12.92 : pow(max((g) + 0.055, 0.0) / 1.055, 2.4))";
+    static constexpr char c_SrgbaToLinear[] =
+        "c.r = GAMMA_TO_LINEAR(c.r); c.g = GAMMA_TO_LINEAR(c.g); c.b = "
+        "GAMMA_TO_LINEAR(c.b); c.a = 1.0 - GAMMA_TO_LINEAR(1.0 - c.a);";
 
     //
 
     ImGuiDiligentRendererImpl::ImGuiDiligentRendererImpl(IReferenceCounters*            counters,
-                                                         const ImGuiRendererCreateDesc& desc) :
-        IImGuiRenderer(counters), m_VertexBufferSize(desc.InitialVertexBufferSize),
-        m_IndexBufferSize(desc.InitialIndexBufferSize), m_ConversionMode(desc.ConversionMode)
+                                                         const ImGuiRendererCreateDesc& desc)
+        : IImGuiRenderer(counters), m_VertexBufferSize(desc.InitialVertexBufferSize),
+          m_IndexBufferSize(desc.InitialIndexBufferSize), m_ConversionMode(desc.ConversionMode)
     {
         m_RenderDevice  = desc.RhiDevice->GetRenderDevice();
         m_DeviceContext = desc.RhiDevice->GetImmediateContext();
@@ -87,11 +91,11 @@ namespace Ame::Rhi
         m_DepthBufferFormat = swapchainDesc.DepthBufferFormat;
 
         // Check base vertex support
-        m_BaseVertexSupported =
-            m_RenderDevice->GetAdapterInfo().DrawCommand.CapFlags & Dg::DRAW_COMMAND_CAP_FLAG_BASE_VERTEX;
+        m_BaseVertexSupported = m_RenderDevice->GetAdapterInfo().DrawCommand.CapFlags &
+                                Dg::DRAW_COMMAND_CAP_FLAG_BASE_VERTEX;
 
-        ImGui::SetAllocatorFunctions(
-            [](size_t size, void*) { return mi_malloc(size); }, [](void* ptr, void*) -> void { mi_free(ptr); });
+        ImGui::SetAllocatorFunctions([](size_t size, void*) { return mi_malloc(size); },
+                                     [](void* ptr, void*) -> void { mi_free(ptr); });
 
         ImGui::CreateContext();
         InitializeImGui();
@@ -162,15 +166,16 @@ namespace Ame::Rhi
         return iter != m_Fonts.end() ? iter->second : nullptr;
     }
 
-    ImFont* ImGuiDiligentRendererImpl::LoadFont(const String& fontName, const ImFontConfig& fontConfig)
+    ImFont* ImGuiDiligentRendererImpl::LoadFont(const String&       fontName,
+                                                const ImFontConfig& fontConfig)
     {
-#ifdef AME_DEBUG
+    #ifdef AME_DEBUG
         if (m_Fonts.contains(fontName))
         {
             AME_LOG_WARNING(std::format("Font '{}' already loaded", fontName));
             return nullptr;
         }
-#endif
+    #endif
 
         ImGuiIO& io   = ImGui::GetIO();
         ImFont*  font = io.Fonts->AddFont(&fontConfig);
@@ -179,19 +184,23 @@ namespace Ame::Rhi
         return font;
     }
 
-    ImFont* ImGuiDiligentRendererImpl::LoadCompressedFont(const char* fontName, const ImFontConfig& fontConfig)
+    ImFont* ImGuiDiligentRendererImpl::LoadCompressedFont(const char*         fontName,
+                                                          const ImFontConfig& fontConfig)
     {
-#ifdef AME_DEBUG
+    #ifdef AME_DEBUG
         if (m_Fonts.contains(fontName))
         {
             AME_LOG_WARNING(std::format("Font '{}' already loaded", fontName));
             return nullptr;
         }
-#endif
+    #endif
 
         ImGuiIO& io   = ImGui::GetIO();
-        ImFont*  font = io.Fonts->AddFontFromMemoryCompressedTTF(
-            fontConfig.FontData, fontConfig.FontDataSize, fontConfig.SizePixels, &fontConfig, fontConfig.GlyphRanges);
+        ImFont*  font = io.Fonts->AddFontFromMemoryCompressedTTF(fontConfig.FontData,
+                                                                fontConfig.FontDataSize,
+                                                                fontConfig.SizePixels,
+                                                                &fontConfig,
+                                                                fontConfig.GlyphRanges);
 
         m_Fonts.emplace(fontName, font);
         return font;
@@ -214,10 +223,12 @@ namespace Ame::Rhi
 
                     ImGuiIO& io = ImGui::GetIO();
                     io.ConfigFlags |= /*ImGuiConfigFlags_ViewportsEnable |*/ // TODO
-                                      ImGuiConfigFlags_DockingEnable | ImGuiConfigFlags_NavEnableKeyboard |
+                                      ImGuiConfigFlags_DockingEnable |
+                                      ImGuiConfigFlags_NavEnableKeyboard |
                                       ImGuiConfigFlags_NavEnableGamepad;
 
-                    io.BackendFlags |= ImGuiBackendFlags_RendererHasViewports | ImGuiBackendFlags_RendererHasVtxOffset;
+                    io.BackendFlags |= ImGuiBackendFlags_RendererHasViewports |
+                                       ImGuiBackendFlags_RendererHasVtxOffset;
 
                     ImGui_ImplGlfw_InitForOther(m_Window->GetGlfwHandle(), true);
                 })
@@ -274,23 +285,30 @@ namespace Ame::Rhi
         style.Colors[ImGuiCol_Text] = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
         style.Colors[ImGuiCol_TextDisabled] =
             ImVec4(0.2745098173618317f, 0.3176470696926117f, 0.4509803950786591f, 1.0f);
-        style.Colors[ImGuiCol_WindowBg] = ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
-        style.Colors[ImGuiCol_ChildBg]  = ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
-        style.Colors[ImGuiCol_PopupBg]  = ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
-        style.Colors[ImGuiCol_Border]   = ImVec4(0.1568627506494522f, 0.168627455830574f, 0.1921568661928177f, 1.0f);
+        style.Colors[ImGuiCol_WindowBg] =
+            ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
+        style.Colors[ImGuiCol_ChildBg] =
+            ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
+        style.Colors[ImGuiCol_PopupBg] =
+            ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
+        style.Colors[ImGuiCol_Border] =
+            ImVec4(0.1568627506494522f, 0.168627455830574f, 0.1921568661928177f, 1.0f);
         style.Colors[ImGuiCol_BorderShadow] =
             ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
-        style.Colors[ImGuiCol_FrameBg] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
+        style.Colors[ImGuiCol_FrameBg] =
+            ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
         style.Colors[ImGuiCol_FrameBgHovered] =
             ImVec4(0.1568627506494522f, 0.168627455830574f, 0.1921568661928177f, 1.0f);
         style.Colors[ImGuiCol_FrameBgActive] =
             ImVec4(0.2352941185235977f, 0.2156862765550613f, 0.5960784554481506f, 1.0f);
-        style.Colors[ImGuiCol_TitleBg] = ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
+        style.Colors[ImGuiCol_TitleBg] =
+            ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
         style.Colors[ImGuiCol_TitleBgActive] =
             ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
         style.Colors[ImGuiCol_TitleBgCollapsed] =
             ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
-        style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.09803921729326248f, 0.105882354080677f, 0.1215686276555061f, 1.0f);
+        style.Colors[ImGuiCol_MenuBarBg] =
+            ImVec4(0.09803921729326248f, 0.105882354080677f, 0.1215686276555061f, 1.0f);
         style.Colors[ImGuiCol_ScrollbarBg] =
             ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
         style.Colors[ImGuiCol_ScrollbarGrab] =
@@ -299,41 +317,52 @@ namespace Ame::Rhi
             ImVec4(0.1568627506494522f, 0.168627455830574f, 0.1921568661928177f, 1.0f);
         style.Colors[ImGuiCol_ScrollbarGrabActive] =
             ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
-        style.Colors[ImGuiCol_CheckMark]        = ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
-        style.Colors[ImGuiCol_SliderGrab]       = ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
-        style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.5372549295425415f, 0.5529412031173706f, 1.0f, 1.0f);
-        style.Colors[ImGuiCol_Button] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
+        style.Colors[ImGuiCol_CheckMark] =
+            ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
+        style.Colors[ImGuiCol_SliderGrab] =
+            ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
+        style.Colors[ImGuiCol_SliderGrabActive] =
+            ImVec4(0.5372549295425415f, 0.5529412031173706f, 1.0f, 1.0f);
+        style.Colors[ImGuiCol_Button] =
+            ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
         style.Colors[ImGuiCol_ButtonHovered] =
             ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 1.0f);
         style.Colors[ImGuiCol_ButtonActive] =
             ImVec4(0.2352941185235977f, 0.2156862765550613f, 0.5960784554481506f, 1.0f);
-        style.Colors[ImGuiCol_Header] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
+        style.Colors[ImGuiCol_Header] =
+            ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
         style.Colors[ImGuiCol_HeaderHovered] =
             ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 1.0f);
         style.Colors[ImGuiCol_HeaderActive] =
             ImVec4(0.2352941185235977f, 0.2156862765550613f, 0.5960784554481506f, 1.0f);
-        style.Colors[ImGuiCol_Separator] = ImVec4(0.1568627506494522f, 0.1843137294054031f, 0.250980406999588f, 1.0f);
+        style.Colors[ImGuiCol_Separator] =
+            ImVec4(0.1568627506494522f, 0.1843137294054031f, 0.250980406999588f, 1.0f);
         style.Colors[ImGuiCol_SeparatorHovered] =
             ImVec4(0.1568627506494522f, 0.1843137294054031f, 0.250980406999588f, 1.0f);
         style.Colors[ImGuiCol_SeparatorActive] =
             ImVec4(0.1568627506494522f, 0.1843137294054031f, 0.250980406999588f, 1.0f);
-        style.Colors[ImGuiCol_ResizeGrip] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
+        style.Colors[ImGuiCol_ResizeGrip] =
+            ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
         style.Colors[ImGuiCol_ResizeGripHovered] =
             ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 1.0f);
         style.Colors[ImGuiCol_ResizeGripActive] =
             ImVec4(0.2352941185235977f, 0.2156862765550613f, 0.5960784554481506f, 1.0f);
-        style.Colors[ImGuiCol_Tab] = ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
-        style.Colors[ImGuiCol_TabHovered] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
+        style.Colors[ImGuiCol_Tab] =
+            ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
+        style.Colors[ImGuiCol_TabHovered] =
+            ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
         style.Colors[ImGuiCol_TabSelected] =
             ImVec4(0.09803921729326248f, 0.105882354080677f, 0.1215686276555061f, 1.0f);
         style.Colors[ImGuiCol_TabDimmed] =
             ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
         style.Colors[ImGuiCol_TabDimmedSelected] =
             ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
-        style.Colors[ImGuiCol_PlotLines] = ImVec4(0.5215686559677124f, 0.6000000238418579f, 0.7019608020782471f, 1.0f);
+        style.Colors[ImGuiCol_PlotLines] =
+            ImVec4(0.5215686559677124f, 0.6000000238418579f, 0.7019608020782471f, 1.0f);
         style.Colors[ImGuiCol_PlotLinesHovered] =
             ImVec4(0.03921568766236305f, 0.9803921580314636f, 0.9803921580314636f, 1.0f);
-        style.Colors[ImGuiCol_PlotHistogram] = ImVec4(1.0f, 0.2901960909366608f, 0.5960784554481506f, 1.0f);
+        style.Colors[ImGuiCol_PlotHistogram] =
+            ImVec4(1.0f, 0.2901960909366608f, 0.5960784554481506f, 1.0f);
         style.Colors[ImGuiCol_PlotHistogramHovered] =
             ImVec4(0.9960784316062927f, 0.4745098054409027f, 0.6980392336845398f, 1.0f);
         style.Colors[ImGuiCol_TableHeaderBg] =
@@ -341,18 +370,26 @@ namespace Ame::Rhi
         style.Colors[ImGuiCol_TableBorderStrong] =
             ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
         style.Colors[ImGuiCol_TableBorderLight] = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
-        style.Colors[ImGuiCol_TableRowBg] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
+        style.Colors[ImGuiCol_TableRowBg] =
+            ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
         style.Colors[ImGuiCol_TableRowBgAlt] =
             ImVec4(0.09803921729326248f, 0.105882354080677f, 0.1215686276555061f, 1.0f);
         style.Colors[ImGuiCol_TextSelectedBg] =
             ImVec4(0.2352941185235977f, 0.2156862765550613f, 0.5960784554481506f, 1.0f);
-        style.Colors[ImGuiCol_DragDropTarget]        = ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
-        style.Colors[ImGuiCol_NavHighlight]          = ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
-        style.Colors[ImGuiCol_NavWindowingHighlight] = ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
-        style.Colors[ImGuiCol_NavWindowingDimBg] =
-            ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 0.501960813999176f);
-        style.Colors[ImGuiCol_ModalWindowDimBg] =
-            ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 0.501960813999176f);
+        style.Colors[ImGuiCol_DragDropTarget] =
+            ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
+        style.Colors[ImGuiCol_NavHighlight] =
+            ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
+        style.Colors[ImGuiCol_NavWindowingHighlight] =
+            ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
+        style.Colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.196078434586525f,
+                                                          0.1764705926179886f,
+                                                          0.5450980663299561f,
+                                                          0.501960813999176f);
+        style.Colors[ImGuiCol_ModalWindowDimBg]  = ImVec4(0.196078434586525f,
+                                                         0.1764705926179886f,
+                                                         0.5450980663299561f,
+                                                         0.501960813999176f);
     }
 
     void ImGuiDiligentRendererImpl::LoadDefaultFonts()
@@ -366,9 +403,12 @@ namespace Ame::Rhi
                 ImFontConfig fontCfg;
                 fontCfg.OversampleH = 2;
 
-                io.Fonts->AddFontFromMemoryCompressedTTF(Arimo_Medium_compressed_data, Arimo_Medium_compressed_size,
-                                                         15.f, &fontCfg,
-                                                         ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
+                io.Fonts->AddFontFromMemoryCompressedTTF(
+                    Arimo_Medium_compressed_data,
+                    Arimo_Medium_compressed_size,
+                    15.f,
+                    &fontCfg,
+                    ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
             }
 
             // Second is the interface's default icons
@@ -379,7 +419,9 @@ namespace Ame::Rhi
                 static const ImWchar iconRanges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
 
                 io.Fonts->AddFontFromMemoryCompressedTTF(FontAwesomeSolid900_compressed_data,
-                                                         FontAwesomeSolid900_compressed_size, 13.f, &fontCfg,
+                                                         FontAwesomeSolid900_compressed_size,
+                                                         13.f,
+                                                         &fontCfg,
                                                          iconRanges);
             }
         };
@@ -403,9 +445,11 @@ namespace Ame::Rhi
         InvalidateDeviceObjects();
 
         const auto srgbFramebuffer =
-            Dg::GetTextureFormatAttribs(m_BackBufferFormat).ComponentType == Dg::COMPONENT_TYPE_UNORM_SRGB;
-        const auto manualSrgb = (m_ConversionMode == ImGuiColorConversionMode::Auto && srgbFramebuffer) ||
-                                (m_ConversionMode == ImGuiColorConversionMode::SrgbToLinear);
+            Dg::GetTextureFormatAttribs(m_BackBufferFormat).ComponentType ==
+            Dg::COMPONENT_TYPE_UNORM_SRGB;
+        const auto manualSrgb =
+            (m_ConversionMode == ImGuiColorConversionMode::Auto && srgbFramebuffer) ||
+            (m_ConversionMode == ImGuiColorConversionMode::SrgbToLinear);
 
         Ptr<Dg::IShader> vertexShader;
         {
@@ -475,8 +519,12 @@ namespace Ame::Rhi
 
         m_RenderDevice->CreateGraphicsPipelineState(psoCreateInfo, &m_PipelineState);
 
-        Dg::CreateUniformBuffer(m_RenderDevice, sizeof(Math::Matrix4x4), "ImGui Constants", &m_TransformBuffer);
-        m_PipelineState->GetStaticVariableByName(Dg::SHADER_TYPE_VERTEX, "Constants")->Set(m_TransformBuffer);
+        Dg::CreateUniformBuffer(m_RenderDevice,
+                                sizeof(Math::Matrix4x4),
+                                "ImGui Constants",
+                                &m_TransformBuffer);
+        m_PipelineState->GetStaticVariableByName(Dg::SHADER_TYPE_VERTEX, "Constants")
+            ->Set(m_TransformBuffer);
     }
 
     void ImGuiDiligentRendererImpl::CreateFontsTextures()
@@ -519,20 +567,22 @@ namespace Ame::Rhi
 
     //
 
-    static Math::Vector4 TransformClipRect(Dg::SURFACE_TRANSFORM transform, const ImVec2& displaySize,
-                                           const Math::Vector4& rect)
+    static Math::Vector4 TransformClipRect(Dg::SURFACE_TRANSFORM transform,
+                                           const ImVec2&         displaySize,
+                                           const Math::Vector4&  rect)
     {
         switch (transform)
         {
-        case Dg::SURFACE_TRANSFORM_IDENTITY:
-            return rect;
+        case Dg::SURFACE_TRANSFORM_IDENTITY: return rect;
 
         case Dg::SURFACE_TRANSFORM_ROTATE_90:
         {
-            // The image content is rotated 90 degrees clockwise. The origin is in the left-top corner.
+            // The image content is rotated 90 degrees clockwise. The origin is in the left-top
+            // corner.
             //
             //                                                             DsplSz.y
-            //                a.x                                            -a.y     a.y     Old origin
+            //                a.x                                            -a.y     a.y     Old
+            //                origin
             //              0---->|                                       0------->|<------| /
             //           0__|_____|____________________                0__|________|_______|/
             //            | |     '                    |                | |        '       |
@@ -559,21 +609,22 @@ namespace Ame::Rhi
 
         case Dg::SURFACE_TRANSFORM_ROTATE_180:
         {
-            // The image content is rotated 180 degrees clockwise. The origin is in the left-top corner.
+            // The image content is rotated 180 degrees clockwise. The origin is in the left-top
+            // corner.
             //
             //                a.x                                               DsplSz.x - a.x
             //              0---->|                                         0------------------>|
-            //           0__|_____|____________________                 0_ _|___________________|______
-            //            | |     '                    |                  | |                   '      |
-            //        a.y | |     '                    |        DsplSz.y  | |              c'___d'     |
-            //           _V_|_ _ _a____b               |          -a.y    | |              |    |      |
-            //              |     |    |               |                 _V_|_ _ _ _ _ _ _ |____|      |
-            //              |     |____|               |                    |              b'   a'     |
-            //              |     d    c               |                    |                          |
-            //              |__________________________|                    |__________________________|
-            //                                         A                                               A
-            //                                         |                                               |
-            //                                     New Origin                                      Old Origin
+            //           0__|_____|____________________                 0_
+            //           _|___________________|______
+            //            | |     '                    |                  | |                   ' |
+            //        a.y | |     '                    |        DsplSz.y  | |              c'___d' |
+            //           _V_|_ _ _a____b               |          -a.y    | |              |    | |
+            //              |     |    |               |                 _V_|_ _ _ _ _ _ _ |____| |
+            //              |     |____|               |                    |              b'   a' |
+            //              |     d    c               |                    | |
+            //              |__________________________| |__________________________|
+            //                                         A A | |
+            //                                     New Origin Old Origin
             Math::Vector2 a{ rect.x(), rect.y() };
             Math::Vector2 c{ rect.z(), rect.w() };
             return Math::Vector4 //
@@ -587,7 +638,8 @@ namespace Ame::Rhi
 
         case Dg::SURFACE_TRANSFORM_ROTATE_270:
         {
-            // The image content is rotated 270 degrees clockwise. The origin is in the left-top corner.
+            // The image content is rotated 270 degrees clockwise. The origin is in the left-top
+            // corner.
             //
             //              0  a.x     DsplSz.x-a.x   New Origin              a.y
             //              |---->|<-------------------|                    0----->|
@@ -617,7 +669,8 @@ namespace Ame::Rhi
         }
 
         case Dg::SURFACE_TRANSFORM_OPTIMAL:
-            AME_LOG_WARNING("SURFACE_TRANSFORM_OPTIMAL is only valid as parameter during swap chain initialization.");
+            AME_LOG_WARNING(
+                "SURFACE_TRANSFORM_OPTIMAL is only valid as parameter during swap chain initialization.");
             return rect;
 
         case Dg::SURFACE_TRANSFORM_HORIZONTAL_MIRROR:
@@ -627,20 +680,24 @@ namespace Ame::Rhi
             AME_LOG_WARNING("Mirror transforms are not supported");
             return rect;
 
-        default:
-            std::unreachable();
+        default: std::unreachable();
         }
     }
 
     void ImGuiDiligentRendererImpl::SubmitDrawData(ImDrawData* drawData)
     {
         // Avoid rendering when minimized
-        if (drawData->DisplaySize.x <= 0.0f || drawData->DisplaySize.y <= 0.0f || drawData->CmdListsCount == 0)
+        if (drawData->DisplaySize.x <= 0.0f || drawData->DisplaySize.y <= 0.0f ||
+            drawData->CmdListsCount == 0)
         {
             return;
         }
 
-        auto reserveBuffer = [this](auto& buffer, const char* name, auto& bufferSize, auto totalCount, auto structSize,
+        auto reserveBuffer = [this](auto&          buffer,
+                                    const char*    name,
+                                    auto&          bufferSize,
+                                    auto           totalCount,
+                                    auto           structSize,
                                     Dg::BIND_FLAGS flags)
         {
             auto totalSize = totalCount * structSize;
@@ -652,18 +709,36 @@ namespace Ame::Rhi
                     bufferSize *= 2;
                 }
 
-                Dg::BufferDesc bufferDesc{ name, bufferSize, flags, Dg::USAGE_DYNAMIC, Dg::CPU_ACCESS_WRITE };
+                Dg::BufferDesc bufferDesc{ name,
+                                           bufferSize,
+                                           flags,
+                                           Dg::USAGE_DYNAMIC,
+                                           Dg::CPU_ACCESS_WRITE };
                 m_RenderDevice->CreateBuffer(bufferDesc, nullptr, &buffer);
             }
         };
-        reserveBuffer(m_VertexBuffer, "ImGui Vertex Buffer", m_VertexBufferSize, drawData->TotalVtxCount,
-                      sizeof(ImDrawVert), Dg::BIND_VERTEX_BUFFER);
-        reserveBuffer(m_IndexBuffer, "ImGui Index Buffer", m_IndexBufferSize, drawData->TotalIdxCount,
-                      sizeof(ImDrawIdx), Dg::BIND_INDEX_BUFFER);
+        reserveBuffer(m_VertexBuffer,
+                      "ImGui Vertex Buffer",
+                      m_VertexBufferSize,
+                      drawData->TotalVtxCount,
+                      sizeof(ImDrawVert),
+                      Dg::BIND_VERTEX_BUFFER);
+        reserveBuffer(m_IndexBuffer,
+                      "ImGui Index Buffer",
+                      m_IndexBufferSize,
+                      drawData->TotalIdxCount,
+                      sizeof(ImDrawIdx),
+                      Dg::BIND_INDEX_BUFFER);
 
         {
-            Dg::MapHelper<ImDrawVert> vertices(m_DeviceContext, m_VertexBuffer, Dg::MAP_WRITE, Dg::MAP_FLAG_DISCARD);
-            Dg::MapHelper<ImDrawIdx>  indices(m_DeviceContext, m_IndexBuffer, Dg::MAP_WRITE, Dg::MAP_FLAG_DISCARD);
+            Dg::MapHelper<ImDrawVert> vertices(m_DeviceContext,
+                                               m_VertexBuffer,
+                                               Dg::MAP_WRITE,
+                                               Dg::MAP_FLAG_DISCARD);
+            Dg::MapHelper<ImDrawIdx>  indices(m_DeviceContext,
+                                             m_IndexBuffer,
+                                             Dg::MAP_WRITE,
+                                             Dg::MAP_FLAG_DISCARD);
 
             ImDrawVert* vertexDst = vertices;
             ImDrawIdx*  indexDst  = indices;
@@ -671,8 +746,12 @@ namespace Ame::Rhi
             {
                 const ImDrawList* cmdList = drawData->CmdLists[id];
 
-                memcpy(vertexDst, cmdList->VtxBuffer.Data, cmdList->VtxBuffer.Size * sizeof(ImDrawVert));
-                memcpy(indexDst, cmdList->IdxBuffer.Data, cmdList->IdxBuffer.Size * sizeof(ImDrawIdx));
+                memcpy(vertexDst,
+                       cmdList->VtxBuffer.Data,
+                       cmdList->VtxBuffer.Size * sizeof(ImDrawVert));
+                memcpy(indexDst,
+                       cmdList->IdxBuffer.Data,
+                       cmdList->IdxBuffer.Size * sizeof(ImDrawIdx));
 
                 vertexDst += cmdList->VtxBuffer.Size;
                 indexDst += cmdList->IdxBuffer.Size;
@@ -681,10 +760,11 @@ namespace Ame::Rhi
 
         // Setup orthographic projection matrix into our constant buffer
         // Our visible imgui space lies from drawData->DisplayPos (top left) to
-        // drawData->DisplayPos+data_data->DisplaySize (bottom right). DisplayPos is (0,0) for single viewport apps.
+        // drawData->DisplayPos+data_data->DisplaySize (bottom right). DisplayPos is (0,0) for
+        // single viewport apps.
         {
-            // DisplaySize always refers to the logical dimensions that account for pre-transform, hence
-            // the aspect ratio will be correct after applying appropriate rotation.
+            // DisplaySize always refers to the logical dimensions that account for pre-transform,
+            // hence the aspect ratio will be correct after applying appropriate rotation.
             float L = drawData->DisplayPos.x;
             float R = drawData->DisplayPos.x + drawData->DisplaySize.x;
             float T = drawData->DisplayPos.y;
@@ -733,12 +813,13 @@ namespace Ame::Rhi
                 AME_LOG_WARNING("Mirror transforms are not supported");
                 break;
 
-            default:
-                std::unreachable();
+            default: std::unreachable();
             }
 
-            Dg::MapHelper<Math::Matrix4x4> transform(
-                m_DeviceContext, m_TransformBuffer, Dg::MAP_WRITE, Dg::MAP_FLAG_DISCARD);
+            Dg::MapHelper<Math::Matrix4x4> transform(m_DeviceContext,
+                                                     m_TransformBuffer,
+                                                     Dg::MAP_WRITE,
+                                                     Dg::MAP_FLAG_DISCARD);
             *transform = projection;
         }
 
@@ -747,20 +828,29 @@ namespace Ame::Rhi
             Dg::ITextureView* renderTarget = m_Swapchain->GetCurrentBackBufferRTV();
             Dg::ITextureView* depthStencil = m_Swapchain->GetDepthBufferDSV();
 
-            m_DeviceContext->SetRenderTargets(
-                1, &renderTarget, depthStencil, Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+            m_DeviceContext->SetRenderTargets(1,
+                                              &renderTarget,
+                                              depthStencil,
+                                              Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
 
             // Setup shader and vertex buffers
             Dg::IBuffer* vertices[] = { m_VertexBuffer };
-            m_DeviceContext->SetVertexBuffers(0, 1, vertices, nullptr, Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION,
+            m_DeviceContext->SetVertexBuffers(0,
+                                              1,
+                                              vertices,
+                                              nullptr,
+                                              Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION,
                                               Dg::SET_VERTEX_BUFFERS_FLAG_RESET);
-            m_DeviceContext->SetIndexBuffer(m_IndexBuffer, 0, Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+            m_DeviceContext->SetIndexBuffer(m_IndexBuffer,
+                                            0,
+                                            Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
             m_DeviceContext->SetPipelineState(m_PipelineState);
 
             const float blend_factor[4] = { 0.f, 0.f, 0.f, 0.f };
             m_DeviceContext->SetBlendFactors(blend_factor);
 
-            Dg::Viewport viewport{ 0.0f, 0.0f, drawData->DisplaySize.x, drawData->DisplaySize.y, 0.0f, 1.0f };
+            Dg::Viewport viewport{ 0.0f, 0.0f, drawData->DisplaySize.x, drawData->DisplaySize.y,
+                                   0.0f, 1.0f };
             m_DeviceContext->SetViewports(1, &viewport, 0, 0);
         };
 
@@ -781,8 +871,8 @@ namespace Ame::Rhi
                 if (cmd->UserCallback != NULL)
                 {
                     // User callback, registered via ImDrawList::AddCallback()
-                    // (ImDrawCallback_ResetRenderState is a special callback value used by the user to request the
-                    // renderer to reset render state.)
+                    // (ImDrawCallback_ResetRenderState is a special callback value used by the user
+                    // to request the renderer to reset render state.)
                     if (cmd->UserCallback == ImDrawCallback_ResetRenderState)
                     {
                         setupRenderState();
@@ -802,24 +892,31 @@ namespace Ame::Rhi
                     // Apply scissor/clipping rectangle
                     Math::Vector4 clipRect //
                         {
-                            (cmd->ClipRect.x - drawData->DisplayPos.x) * drawData->FramebufferScale.x,
-                            (cmd->ClipRect.y - drawData->DisplayPos.y) * drawData->FramebufferScale.y,
-                            (cmd->ClipRect.z - drawData->DisplayPos.x) * drawData->FramebufferScale.x,
-                            (cmd->ClipRect.w - drawData->DisplayPos.y) * drawData->FramebufferScale.y //
+                            (cmd->ClipRect.x - drawData->DisplayPos.x) *
+                                drawData->FramebufferScale.x,
+                            (cmd->ClipRect.y - drawData->DisplayPos.y) *
+                                drawData->FramebufferScale.y,
+                            (cmd->ClipRect.z - drawData->DisplayPos.x) *
+                                drawData->FramebufferScale.x,
+                            (cmd->ClipRect.w - drawData->DisplayPos.y) *
+                                drawData->FramebufferScale.y //
                         };
                     // Apply pretransform
                     clipRect = TransformClipRect(m_Transform, drawData->DisplaySize, clipRect);
 
                     Dg::Rect scissor //
                         {
-                            static_cast<int>(clipRect.x()), static_cast<int>(clipRect.y()),
+                            static_cast<int>(clipRect.x()),
+                            static_cast<int>(clipRect.y()),
                             static_cast<int>(clipRect.z()),
                             static_cast<int>(clipRect.w()) //
                         };
-                    scissor.left   = std::max(scissor.left, 0);
-                    scissor.top    = std::max(scissor.top, 0);
-                    scissor.right  = std::min(scissor.right, static_cast<int>(drawData->DisplaySize.x));
-                    scissor.bottom = std::min(scissor.bottom, static_cast<int>(drawData->DisplaySize.y));
+                    scissor.left = std::max(scissor.left, 0);
+                    scissor.top  = std::max(scissor.top, 0);
+                    scissor.right =
+                        std::min(scissor.right, static_cast<int>(drawData->DisplaySize.x));
+                    scissor.bottom =
+                        std::min(scissor.bottom, static_cast<int>(drawData->DisplaySize.y));
                     if (!scissor.IsValid())
                     {
                         continue;
@@ -833,12 +930,15 @@ namespace Ame::Rhi
                     {
                         lastTextureView = textureView;
                         m_TextureVariable->Set(textureView);
-                        m_DeviceContext->CommitShaderResources(m_SRB, Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
+                        m_DeviceContext->CommitShaderResources(
+                            m_SRB,
+                            Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION);
                     }
 
                     Dg::DrawIndexedAttribs drawAtributes{ cmd->ElemCount,
-                                                          sizeof(ImDrawIdx) == sizeof(uint16_t) ? Dg::VT_UINT16
-                                                                                                : Dg::VT_UINT32,
+                                                          sizeof(ImDrawIdx) == sizeof(uint16_t)
+                                                              ? Dg::VT_UINT16
+                                                              : Dg::VT_UINT32,
                                                           Dg::DRAW_FLAG_VERIFY_STATES };
                     drawAtributes.FirstIndexLocation = cmd->IdxOffset + globalIdxOffset;
                     if (m_BaseVertexSupported)
@@ -848,10 +948,15 @@ namespace Ame::Rhi
                     else
                     {
                         Dg::IBuffer* vertices[] = { m_VertexBuffer };
-                        uint64_t     offsets[]  = { sizeof(ImDrawVert) * (size_t{ cmd->VtxOffset } + globalVtxOffset) };
-                        m_DeviceContext->SetVertexBuffers(0, 1, vertices, offsets,
-                                                          Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION,
-                                                          Dg::SET_VERTEX_BUFFERS_FLAG_NONE);
+                        uint64_t     offsets[]  = { sizeof(ImDrawVert) *
+                                                    (size_t{ cmd->VtxOffset } + globalVtxOffset) };
+                        m_DeviceContext->SetVertexBuffers(
+                            0,
+                            1,
+                            vertices,
+                            offsets,
+                            Dg::RESOURCE_STATE_TRANSITION_MODE_TRANSITION,
+                            Dg::SET_VERTEX_BUFFERS_FLAG_NONE);
                     }
                     m_DeviceContext->DrawIndexed(drawAtributes);
                 }
@@ -860,5 +965,5 @@ namespace Ame::Rhi
             globalVtxOffset += cmdList->VtxBuffer.Size;
         }
     }
-} // namespace Ame::Rhi
+}
 #endif

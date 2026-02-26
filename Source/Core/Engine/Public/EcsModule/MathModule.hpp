@@ -19,4 +19,4 @@ namespace Ame::Ecs
     private:
         void RegisterTransformObservers(WorldRef world);
     };
-} // namespace Ame::Ecs
+}

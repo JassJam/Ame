@@ -22,7 +22,8 @@ namespace Ame::Asset
 
     void Storage::Unmount(IAssetPackage* package)
     {
-        std::erase_if(m_Packages, [package](const auto& CurPackage) { return CurPackage == package; });
+        std::erase_if(m_Packages,
+                      [package](const auto& CurPackage) { return CurPackage == package; });
     }
 
     //
@@ -84,4 +85,4 @@ namespace Ame::Asset
         }
         return nullptr;
     }
-} // namespace Ame::Asset
+}

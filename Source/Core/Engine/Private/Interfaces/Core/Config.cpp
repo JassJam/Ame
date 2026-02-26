@@ -34,4 +34,4 @@ namespace Ame::Interfaces
             registry->ExposeInterface(owner, IID_FrameEvent, AmeCreateObject(FrameEvent));
         }
     }
-} // namespace Ame::Interfaces
+}

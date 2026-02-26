@@ -21,7 +21,8 @@ namespace Ame::Ecs
                 if (iter.event() == flecs::OnSet)
                 {
                     Geometry::Frustum frustum(cameras[i].GetProjectionMatrix());
-                    entity->set(CameraFrustumComponent{ frustum.Transform(transforms[i].ToMat4x4()) });
+                    entity->set(
+                        CameraFrustumComponent{ frustum.Transform(transforms[i].ToMat4x4()) });
                 }
                 else if (iter.event() == flecs::OnRemove)
                 {
@@ -43,4 +44,4 @@ namespace Ame::Ecs
             .yield_existing()
             .run(OnCameraTransformChanged_UpdateFrustum);
     }
-} // namespace Ame::Ecs
+}

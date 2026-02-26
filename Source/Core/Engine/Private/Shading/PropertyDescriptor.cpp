@@ -2,47 +2,57 @@
 #include <Math/Common.hpp>
 #include <Shading/PropertyDescriptor.hpp>
 
-#define AME_PROPDESC_METANAME     "meta"
-#define AME_PROPDESC_METADIMS     "dims"
-#define AME_PROPDESC_METATYPE     "type"
+#define AME_PROPDESC_METANAME "meta"
+#define AME_PROPDESC_METADIMS "dims"
+#define AME_PROPDESC_METATYPE "type"
 #define AME_PROPDESC_METADATATYPE "data_type"
-#define AME_PROPDESC_METAOFFSET   "offset"
-#define AME_PROPDESC_META(Name)   AME_PROPDESC_METANAME##"."##Name
+#define AME_PROPDESC_METAOFFSET "offset"
+#define AME_PROPDESC_META(Name) AME_PROPDESC_METANAME##"."##Name
 
 namespace Ame::Rhi
 {
-    MaterialPropertyDescriptor& MaterialPropertyDescriptor::IntImpl(const String& propertyName, uint8_t dims)
+    MaterialPropertyDescriptor& MaterialPropertyDescriptor::IntImpl(const String& propertyName,
+                                                                    uint8_t       dims)
     {
         InsertProp(propertyName, { MaterialResourceType::Scalar, MaterialDataType::Int, dims });
         return *this;
     }
 
-    MaterialPropertyDescriptor& MaterialPropertyDescriptor::FloatImpl(const String& propertyName, uint8_t dims)
+    MaterialPropertyDescriptor& MaterialPropertyDescriptor::FloatImpl(const String& propertyName,
+                                                                      uint8_t       dims)
     {
         InsertProp(propertyName, { MaterialResourceType::Scalar, MaterialDataType::Float, dims });
         return *this;
     }
 
-    MaterialPropertyDescriptor& MaterialPropertyDescriptor::BoolImpl(const String& propertyName, uint8_t dims)
+    MaterialPropertyDescriptor& MaterialPropertyDescriptor::BoolImpl(const String& propertyName,
+                                                                     uint8_t       dims)
     {
         InsertProp(propertyName, { MaterialResourceType::Scalar, MaterialDataType::Bool, dims });
         return *this;
     }
 
-    MaterialPropertyDescriptor& MaterialPropertyDescriptor::Matrix3x3Impl(const String& propertyName, uint8_t dims)
+    MaterialPropertyDescriptor& MaterialPropertyDescriptor::Matrix3x3Impl(
+        const String& propertyName,
+        uint8_t       dims)
     {
-        InsertProp(propertyName, { MaterialResourceType::Scalar, MaterialDataType::Matrix3x3, dims });
+        InsertProp(propertyName,
+                   { MaterialResourceType::Scalar, MaterialDataType::Matrix3x3, dims });
         return *this;
     }
 
-    MaterialPropertyDescriptor& MaterialPropertyDescriptor::Matrix4x4Impl(const String& propertyName, uint8_t dims)
+    MaterialPropertyDescriptor& MaterialPropertyDescriptor::Matrix4x4Impl(
+        const String& propertyName,
+        uint8_t       dims)
     {
-        InsertProp(propertyName, { MaterialResourceType::Scalar, MaterialDataType::Matrix4x4, dims });
+        InsertProp(propertyName,
+                   { MaterialResourceType::Scalar, MaterialDataType::Matrix4x4, dims });
         return *this;
     }
 
-    MaterialPropertyDescriptor& MaterialPropertyDescriptor::StructImpl(const String&                     propertyName,
-                                                                       const MaterialPropertyDescriptor& descriptor)
+    MaterialPropertyDescriptor& MaterialPropertyDescriptor::StructImpl(
+        const String&                     propertyName,
+        const MaterialPropertyDescriptor& descriptor)
     {
         InsertStruct(propertyName, descriptor);
         return *this;
@@ -61,7 +71,8 @@ namespace Ame::Rhi
             .map(
                 [](const boost::property_tree::ptree& property)
                 {
-                    return property.get_optional<uint32_t>(AME_PROPDESC_META(AME_PROPDESC_METAOFFSET))
+                    return property
+                        .get_optional<uint32_t>(AME_PROPDESC_META(AME_PROPDESC_METAOFFSET))
                         .value_or(InvalidOffset);
                 })
             .value_or(InvalidOffset);
@@ -76,7 +87,9 @@ namespace Ame::Rhi
 
     //
 
-    uint32_t MaterialPropertyDescriptor::GetSize(MaterialResourceType type, MaterialDataType dataType, uint8_t dims)
+    uint32_t MaterialPropertyDescriptor::GetSize(MaterialResourceType type,
+                                                 MaterialDataType     dataType,
+                                                 uint8_t              dims)
     {
         uint32_t size = 0;
         if (type == MaterialResourceType::Scalar)
@@ -85,44 +98,24 @@ namespace Ame::Rhi
             {
             case MaterialDataType::Bool:
             case MaterialDataType::Int:
-            case MaterialDataType::UInt:
-                size = sizeof(int);
-                break;
+            case MaterialDataType::UInt : size = sizeof(int); break;
             case MaterialDataType::Bool2:
-            case MaterialDataType::Int2:
-            case MaterialDataType::UInt2:
-                size = sizeof(int[2]);
-                break;
+            case MaterialDataType::Int2 :
+            case MaterialDataType::UInt2: size = sizeof(int[2]); break;
             case MaterialDataType::Bool3:
-            case MaterialDataType::Int3:
-            case MaterialDataType::UInt3:
-                size = sizeof(int[3]);
-                break;
+            case MaterialDataType::Int3 :
+            case MaterialDataType::UInt3: size = sizeof(int[3]); break;
             case MaterialDataType::Bool4:
-            case MaterialDataType::Int4:
-            case MaterialDataType::UInt4:
-                size = sizeof(int[4]);
-                break;
+            case MaterialDataType::Int4 :
+            case MaterialDataType::UInt4: size = sizeof(int[4]); break;
 
-            case MaterialDataType::Float:
-                size = sizeof(float);
-                break;
-            case MaterialDataType::Float2:
-                size = sizeof(float[2]);
-                break;
-            case MaterialDataType::Float3:
-                size = sizeof(float[3]);
-                break;
-            case MaterialDataType::Float4:
-                size = sizeof(float[4]);
-                break;
+            case MaterialDataType::Float : size = sizeof(float); break;
+            case MaterialDataType::Float2: size = sizeof(float[2]); break;
+            case MaterialDataType::Float3: size = sizeof(float[3]); break;
+            case MaterialDataType::Float4: size = sizeof(float[4]); break;
 
-            case MaterialDataType::Matrix3x3:
-                size = sizeof(float[3][3]);
-                break;
-            case MaterialDataType::Matrix4x4:
-                size = sizeof(float[4][4]);
-                break;
+            case MaterialDataType::Matrix3x3: size = sizeof(float[3][3]); break;
+            case MaterialDataType::Matrix4x4: size = sizeof(float[4][4]); break;
             }
 
             if (dims > 1)
@@ -139,7 +132,8 @@ namespace Ame::Rhi
 
         if (size)
         {
-            // if offset + size cant fit in 'UserDataAlignment' bytes, move to next 16 bytes boundary
+            // if offset + size cant fit in 'UserDataAlignment' bytes, move to next 16 bytes
+            // boundary
             if (((m_AlignedSize % UserDataAlignment) + size > UserDataAlignment))
             {
                 m_AlignedSize = Math::AlignUp(m_AlignedSize, UserDataAlignment);
@@ -153,7 +147,8 @@ namespace Ame::Rhi
 
     //
 
-    void MaterialPropertyDescriptor::InsertProp(const String& propertyName, const PropertyInfo& propertyInfo)
+    void MaterialPropertyDescriptor::InsertProp(const String&       propertyName,
+                                                const PropertyInfo& propertyInfo)
     {
         uint32_t size   = GetSize(propertyInfo.Type, propertyInfo.DataType, propertyInfo.Dims);
         uint32_t offset = AdvanceSize(size);
@@ -209,7 +204,8 @@ namespace Ame::Rhi
             auto  type     = static_cast<MaterialResourceType>(
                 metaData.get<std::underlying_type_t<MaterialResourceType>>(AME_PROPDESC_METATYPE));
 
-            metaData.put(AME_PROPDESC_METAOFFSET, metaData.get<uint32_t>(AME_PROPDESC_METAOFFSET) + offset);
+            metaData.put(AME_PROPDESC_METAOFFSET,
+                         metaData.get<uint32_t>(AME_PROPDESC_METAOFFSET) + offset);
 
             if (type == MaterialResourceType::Struct)
             {
@@ -233,4 +229,4 @@ namespace Ame::Rhi
     {
         m_AlignedSize = Math::AlignUp(m_AlignedSize, UserDataAlignment);
     }
-} // namespace Ame::Rhi
+}

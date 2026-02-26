@@ -40,4 +40,4 @@ namespace Ame::Gfx
     };
 
     using EntityTransformGpuStorage = EntityGpuStorage<EntityGpuStorageTraits_Transform>;
-} // namespace Ame::Gfx
+}

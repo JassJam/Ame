@@ -7,7 +7,8 @@
 
 namespace Ame::Ecs
 {
-    template<typename Ty> static void BaseLight(flecs::component<Ty> component)
+    template<typename Ty>
+    static void BaseLight(flecs::component<Ty> component)
     {
         component.on_set([](const Entity& entity, Ty&) { entity->add<LightTypeTag>(); });
         component.on_remove([](const Entity& entity, Ty&) { entity->remove<LightTypeTag>(); });
@@ -24,4 +25,4 @@ namespace Ame::Ecs
         BaseLight(world->component<PointLightComponent>());
         BaseLight(world->component<SpotLightComponent>());
     }
-} // namespace Ame::Ecs
+}

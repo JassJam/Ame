@@ -66,4 +66,4 @@ namespace Ame::Rhi
         { "float3", "world_tangent",    "WORLD_TANGENT",    Dg::VT_FLOAT32, 3 },
     };
     // clang-format on
-} // namespace Ame::Rhi
+}

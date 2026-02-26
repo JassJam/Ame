@@ -8,4 +8,4 @@ namespace Ame::Ecs
     {
         String Tag;
     };
-} // namespace Ame::Ecs
+}

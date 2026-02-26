@@ -17,4 +17,4 @@ namespace Ame::Editor
         s_ModuleRegistry = registry;
         return true;
     }
-} // namespace Ame::Editor
+} 

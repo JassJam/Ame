@@ -8,7 +8,8 @@ namespace Ame::Rhi
 #if PLATFORM_EMSCRIPTEN
     static constexpr char MultiDrawGLSLExtension[] = "#extension GL_ANGLE_multi_draw : enable";
 #else
-    static constexpr char MultiDrawGLSLExtension[] = "#extension GL_ARB_shader_draw_parameters : enable";
+    static constexpr char MultiDrawGLSLExtension[] =
+        "#extension GL_ARB_shader_draw_parameters : enable";
 #endif
 
     class ShaderCreateInfoX
@@ -45,8 +46,11 @@ namespace Ame::Rhi
         {
             this->FilePathCStr(createInfo.FilePath)
                 .SourceInputStreamFactory(Ptr{ createInfo.pShaderSourceStreamFactory })
-                .SourceCode(createInfo.Source == nullptr ? "" : String{ createInfo.Source, createInfo.SourceLength })
-                .Macros({ createInfo.Macros.Elements, createInfo.Macros.Elements + createInfo.Macros.Count })
+                .SourceCode(createInfo.Source == nullptr
+                                ? ""
+                                : String{ createInfo.Source, createInfo.SourceLength })
+                .Macros({ createInfo.Macros.Elements,
+                          createInfo.Macros.Elements + createInfo.Macros.Count })
                 .ShaderType(createInfo.Desc.ShaderType)
                 .CombinedTextureSamplers(createInfo.Desc.UseCombinedTextureSamplers)
                 .CombinedSamplerSuffix(createInfo.Desc.CombinedSamplerSuffix)
@@ -73,7 +77,8 @@ namespace Ame::Rhi
     public:
         ShaderCreateInfoX& NameCStr(const char* name)
         {
-            m_CreateInfo.Desc.Name = name == nullptr ? "" : m_StringPool.insert(std::move(name)).first->c_str();
+            m_CreateInfo.Desc.Name =
+                name == nullptr ? "" : m_StringPool.insert(std::move(name)).first->c_str();
             return *this;
         }
 
@@ -83,7 +88,8 @@ namespace Ame::Rhi
             return *this;
         }
 
-        [[nodiscard]] const char* Name() const noexcept
+        [[nodiscard]]
+        const char* Name() const noexcept
         {
             return m_CreateInfo.Desc.Name;
         }
@@ -91,7 +97,8 @@ namespace Ame::Rhi
     public:
         ShaderCreateInfoX& FilePathCStr(const char* path)
         {
-            m_CreateInfo.FilePath = path == nullptr ? "" : m_StringPool.insert(std::move(path)).first->c_str();
+            m_CreateInfo.FilePath =
+                path == nullptr ? "" : m_StringPool.insert(std::move(path)).first->c_str();
             return *this;
         }
 
@@ -101,21 +108,24 @@ namespace Ame::Rhi
             return *this;
         }
 
-        [[nodiscard]] const char* FilePath() const noexcept
+        [[nodiscard]]
+        const char* FilePath() const noexcept
         {
             return m_CreateInfo.FilePath;
         }
 
         //
 
-        ShaderCreateInfoX& SourceInputStreamFactory(Ptr<Dg::IShaderSourceInputStreamFactory> factory)
+        ShaderCreateInfoX& SourceInputStreamFactory(
+            Ptr<Dg::IShaderSourceInputStreamFactory> factory)
         {
             m_CreateInfo.pShaderSourceStreamFactory = factory;
             m_ShaderSourceStreamFactory             = std::move(factory);
             return *this;
         }
 
-        [[nodiscard]] Dg::IShaderSourceInputStreamFactory* SourceInputStreamFactory() const noexcept
+        [[nodiscard]]
+        Dg::IShaderSourceInputStreamFactory* SourceInputStreamFactory() const noexcept
         {
             return m_CreateInfo.pShaderSourceStreamFactory;
         }
@@ -124,8 +134,9 @@ namespace Ame::Rhi
 
         ShaderCreateInfoX& SourceCodeCStr(const char* sourceCode, size_t length = 0)
         {
-            m_CreateInfo.Source =
-                sourceCode == nullptr ? "" : m_StringPool.insert(std::move(sourceCode)).first->c_str();
+            m_CreateInfo.Source       = sourceCode == nullptr
+                                            ? ""
+                                            : m_StringPool.insert(std::move(sourceCode)).first->c_str();
             m_CreateInfo.SourceLength = length;
             return *this;
         }
@@ -137,12 +148,14 @@ namespace Ame::Rhi
             return *this;
         }
 
-        [[nodiscard]] const char* SourceCode() const noexcept
+        [[nodiscard]]
+        const char* SourceCode() const noexcept
         {
             return m_CreateInfo.Source;
         }
 
-        [[nodiscard]] size_t SourceCodeLength() const noexcept
+        [[nodiscard]]
+        size_t SourceCodeLength() const noexcept
         {
             return m_CreateInfo.SourceLength;
         }
@@ -162,18 +175,22 @@ namespace Ame::Rhi
             if (size)
             {
                 m_ByteCode = std::make_unique<std::byte[]>(size);
-                std::ranges::copy_n(static_cast<const std::byte*>(byteCode), size, m_ByteCode.get());
+                std::ranges::copy_n(static_cast<const std::byte*>(byteCode),
+                                    size,
+                                    m_ByteCode.get());
             }
             m_CreateInfo.ByteCodeSize = size;
             return *this;
         }
 
-        [[nodiscard]] const std::byte* ByteCode() const noexcept
+        [[nodiscard]]
+        const std::byte* ByteCode() const noexcept
         {
             return m_ByteCode.get();
         }
 
-        [[nodiscard]] size_t ByteCodeSize() const noexcept
+        [[nodiscard]]
+        size_t ByteCodeSize() const noexcept
         {
             return m_CreateInfo.ByteCodeSize;
         }
@@ -186,7 +203,8 @@ namespace Ame::Rhi
             return *this;
         }
 
-        [[nodiscard]] const char* EntryPoint() const noexcept
+        [[nodiscard]]
+        const char* EntryPoint() const noexcept
         {
             return m_CreateInfo.EntryPoint;
         }
@@ -207,8 +225,8 @@ namespace Ame::Rhi
 
         ShaderCreateInfoX& AppendMacro(Dg::ShaderMacro macro)
         {
-            m_Macros.emplace_back(
-                m_StringPool.insert(macro.Name).first->c_str(), m_StringPool.insert(macro.Definition).first->c_str());
+            m_Macros.emplace_back(m_StringPool.insert(macro.Name).first->c_str(),
+                                  m_StringPool.insert(macro.Definition).first->c_str());
             m_CreateInfo.Macros = { m_Macros.data(), Count32(m_Macros) };
             return *this;
         }
@@ -225,7 +243,8 @@ namespace Ame::Rhi
             return *this;
         }
 
-        [[nodiscard]] const std::vector<Dg::ShaderMacro>& Macros() const noexcept
+        [[nodiscard]]
+        const std::vector<Dg::ShaderMacro>& Macros() const noexcept
         {
             return m_Macros;
         }
@@ -244,7 +263,8 @@ namespace Ame::Rhi
             return *this;
         }
 
-        [[nodiscard]] Dg::SHADER_TYPE ShaderType() const noexcept
+        [[nodiscard]]
+        Dg::SHADER_TYPE ShaderType() const noexcept
         {
             return m_CreateInfo.Desc.ShaderType;
         }
@@ -257,7 +277,8 @@ namespace Ame::Rhi
             return *this;
         }
 
-        [[nodiscard]] bool CombinedTextureSamplers() const noexcept
+        [[nodiscard]]
+        bool CombinedTextureSamplers() const noexcept
         {
             return m_CreateInfo.Desc.UseCombinedTextureSamplers;
         }
@@ -271,7 +292,8 @@ namespace Ame::Rhi
             return *this;
         }
 
-        [[nodiscard]] const char* CombinedSamplerSuffix() const noexcept
+        [[nodiscard]]
+        const char* CombinedSamplerSuffix() const noexcept
         {
             return m_CreateInfo.Desc.CombinedSamplerSuffix;
         }
@@ -284,7 +306,8 @@ namespace Ame::Rhi
             return *this;
         }
 
-        [[nodiscard]] Dg::SHADER_SOURCE_LANGUAGE SourceLanguage() const noexcept
+        [[nodiscard]]
+        Dg::SHADER_SOURCE_LANGUAGE SourceLanguage() const noexcept
         {
             return m_CreateInfo.SourceLanguage;
         }
@@ -297,7 +320,8 @@ namespace Ame::Rhi
             return *this;
         }
 
-        [[nodiscard]] Dg::SHADER_COMPILER ShaderCompiler() const noexcept
+        [[nodiscard]]
+        Dg::SHADER_COMPILER ShaderCompiler() const noexcept
         {
             return m_CreateInfo.ShaderCompiler;
         }
@@ -310,7 +334,8 @@ namespace Ame::Rhi
             return *this;
         }
 
-        [[nodiscard]] Dg::ShaderVersion HLSLVersion() const noexcept
+        [[nodiscard]]
+        Dg::ShaderVersion HLSLVersion() const noexcept
         {
             return m_CreateInfo.HLSLVersion;
         }
@@ -323,7 +348,8 @@ namespace Ame::Rhi
             return *this;
         }
 
-        [[nodiscard]] Dg::ShaderVersion GLSLVersion() const noexcept
+        [[nodiscard]]
+        Dg::ShaderVersion GLSLVersion() const noexcept
         {
             return m_CreateInfo.GLSLVersion;
         }
@@ -336,7 +362,8 @@ namespace Ame::Rhi
             return *this;
         }
 
-        [[nodiscard]] Dg::ShaderVersion GLESSLVersion() const noexcept
+        [[nodiscard]]
+        Dg::ShaderVersion GLESSLVersion() const noexcept
         {
             return m_CreateInfo.GLESSLVersion;
         }
@@ -349,7 +376,8 @@ namespace Ame::Rhi
             return *this;
         }
 
-        [[nodiscard]] Dg::ShaderVersion MSLVersion() const noexcept
+        [[nodiscard]]
+        Dg::ShaderVersion MSLVersion() const noexcept
         {
             return m_CreateInfo.MSLVersion;
         }
@@ -362,7 +390,8 @@ namespace Ame::Rhi
             return *this;
         }
 
-        [[nodiscard]] Dg::SHADER_COMPILE_FLAGS CompileFlags() const noexcept
+        [[nodiscard]]
+        Dg::SHADER_COMPILE_FLAGS CompileFlags() const noexcept
         {
             return m_CreateInfo.CompileFlags;
         }
@@ -375,7 +404,8 @@ namespace Ame::Rhi
             return *this;
         }
 
-        [[nodiscard]] bool LoadConstantBufferReflection() const noexcept
+        [[nodiscard]]
+        bool LoadConstantBufferReflection() const noexcept
         {
             return m_CreateInfo.LoadConstantBufferReflection;
         }
@@ -384,30 +414,37 @@ namespace Ame::Rhi
 
         ShaderCreateInfoX& GLSLExtensionsCStr(const char* path)
         {
-            m_CreateInfo.GLSLExtensions = path == nullptr ? "" : m_StringPool.insert(std::move(path)).first->c_str();
+            m_CreateInfo.GLSLExtensions =
+                path == nullptr ? "" : m_StringPool.insert(std::move(path)).first->c_str();
             return *this;
         }
 
         ShaderCreateInfoX& GLSLExtensions(String glslExtensions)
         {
-            m_CreateInfo.GLSLExtensions = m_StringPool.insert(std::move(glslExtensions)).first->c_str();
+            m_CreateInfo.GLSLExtensions =
+                m_StringPool.insert(std::move(glslExtensions)).first->c_str();
             return *this;
         }
 
         ShaderCreateInfoX& AppendGLSLExtensions(String glslExtensions)
         {
-            return GLSLExtensions(std::format(
-                "{}\n{}", (m_CreateInfo.GLSLExtensions ? m_CreateInfo.GLSLExtensions : ""), "\n", glslExtensions));
+            return GLSLExtensions(
+                std::format("{}\n{}",
+                            (m_CreateInfo.GLSLExtensions ? m_CreateInfo.GLSLExtensions : ""),
+                            "\n",
+                            glslExtensions));
         }
 
-        [[nodiscard]] const char* GLSLExtensions() const noexcept
+        [[nodiscard]]
+        const char* GLSLExtensions() const noexcept
         {
             return m_CreateInfo.GLSLExtensions;
         }
 
         //
 
-        ShaderCreateInfoX& WebGPUEmulatedArrayIndexSuffixCStr(const char* webGPUEmulatedArrayIndexSuffix)
+        ShaderCreateInfoX& WebGPUEmulatedArrayIndexSuffixCStr(
+            const char* webGPUEmulatedArrayIndexSuffix)
         {
             m_CreateInfo.WebGPUEmulatedArrayIndexSuffix =
                 webGPUEmulatedArrayIndexSuffix == nullptr
@@ -423,19 +460,22 @@ namespace Ame::Rhi
             return *this;
         }
 
-        [[nodiscard]] const char* WebGPUEmulatedArrayIndexSuffix() const noexcept
+        [[nodiscard]]
+        const char* WebGPUEmulatedArrayIndexSuffix() const noexcept
         {
             return m_CreateInfo.WebGPUEmulatedArrayIndexSuffix;
         }
 
         //
 
-        [[nodiscard]] const Dg::ShaderCreateInfo& GetCreateInfo() const noexcept
+        [[nodiscard]]
+        const Dg::ShaderCreateInfo& GetCreateInfo() const noexcept
         {
             return m_CreateInfo;
         }
 
-        [[nodiscard]] explicit operator const Dg::ShaderCreateInfo&() const noexcept
+        [[nodiscard]]
+        explicit operator const Dg::ShaderCreateInfo&() const noexcept
         {
             return m_CreateInfo;
         }
@@ -447,4 +487,4 @@ namespace Ame::Rhi
         std::unordered_set<std::string>          m_StringPool;
         std::vector<Dg::ShaderMacro>             m_Macros;
     };
-} // namespace Ame::Rhi
+}

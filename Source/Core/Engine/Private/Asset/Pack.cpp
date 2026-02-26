@@ -5,8 +5,9 @@
 
 namespace Ame::Asset
 {
-    IAssetPackage::IAssetPackage(IReferenceCounters* counters, Storage& assetStorage) :
-        IObjectWithCallback(counters), m_Storage(assetStorage), m_Runtime(assetStorage.GetRuntime())
+    IAssetPackage::IAssetPackage(IReferenceCounters* counters, Storage& assetStorage)
+        : IObjectWithCallback(counters), m_Storage(assetStorage),
+          m_Runtime(assetStorage.GetRuntime())
     {
     }
 
@@ -14,4 +15,4 @@ namespace Ame::Asset
     {
         return m_Storage;
     }
-} // namespace Ame::Asset
+}

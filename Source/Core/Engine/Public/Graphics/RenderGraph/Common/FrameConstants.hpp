@@ -47,4 +47,4 @@ namespace Ame::Gfx
     };
     static_assert(sizeof(CameraFrameData) == Math::AlignUp(sizeof(CameraFrameData), 16),
                   "CameraFrameData is not 16-byte aligned");
-} // namespace Ame::Gfx
+}

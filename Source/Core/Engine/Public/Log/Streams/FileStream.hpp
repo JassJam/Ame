@@ -11,4 +11,4 @@ namespace Ame::Log
         FileStream(const String& fileName, bool truncate = false);
         FileStream(const String& fileName, LogFileEvent events, bool truncate = false);
     };
-} // namespace Ame::Log
+}

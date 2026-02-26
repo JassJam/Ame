@@ -32,13 +32,15 @@ namespace Ame
         bool     UnloadPlugin(const String& name) override;
 
     private:
-        [[nodiscard]] auto FindContext(const String& name) noexcept
+        [[nodiscard]]
+        auto FindContext(const String& name) noexcept
         {
             auto iter = m_Plugins.find(name);
             return iter != m_Plugins.end() ? iter->second.get() : nullptr;
         }
 
-        [[nodiscard]] auto FindContext(const IPlugin* plugin) noexcept
+        [[nodiscard]]
+        auto FindContext(const IPlugin* plugin) noexcept
         {
             return FindContext(plugin->GetPluginName());
         }
@@ -51,4 +53,4 @@ namespace Ame
         InterfaceMap m_Interfaces;
         PluginMap    m_Plugins;
     };
-} // namespace Ame
+}

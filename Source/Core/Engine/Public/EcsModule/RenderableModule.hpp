@@ -13,4 +13,4 @@ namespace Ame::Ecs
     public:
         RenderableEcsModule(flecs::world& flecsWorld);
     };
-} // namespace Ame::Ecs
+}

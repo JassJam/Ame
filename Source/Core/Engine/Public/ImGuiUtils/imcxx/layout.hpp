@@ -5,8 +5,9 @@
 namespace imcxx
 {
     /// <summary>
-    /// lock and unlock horizontal starting position + capture the whole group bounding box into one "item"
-    /// (so you can use IsItemHovered() or layout primitives such as SameLine() on whole group, etc.)
+    /// lock and unlock horizontal starting position + capture the whole group bounding box into one
+    /// "item" (so you can use IsItemHovered() or layout primitives such as SameLine() on whole
+    /// group, etc.)
     /// </summary>
     class [[nodiscard]] group : public scope_wrap<group, scope_traits::always_dtor, false>
     {
@@ -68,4 +69,4 @@ namespace imcxx
         }
         float m_Indent;
     };
-} // namespace imcxx
+}

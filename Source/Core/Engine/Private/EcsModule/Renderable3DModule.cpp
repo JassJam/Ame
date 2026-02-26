@@ -15,4 +15,4 @@ namespace Ame::Ecs
 
         ImplementObject<StaticMeshComponent, IBaseRenderable3DComponent>(flecsWorld);
     }
-} // namespace Ame::Ecs
+}

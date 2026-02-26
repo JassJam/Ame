@@ -11,4 +11,4 @@ namespace Ame::Scripting
 
         bool OnPluginPreLoad(IModuleRegistry* registry);
     };
-} // namespace Ame::Scripting
+}

@@ -10,21 +10,25 @@
 
 namespace Ame::Editor
 {
-    SceneViewEditorWindow::SceneViewEditorWindow(IReferenceCounters* counter) :
-        IEditorWindow(counter, SceneViewEditorWindowPath), m_World(ModuleUtils::GetWorld()),
-        m_CameraQuery(m_World
-                          ->CreateQuery<const Ecs::CameraComponent, const Ecs::GlobalTransformComponent,
-                                        const Ecs::CameraOutputComponent>()
-                          .with<Ecs::ActiveSceneEntityTag>()
-                          .order_by<Ecs::CameraComponent>([](Ecs::EntityId, auto a, Ecs::EntityId, auto b)
-                                                          { return a->Priority - b->Priority; })
-                          .build())
+    SceneViewEditorWindow::SceneViewEditorWindow(IReferenceCounters* counter)
+        : IEditorWindow(counter, SceneViewEditorWindowPath), m_World(ModuleUtils::GetWorld()),
+          m_CameraQuery(
+              m_World
+                  ->CreateQuery<const Ecs::CameraComponent,
+                                const Ecs::GlobalTransformComponent,
+                                const Ecs::CameraOutputComponent>()
+                  .with<Ecs::ActiveSceneEntityTag>()
+                  .order_by<Ecs::CameraComponent>([](Ecs::EntityId, auto a, Ecs::EntityId, auto b)
+                                                  { return a->Priority - b->Priority; })
+                  .build())
     {
     }
 
     void SceneViewEditorWindow::OnDrawVisible()
     {
-        imcxx::window window{ GetFullPath(), nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse };
+        imcxx::window window{ GetFullPath(),
+                              nullptr,
+                              ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse };
 
         RenderHeader();
         ImGui::Separator();
@@ -51,7 +55,8 @@ namespace Ame::Editor
         auto& currentCamera = GetCurrentCamera();
         if (ImGui::BeginCombo("##CameraList", currentCamera.Name.c_str()))
         {
-            if (ImGui::Selectable(s_NoneCamera.Name.c_str(), m_CurrentCameraIndex == m_CameraList.size()))
+            if (ImGui::Selectable(s_NoneCamera.Name.c_str(),
+                                  m_CurrentCameraIndex == m_CameraList.size()))
             {
                 m_CurrentCameraIndex = static_cast<uint32_t>(m_CameraList.size());
             }
@@ -86,8 +91,8 @@ namespace Ame::Editor
             return;
         }
 
-        auto& graphStorage      = cameraComponent->RenderGraph->GetResourceStorage();
-        auto  outputView        = graphStorage.GetResource(Rg::ResourceId(cameraOutput->SourceView));
+        auto& graphStorage = cameraComponent->RenderGraph->GetResourceStorage();
+        auto  outputView   = graphStorage.GetResource(Rg::ResourceId(cameraOutput->SourceView));
         auto  textureOutputView = outputView ? outputView->AsTexture() : nullptr;
         if (!textureOutputView) [[unlikely]]
         {
@@ -125,6 +130,7 @@ namespace Ame::Editor
 
     auto SceneViewEditorWindow::GetCurrentCamera() const -> const CameraInfo&
     {
-        return m_CurrentCameraIndex < m_CameraList.size() ? m_CameraList[m_CurrentCameraIndex] : s_NoneCamera;
+        return m_CurrentCameraIndex < m_CameraList.size() ? m_CameraList[m_CurrentCameraIndex]
+                                                          : s_NoneCamera;
     }
-} // namespace Ame::Editor
+}

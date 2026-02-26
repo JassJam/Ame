@@ -24,4 +24,4 @@ namespace Ame::Gfx
     private:
         PassData m_PassData;
     };
-} // namespace Ame::Gfx
+}

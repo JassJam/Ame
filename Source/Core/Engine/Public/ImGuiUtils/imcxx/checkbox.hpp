@@ -9,17 +9,23 @@ namespace imcxx
     {
     public:
         template<typename _StrTy>
-        checkbox(const _StrTy& label, bool* p_open) : scope_wrap(ImGui::Checkbox(impl::get_string(label), p_open))
+        checkbox(const _StrTy& label, bool* p_open)
+            : scope_wrap(ImGui::Checkbox(impl::get_string(label), p_open))
         {
         }
 
-        template<typename _StrTy> checkbox(const _StrTy& label, bool& r_open) : checkbox(label, &r_open)
+        template<typename _StrTy>
+        checkbox(const _StrTy& label, bool& r_open) : checkbox(label, &r_open)
         {
         }
 
-        template<typename _StrTy, typename _Ty, typename _FlagsTy, typename = std::enable_if_t<std::is_integral_v<_Ty>>>
-        checkbox(const _StrTy& label, _Ty* flags, _FlagsTy flag) :
-            scope_wrap(ImGui::CheckboxFlagsT(impl::get_string(label), flags, static_cast<_Ty>(flag)))
+        template<typename _StrTy,
+                 typename _Ty,
+                 typename _FlagsTy,
+                 typename = std::enable_if_t<std::is_integral_v<_Ty>>>
+        checkbox(const _StrTy& label, _Ty* flags, _FlagsTy flag)
+            : scope_wrap(
+                  ImGui::CheckboxFlagsT(impl::get_string(label), flags, static_cast<_Ty>(flag)))
         {
         }
 
@@ -29,7 +35,8 @@ namespace imcxx
         }
     };
 
-    template<size_t _Size> class checkbox_list
+    template<size_t _Size>
+    class checkbox_list
     {
     public:
         size_t size() const noexcept
@@ -100,5 +107,6 @@ namespace imcxx
         checkbox m_Checkboxes[_Size];
     };
 
-    template<typename _Ty, typename... _Args> checkbox_list(_Ty, _Args...) -> checkbox_list<1 + sizeof...(_Args)>;
-} // namespace imcxx
+    template<typename _Ty, typename... _Args>
+    checkbox_list(_Ty, _Args...) -> checkbox_list<1 + sizeof...(_Args)>;
+}

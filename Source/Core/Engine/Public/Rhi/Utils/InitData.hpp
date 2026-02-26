@@ -7,14 +7,16 @@
 namespace Ame::Rhi
 {
     // {0BF00221-593F-40CE-B5BD-E47039D77F4A}
-    inline constexpr UId IID_BufferInitData{
-        0xbf00221, 0x593f, 0x40ce, { 0xb5, 0xbd, 0xe4, 0x70, 0x39, 0xd7, 0x7f, 0x4a }
-    };
+    inline constexpr UId IID_BufferInitData{ 0xbf00221,
+                                             0x593f,
+                                             0x40ce,
+                                             { 0xb5, 0xbd, 0xe4, 0x70, 0x39, 0xd7, 0x7f, 0x4a } };
 
     // {F8BAB672-F3B8-440C-8709-A05608CFEB23}
-    inline constexpr UId IID_TextureInitData{
-        0xf8bab672, 0xf3b8, 0x440c, { 0x87, 0x9, 0xa0, 0x56, 0x8, 0xcf, 0xeb, 0x23 }
-    };
+    inline constexpr UId IID_TextureInitData{ 0xf8bab672,
+                                              0xf3b8,
+                                              0x440c,
+                                              { 0x87, 0x9, 0xa0, 0x56, 0x8, 0xcf, 0xeb, 0x23 } };
 
     struct BufferInitData : IObjectWithCallback
     {
@@ -27,7 +29,8 @@ namespace Ame::Rhi
         static Ptr<BufferInitData> Create(const void* data, size_t size)
         {
             auto initData  = AmeCreate(BufferInitData);
-            initData->Data = { static_cast<const std::byte*>(data), static_cast<const std::byte*>(data) + size };
+            initData->Data = { static_cast<const std::byte*>(data),
+                               static_cast<const std::byte*>(data) + size };
             return initData;
         }
 
@@ -36,9 +39,11 @@ namespace Ame::Rhi
         std::vector<std::byte> Data;
 
     public:
-        [[nodiscard]] Dg::BufferData GetInitData(Dg::IDeviceContext* deviceContext = nullptr) const
+        [[nodiscard]]
+        Dg::BufferData GetInitData(Dg::IDeviceContext* deviceContext = nullptr) const
         {
-            return { Data.empty() ? nullptr : static_cast<const void*>(Data.data()), static_cast<uint32_t>(Data.size()),
+            return { Data.empty() ? nullptr : static_cast<const void*>(Data.data()),
+                     static_cast<uint32_t>(Data.size()),
                      deviceContext };
         }
     };
@@ -46,8 +51,8 @@ namespace Ame::Rhi
     struct TextureInitData : IObjectWithCallback
     {
     private:
-        IMPLEMENT_INTERFACE_CTOR(TextureInitData, Dg::TEXTURE_FORMAT format) :
-            IObjectWithCallback(counters), Format(format)
+        IMPLEMENT_INTERFACE_CTOR(TextureInitData, Dg::TEXTURE_FORMAT format)
+            : IObjectWithCallback(counters), Format(format)
         {
         }
 
@@ -88,46 +93,56 @@ namespace Ame::Rhi
                 const auto& prevLevel = Levels[mip - 1];
 
                 // Note that we can't use GetMipLevelProperties here
-                level.Width = Math::AlignUp(
-                    std::max(prevLevel.Width / 2u, 1u), static_cast<uint32_t>(formatAttributes.BlockWidth));
-                level.Height = Math::AlignUp(
-                    std::max(prevLevel.Height / 2u, 1u), static_cast<uint32_t>(formatAttributes.BlockHeight));
+                level.Width  = Math::AlignUp(std::max(prevLevel.Width / 2u, 1u),
+                                            static_cast<uint32_t>(formatAttributes.BlockWidth));
+                level.Height = Math::AlignUp(std::max(prevLevel.Height / 2u, 1u),
+                                             static_cast<uint32_t>(formatAttributes.BlockHeight));
 
                 level.SubResData.Stride =
-                    static_cast<uint32_t>(level.Width) / static_cast<uint32_t>(formatAttributes.BlockWidth) *
+                    static_cast<uint32_t>(level.Width) /
+                    static_cast<uint32_t>(formatAttributes.BlockWidth) *
                     formatAttributes.ComponentSize *
-                    (formatAttributes.ComponentType != Dg::COMPONENT_TYPE_COMPRESSED ? formatAttributes.NumComponents
-                                                                                     : 1);
+                    (formatAttributes.ComponentType != Dg::COMPONENT_TYPE_COMPRESSED
+                         ? formatAttributes.NumComponents
+                         : 1);
                 level.SubResData.Stride = Math::AlignUp(level.SubResData.Stride, 4ull);
 
-                const auto MipSize = level.SubResData.Stride * level.Height / formatAttributes.BlockHeight;
+                const auto MipSize =
+                    level.SubResData.Stride * level.Height / formatAttributes.BlockHeight;
 
                 level.Data.resize(static_cast<size_t>(MipSize));
                 level.SubResData.pData = level.Data.data();
 
                 if (formatAttributes.ComponentType != Dg::COMPONENT_TYPE_COMPRESSED)
                 {
-                    Dg::ComputeMipLevel({ Format, prevLevel.Width, prevLevel.Height, prevLevel.Data.data(),
-                                          static_cast<size_t>(prevLevel.SubResData.Stride), level.Data.data(),
+                    Dg::ComputeMipLevel({ Format,
+                                          prevLevel.Width,
+                                          prevLevel.Height,
+                                          prevLevel.Data.data(),
+                                          static_cast<size_t>(prevLevel.SubResData.Stride),
+                                          level.Data.data(),
                                           static_cast<size_t>(level.SubResData.Stride) });
                 }
                 else
                 {
-                    UNSUPPORTED("Mip generation for compressed formats is not currently implemented");
+                    UNSUPPORTED(
+                        "Mip generation for compressed formats is not currently implemented");
                 }
             }
         }
 
-        [[nodiscard]] TextureData GetInitData(Dg::IDeviceContext* deviceContext = nullptr) const
+        [[nodiscard]]
+        TextureData GetInitData(Dg::IDeviceContext* deviceContext = nullptr) const
         {
             TextureData initData;
-            initData.Subresources = Levels |
-                                    std::views::transform([](const LevelData& level) { return level.SubResData; }) |
-                                    std::ranges::to<std::vector>();
+            initData.Subresources =
+                Levels |
+                std::views::transform([](const LevelData& level) { return level.SubResData; }) |
+                std::ranges::to<std::vector>();
             initData.NumSubresources = static_cast<uint32_t>(initData.Subresources.size());
             initData.pSubResources   = initData.Subresources.data();
             initData.pContext        = deviceContext;
             return initData;
         }
     };
-} // namespace Ame::Rhi
+}

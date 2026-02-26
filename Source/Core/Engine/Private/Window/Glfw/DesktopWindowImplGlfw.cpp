@@ -4,8 +4,9 @@
 
 namespace Ame::Window
 {
-    DesktopWindowImplGlfw::DesktopWindowImplGlfw(IReferenceCounters* counters, const WindowCreateDesc& windowDesc) :
-        IWindow(counters), m_Title(windowDesc.Title)
+    DesktopWindowImplGlfw::DesktopWindowImplGlfw(IReferenceCounters*     counters,
+                                                 const WindowCreateDesc& windowDesc)
+        : IWindow(counters), m_Title(windowDesc.Title)
     {
         GlfwDriverImpl::Initialize();
         GetGlfwDriver()->submit([this, windowDesc] { CreateGlfwWindow(windowDesc); }).wait();
@@ -19,7 +20,8 @@ namespace Ame::Window
                 {
                     GlfwHooks::Get().Uninstall_WindowSize(m_Handle, m_WindowSizeCallbackId);
                     GlfwHooks::Get().Uninstall_WindowPos(m_Handle, m_WindowPosCallbackId);
-                    GlfwHooks::Get().Uninstall_TitlebarHitTest(m_Handle, m_WindowTitlebarCallbackId);
+                    GlfwHooks::Get().Uninstall_TitlebarHitTest(m_Handle,
+                                                               m_WindowTitlebarCallbackId);
                     GlfwHooks::Get().Uninstall_WindowIconified(m_Handle, m_WindowIconifyCallbackId);
                     glfwDestroyWindow(m_Handle);
                 })
@@ -30,7 +32,8 @@ namespace Ame::Window
 
     bool DesktopWindowImplGlfw::IsRunning() const
     {
-        return GetGlfwDriver()->submit([this] { return glfwWindowShouldClose(m_Handle); }).get() == GLFW_FALSE;
+        return GetGlfwDriver()->submit([this] { return glfwWindowShouldClose(m_Handle); }).get() ==
+               GLFW_FALSE;
     }
 
     void DesktopWindowImplGlfw::Close()
@@ -50,13 +53,16 @@ namespace Ame::Window
     {
         m_WindowSize = size;
         GetGlfwDriver()
-            ->submit([this] { glfwSetWindowSize(m_Handle, m_WindowSize.Width(), m_WindowSize.Height()); })
+            ->submit([this]
+                     { glfwSetWindowSize(m_Handle, m_WindowSize.Width(), m_WindowSize.Height()); })
             .wait();
     }
 
     void DesktopWindowImplGlfw::SetPosition(const Math::Vector2I& position)
     {
-        GetGlfwDriver()->submit([&] { glfwSetWindowPos(m_Handle, position.x(), position.y()); }).wait();
+        GetGlfwDriver()
+            ->submit([&] { glfwSetWindowPos(m_Handle, position.x(), position.y()); })
+            .wait();
     }
 
     //
@@ -87,7 +93,9 @@ namespace Ame::Window
 
     bool DesktopWindowImplGlfw::IsFullScreen() const
     {
-        return GetGlfwDriver()->submit([this] { return glfwGetWindowMonitor(m_Handle) != nullptr; }).get();
+        return GetGlfwDriver()
+            ->submit([this] { return glfwGetWindowMonitor(m_Handle) != nullptr; })
+            .get();
     }
 
     void DesktopWindowImplGlfw::SetFullscreen(bool state)
@@ -102,12 +110,24 @@ namespace Ame::Window
                         const GLFWvidmode* mode    = glfwGetVideoMode(monitor);
 
                         m_WindowSize = { mode->width, mode->height };
-                        glfwSetWindowMonitor(m_Handle, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
+                        glfwSetWindowMonitor(m_Handle,
+                                             monitor,
+                                             0,
+                                             0,
+                                             mode->width,
+                                             mode->height,
+                                             mode->refreshRate);
                         glfwSetWindowAttrib(m_Handle, GLFW_DECORATED, GLFW_FALSE);
                     }
                     else
                     {
-                        glfwSetWindowMonitor(m_Handle, nullptr, 0, 0, m_WindowSize.Width(), m_WindowSize.Height(), 0);
+                        glfwSetWindowMonitor(m_Handle,
+                                             nullptr,
+                                             0,
+                                             0,
+                                             m_WindowSize.Width(),
+                                             m_WindowSize.Height(),
+                                             0);
                         glfwSetWindowAttrib(m_Handle, GLFW_DECORATED, GLFW_TRUE);
                     }
                 })
@@ -116,14 +136,16 @@ namespace Ame::Window
 
     bool DesktopWindowImplGlfw::IsMinimized() const
     {
-        return GetGlfwDriver()->submit([this] { return glfwGetWindowAttrib(m_Handle, GLFW_ICONIFIED); }).get() ==
-               GLFW_TRUE;
+        return GetGlfwDriver()
+                   ->submit([this] { return glfwGetWindowAttrib(m_Handle, GLFW_ICONIFIED); })
+                   .get() == GLFW_TRUE;
     }
 
     bool DesktopWindowImplGlfw::IsMaximized() const
     {
-        return GetGlfwDriver()->submit([this] { return glfwGetWindowAttrib(m_Handle, GLFW_MAXIMIZED); }).get() ==
-               GLFW_TRUE;
+        return GetGlfwDriver()
+                   ->submit([this] { return glfwGetWindowAttrib(m_Handle, GLFW_MAXIMIZED); })
+                   .get() == GLFW_TRUE;
     }
 
     void DesktopWindowImplGlfw::Minimize()
@@ -215,11 +237,16 @@ namespace Ame::Window
 
             if (windowDesc.FullScreen)
             {
-                m_Handle = glfwCreateWindow(mode->width, mode->height, windowDesc.Title, monitor, nullptr);
+                m_Handle =
+                    glfwCreateWindow(mode->width, mode->height, windowDesc.Title, monitor, nullptr);
             }
             else
             {
-                m_Handle = glfwCreateWindow(windowDesc.Width, windowDesc.Height, windowDesc.Title, nullptr, nullptr);
+                m_Handle = glfwCreateWindow(windowDesc.Width,
+                                            windowDesc.Height,
+                                            windowDesc.Title,
+                                            nullptr,
+                                            nullptr);
             }
         }
 
@@ -253,7 +280,8 @@ namespace Ame::Window
             m_Handle,
             [](GLFWwindow* glfwWindow, int width, int height)
             {
-                auto         window = static_cast<DesktopWindowImplGlfw*>(glfwGetWindowUserPointer(glfwWindow));
+                auto window =
+                    static_cast<DesktopWindowImplGlfw*>(glfwGetWindowUserPointer(glfwWindow));
                 Math::Size2I newSize{ width, height };
                 window->m_WindowSize = Math::Size2I{ width, height };
 
@@ -272,7 +300,8 @@ namespace Ame::Window
             m_Handle,
             [](GLFWwindow* glfwWindow)
             {
-                auto window = static_cast<DesktopWindowImplGlfw*>(glfwGetWindowUserPointer(glfwWindow));
+                auto window =
+                    static_cast<DesktopWindowImplGlfw*>(glfwGetWindowUserPointer(glfwWindow));
                 window->GetEventListener().OnWindowClosed.Invoke();
                 return true;
             });
@@ -283,10 +312,12 @@ namespace Ame::Window
                 m_Handle,
                 [](GLFWwindow* glfwWindow, int x, int y, int* hit)
                 {
-                    auto window = static_cast<DesktopWindowImplGlfw*>(glfwGetWindowUserPointer(glfwWindow));
+                    auto window =
+                        static_cast<DesktopWindowImplGlfw*>(glfwGetWindowUserPointer(glfwWindow));
 
-                    *hit =
-                        window->GetEventListener().OnWindowTitleHitTest.Invoke(Math::Vector2I{ x, y }).value_or(false);
+                    *hit = window->GetEventListener()
+                               .OnWindowTitleHitTest.Invoke(Math::Vector2I{ x, y })
+                               .value_or(false);
                     return true;
                 });
         }
@@ -295,9 +326,10 @@ namespace Ame::Window
             m_Handle,
             [](GLFWwindow* glfwWindow, int iconified)
             {
-                auto window = static_cast<DesktopWindowImplGlfw*>(glfwGetWindowUserPointer(glfwWindow));
+                auto window =
+                    static_cast<DesktopWindowImplGlfw*>(glfwGetWindowUserPointer(glfwWindow));
                 window->GetEventListener().OnWindowMinized.Invoke(iconified);
                 return true;
             });
     }
-} // namespace Ame::Window
+}

@@ -16,7 +16,8 @@ namespace Ame::Editor
     class EditorWindowManagerImpl final : public Interfaces::IEditorWindowManager
     {
     public:
-        IMPLEMENT_QUERY_INTERFACE_IN_PLACE(Interfaces::IID_EditorWindowManager, IEditorWindowManager);
+        IMPLEMENT_QUERY_INTERFACE_IN_PLACE(Interfaces::IID_EditorWindowManager,
+                                           IEditorWindowManager);
 
     private:
         IMPLEMENT_INTERFACE_CTOR(EditorWindowManagerImpl);
@@ -41,9 +42,10 @@ namespace Ame::Editor
         void EndEditorSpace();
 
     private:
-        void               CloseWindow(IEditorWindow* window);
-        void               OpenWindow(IEditorWindow* window);
-        [[nodiscard]] bool IsWindowOpen(IEditorWindow* window) const;
+        void CloseWindow(IEditorWindow* window);
+        void OpenWindow(IEditorWindow* window);
+        [[nodiscard]]
+        bool IsWindowOpen(IEditorWindow* window) const;
 
     private:
         Ptr<Window::IWindow> m_Window;
@@ -56,4 +58,4 @@ namespace Ame::Editor
 
         bool m_IsTitlebarHovered = false;
     };
-} // namespace Ame::Editor
+}

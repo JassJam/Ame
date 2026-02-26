@@ -56,4 +56,4 @@ namespace Ame::Asset
     private:
         Ref<Storage> m_Storage;
     };
-} // namespace Ame::Asset
+}

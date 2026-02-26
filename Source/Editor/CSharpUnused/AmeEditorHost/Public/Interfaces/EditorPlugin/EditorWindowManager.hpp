@@ -6,7 +6,7 @@ namespace Ame::Editor
 {
     class IEditorWindow;
     struct EditorWindowCreateDesc;
-} // namespace Ame::Editor
+} 
 
 namespace Ame::Interfaces
 {
@@ -30,4 +30,4 @@ namespace Ame::Interfaces
 
         virtual void HideWindow(Editor::IEditorWindow* window) = 0;
     };
-} // namespace Ame::Interfaces
+} 

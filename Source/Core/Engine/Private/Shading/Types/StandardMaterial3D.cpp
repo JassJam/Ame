@@ -16,4 +16,4 @@ namespace Ame::Rhi
 
         Shaders.emplace(Dg::SHADER_TYPE_PIXEL, StdMaterial3D_PixelShader().GetCreateInfo());
     }
-} // namespace Ame::Rhi
+}

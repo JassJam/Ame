@@ -20,31 +20,48 @@ namespace Ame::Rg
         }
 
     public:
-        [[nodiscard]] Rhi::IRhiDevice*       GetDevice() const noexcept;
-        [[nodiscard]] Dg::TEXTURE_FORMAT     GetBackbufferFormat() const;
-        [[nodiscard]] const Dg::TextureDesc& GetBackbufferDesc() const;
+        [[nodiscard]]
+        Rhi::IRhiDevice* GetDevice() const noexcept;
+        [[nodiscard]]
+        Dg::TEXTURE_FORMAT GetBackbufferFormat() const;
+        [[nodiscard]]
+        const Dg::TextureDesc& GetBackbufferDesc() const;
 
     public:
-        [[nodiscard]] bool                  ContainsResource(const ResourceId& id) const;
-        [[nodiscard]] const ResourceHandle* GetResource(const ResourceId& id) const;
-        [[nodiscard]] ResourceHandle*       GetResourceMut(const ResourceId& id);
+        [[nodiscard]]
+        bool ContainsResource(const ResourceId& id) const;
+        [[nodiscard]]
+        const ResourceHandle* GetResource(const ResourceId& id) const;
+        [[nodiscard]]
+        ResourceHandle* GetResourceMut(const ResourceId& id);
 
     public:
-        [[nodiscard]] Dg::IBufferView*  GetBufferView(ResourceViewId viewId) const;
-        [[nodiscard]] Dg::ITextureView* GetTextureView(ResourceViewId viewId) const;
+        [[nodiscard]]
+        Dg::IBufferView* GetBufferView(ResourceViewId viewId) const;
+        [[nodiscard]]
+        Dg::ITextureView* GetTextureView(ResourceViewId viewId) const;
 
     public:
-        [[nodiscard]] bool                          ContainsUserData(const ResourceId& id) const;
-        [[nodiscard]] void                          SetUserData(const ResourceId& id, IObject* object);
-        [[nodiscard]] IObject*                      GetUserData(const ResourceId& id) const;
-        template<typename Ty> [[nodiscard]] Ptr<Ty> GetUserData(const ResourceId& id, const UId& iid) const
+        [[nodiscard]]
+        bool ContainsUserData(const ResourceId& id) const;
+        [[nodiscard]]
+        void SetUserData(const ResourceId& id, IObject* object);
+        [[nodiscard]]
+        IObject* GetUserData(const ResourceId& id) const;
+        template<typename Ty>
+        [[nodiscard]]
+        Ptr<Ty> GetUserData(const ResourceId& id, const UId& iid) const
         {
             return { GetUserData(id), iid };
         }
 
     private:
-        void DeclareResource(const ResourceId& id, Rhi::BufferInitData* initData, const Dg::BufferDesc& desc);
-        void DeclareResource(const ResourceId& id, Rhi::TextureInitData* initData, const Dg::TextureDesc& desc);
+        void DeclareResource(const ResourceId&     id,
+                             Rhi::BufferInitData*  initData,
+                             const Dg::BufferDesc& desc);
+        void DeclareResource(const ResourceId&      id,
+                             Rhi::TextureInitData*  initData,
+                             const Dg::TextureDesc& desc);
 
     public:
         void ImportBuffer(const ResourceId& id, Dg::IBuffer* buffer);
@@ -55,8 +72,12 @@ namespace Ame::Rg
         void UpdateResources();
         void ClearResources();
 
-        [[nodiscard]] ResourceViewId DeclareBufferView(const ResourceId& viewId, const BufferResourceViewDesc& desc);
-        [[nodiscard]] ResourceViewId DeclareTextureView(const ResourceId& viewId, const TextureResourceViewDesc& desc);
+        [[nodiscard]]
+        ResourceViewId DeclareBufferView(const ResourceId&             viewId,
+                                         const BufferResourceViewDesc& desc);
+        [[nodiscard]]
+        ResourceViewId DeclareTextureView(const ResourceId&              viewId,
+                                          const TextureResourceViewDesc& desc);
 
     private:
         /// <summary>
@@ -78,8 +99,9 @@ namespace Ame::Rg
         void CheckLockState(bool locked) const;
 
     private:
-        [[nodiscard]] bool NeedsRebuild() const noexcept;
-        void               SetRebuildState(bool state) noexcept;
+        [[nodiscard]]
+        bool NeedsRebuild() const noexcept;
+        void SetRebuildState(bool state) noexcept;
 
     private:
         Rhi::IRhiDevice* m_RhiDevice;
@@ -91,4 +113,4 @@ namespace Ame::Rg
         bool m_Locked : 1 = false;
 #endif
     };
-} // namespace Ame::Rg
+}

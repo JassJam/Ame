@@ -19,7 +19,8 @@ namespace Ame::Gfx
         EntityStorage(Rhi::IRhiDevice* rhiDevice, Ecs::World* world);
 
     private:
-        void UploadToRenderGraph(Rg::Graph& cameraGraph, const CameraFrameDataUpdateDesc& frameData);
+        void UploadToRenderGraph(Rg::Graph&                       cameraGraph,
+                                 const CameraFrameDataUpdateDesc& frameData);
 
     private:
         void UpdateInstances();
@@ -35,8 +36,10 @@ namespace Ame::Gfx
         void UploadAllResource(Rg::Graph& cameraGraph);
 
     public:
-        [[nodiscard]] Rhi::IRhiDevice* GetRenderDevice();
-        [[nodiscard]] Ecs::World*      GetWorld();
+        [[nodiscard]]
+        Rhi::IRhiDevice* GetRenderDevice();
+        [[nodiscard]]
+        Ecs::World* GetWorld();
 
     private:
         Rhi::IRhiDevice* m_RhiDevice;
@@ -51,4 +54,4 @@ namespace Ame::Gfx
         EntityDrawInstanceGpuStorage m_DrawInstanceStorage; // EntityDrawInstance[]
         EntityLightGpuStorage        m_LightStorage;        // Light[]
     };
-} // namespace Ame::Gfx
+}

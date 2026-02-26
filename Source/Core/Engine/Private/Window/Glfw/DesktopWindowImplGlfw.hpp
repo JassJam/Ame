@@ -51,8 +51,10 @@ namespace Ame::Window
 
         void Restore() override;
 
-        [[nodiscard]] WindowEventListener& GetEventListener() override;
-        [[nodiscard]] IGlfwDriver*         GetGlfwDriver() const override;
+        [[nodiscard]]
+        WindowEventListener& GetEventListener() override;
+        [[nodiscard]]
+        IGlfwDriver* GetGlfwDriver() const override;
 
     private:
         void CreateGlfwWindow(const WindowCreateDesc& windowDesc);
@@ -69,4 +71,4 @@ namespace Ame::Window
         uint32_t m_WindowTitlebarCallbackId = 0;
         uint32_t m_WindowIconifyCallbackId  = 0;
     };
-} // namespace Ame::Window
+}

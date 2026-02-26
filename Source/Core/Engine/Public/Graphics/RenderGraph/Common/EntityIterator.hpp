@@ -15,13 +15,16 @@ namespace Ame::Gfx
     class EntityDrawCommandListIterator
     {
     public:
-        EntityDrawCommandListIterator(const EntityDrawCommandList& list, DrawInstanceType instancesType,
-                                      uint32_t commandOffset) :
-            m_DrawCommandList(list), m_CommandOffset(commandOffset), m_InstancesType(instancesType)
+        EntityDrawCommandListIterator(const EntityDrawCommandList& list,
+                                      DrawInstanceType             instancesType,
+                                      uint32_t                     commandOffset)
+            : m_DrawCommandList(list), m_CommandOffset(commandOffset),
+              m_InstancesType(instancesType)
         {
         }
 
-        [[nodiscard]] Co::generator<EntityDrawRowIterator> GetRows() const
+        [[nodiscard]]
+        Co::generator<EntityDrawRowIterator> GetRows() const
         {
             uint32_t offset = m_CommandOffset;
             for (auto& command : m_DrawCommandList.get())
@@ -31,7 +34,8 @@ namespace Ame::Gfx
             }
         }
 
-        [[nodiscard]] DrawInstanceType GetType() const noexcept
+        [[nodiscard]]
+        DrawInstanceType GetType() const noexcept
         {
             return m_InstancesType;
         }
@@ -45,19 +49,22 @@ namespace Ame::Gfx
     class EntityDrawCommandsCategoryIterator
     {
     public:
-        EntityDrawCommandsCategoryIterator(const EntityDrawCommandsCategory& categories) noexcept :
-            m_DrawCategories(categories)
+        EntityDrawCommandsCategoryIterator(const EntityDrawCommandsCategory& categories) noexcept
+            : m_DrawCategories(categories)
         {
         }
 
-        [[nodiscard]] Co::generator<EntityDrawCommandListIterator> GetGroups() const
+        [[nodiscard]]
+        Co::generator<EntityDrawCommandListIterator> GetGroups() const
         {
             uint32_t commandOffset = 0;
 
             int i = 0;
             for (auto& list : m_DrawCategories.get())
             {
-                co_yield EntityDrawCommandListIterator(list, static_cast<DrawInstanceType>(i), commandOffset);
+                co_yield EntityDrawCommandListIterator(list,
+                                                       static_cast<DrawInstanceType>(i),
+                                                       commandOffset);
                 commandOffset += static_cast<uint32_t>(list.size());
             }
         }
@@ -65,4 +72,4 @@ namespace Ame::Gfx
     private:
         CRef<EntityDrawCommandsCategory> m_DrawCategories;
     };
-} // namespace Ame::Gfx
+}

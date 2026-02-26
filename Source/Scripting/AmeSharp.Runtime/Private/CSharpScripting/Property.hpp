@@ -6,9 +6,10 @@
 namespace Ame::Scripting
 {
     // {87C5378E-EDA9-4962-98B5-258E64B608AE}
-    inline constexpr UId IID_CSProperty{
-        0x87c5378e, 0xeda9, 0x4962, { 0x98, 0xb5, 0x25, 0x8e, 0x64, 0xb6, 0x8, 0xae }
-    };
+    inline constexpr UId IID_CSProperty{ 0x87c5378e,
+                                         0xeda9,
+                                         0x4962,
+                                         { 0x98, 0xb5, 0x25, 0x8e, 0x64, 0xb6, 0x8, 0xae } };
 
     class CSType;
 
@@ -38,10 +39,11 @@ namespace Ame::Scripting
         void SetValue(IInstance* instance, const void* valuePtr) override;
 
     public:
-        [[nodiscard]] auto GetRuntime() const -> const CLRRuntime&;
+        [[nodiscard]]
+        auto GetRuntime() const -> const CLRRuntime&;
 
     private:
         Ptr<CSType> m_Type;
         void*       m_Property;
     };
-} // namespace Ame::Scripting
+}

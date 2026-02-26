@@ -7,8 +7,8 @@
 
 namespace Ame::Editor
 {
-    ConsoleEditorWindow::ConsoleEditorWindow(IReferenceCounters* counters) :
-        IEditorWindow(counters, ConsoleEditorWindowPath)
+    ConsoleEditorWindow::ConsoleEditorWindow(IReferenceCounters* counters)
+        : IEditorWindow(counters, ConsoleEditorWindowPath)
     {
         if (auto logger = Log::ILogger::Get())
         {
@@ -29,7 +29,9 @@ namespace Ame::Editor
 
     void ConsoleEditorWindow::OnDrawVisible()
     {
-        imcxx::window window{ GetFullPath(), nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse };
+        imcxx::window window{ GetFullPath(),
+                              nullptr,
+                              ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse };
         if (!window)
         {
             return;
@@ -42,7 +44,9 @@ namespace Ame::Editor
         ImGui::Text("Show output from: ");
         ImGui::SameLine();
         ImGui::SetNextItemWidth(logTypesWidth);
-        if (imcxx::combo_box logTypes{ "##LogTypes", m_LogStream->GetLevelMaskString(), ImGuiComboFlags_HeightSmall })
+        if (imcxx::combo_box logTypes{ "##LogTypes",
+                                       m_LogStream->GetLevelMaskString(),
+                                       ImGuiComboFlags_HeightSmall })
         {
             auto levelMask = m_LogStream->GetLevelMask();
             for (auto level : Enum::enum_values<Log::LogLevel>())
@@ -53,8 +57,9 @@ namespace Ame::Editor
                 }
 
                 auto name = Enum::enum_name(level);
-                if (ImGui::CheckboxFlags(
-                        name.data(), &levelMask, static_cast<uint64_t>(1ull << std::to_underlying(level))))
+                if (ImGui::CheckboxFlags(name.data(),
+                                         &levelMask,
+                                         static_cast<uint64_t>(1ull << std::to_underlying(level))))
                 {
                     m_LogStream->SetLevelMask(levelMask);
                 }
@@ -68,7 +73,8 @@ namespace Ame::Editor
         }
 
         // Reserve enough left-over height for 1 separator + 1 input text
-        const float contentFooter = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
+        const float contentFooter =
+            ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
 
         imcxx::window_child content{ "##Content",
                                      { windowRegion.x, -contentFooter },
@@ -108,11 +114,12 @@ namespace Ame::Editor
             }
         }
 
-        // Keep up at the bottom of the scroll region if we were already at the bottom at the beginning of the frame.
-        // Using a scrollbar or mouse-wheel will take away from the bottom edge.
+        // Keep up at the bottom of the scroll region if we were already at the bottom at the
+        // beginning of the frame. Using a scrollbar or mouse-wheel will take away from the bottom
+        // edge.
         if (m_AutoScroll && (ImGui::GetScrollY() >= ImGui::GetScrollMaxY()))
         {
             ImGui::SetScrollHereY(1.0f);
         }
     }
-} // namespace Ame::Editor
+}

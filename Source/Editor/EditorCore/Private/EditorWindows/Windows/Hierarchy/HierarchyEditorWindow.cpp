@@ -9,14 +9,16 @@
 
 namespace Ame::Editor
 {
-    HierarchyEditorWindow::HierarchyEditorWindow(IReferenceCounters* counters) :
-        IEditorWindow(counters, HierarchyEditorWindowPath), m_World(ModuleUtils::GetWorld())
+    HierarchyEditorWindow::HierarchyEditorWindow(IReferenceCounters* counters)
+        : IEditorWindow(counters, HierarchyEditorWindowPath), m_World(ModuleUtils::GetWorld())
     {
     }
 
     void HierarchyEditorWindow::OnDrawVisible()
     {
-        imcxx::window window{ GetFullPath(), nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse };
+        imcxx::window window{ GetFullPath(),
+                              nullptr,
+                              ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse };
         if (!window)
         {
             return;
@@ -39,11 +41,13 @@ namespace Ame::Editor
             }
 
             // Display popup for creating entities in the root when right clicked in the void.
-            if (imcxx::popup voidPopup{ imcxx::popup::context_window{}, nullptr,
-                                        ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverItems })
+            if (imcxx::popup voidPopup{ imcxx::popup::context_window{},
+                                        nullptr,
+                                        ImGuiPopupFlags_MouseButtonRight |
+                                            ImGuiPopupFlags_NoOpenOverItems })
             {
                 displayEntities.DisplayAdd();
             }
         }
     }
-} // namespace Ame::Editor
+}

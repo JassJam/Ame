@@ -14,17 +14,20 @@ namespace Ame::Window
 {
     /// <summary>
     /// Since glfw is a singleton, we need to initialize it before using it
-    /// This class is dedicated to initializing and handling all glfw operations in a thread-safe manner
+    /// This class is dedicated to initializing and handling all glfw operations in a thread-safe
+    /// manner
     /// </summary>
     class GlfwDriverImpl : public IGlfwDriver
     {
     public:
         /// <summary>
-        /// Initialize the glfw context, pass a previous context to transfer the ownership of the glfw context
+        /// Initialize the glfw context, pass a previous context to transfer the ownership of the
+        /// glfw context
         /// </summary>
         static IGlfwDriver* Initialize();
 
-        [[nodiscard]] static GlfwHooks& GetHooks();
+        [[nodiscard]]
+        static GlfwHooks& GetHooks();
 
     public:
         GlfwDriverImpl();
@@ -70,4 +73,4 @@ namespace Ame::Window
 
         GlfwHooks m_Hooks;
     };
-} // namespace Ame::Window
+}

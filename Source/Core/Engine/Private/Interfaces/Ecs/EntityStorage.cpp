@@ -8,7 +8,8 @@
 
 namespace Ame::Interfaces
 {
-    Ptr<IEntityWorld> CreateEntityWorld(Ptr<Rhi::IRhiDevice> rhiDevice, const EntityWorldCreateDesc& createDesc)
+    Ptr<IEntityWorld> CreateEntityWorld(Ptr<Rhi::IRhiDevice>         rhiDevice,
+                                        const EntityWorldCreateDesc& createDesc)
     {
         auto world = AmeCreate(Ecs::World, std::move(rhiDevice));
 
@@ -31,4 +32,4 @@ namespace Ame::Interfaces
 
         return world;
     }
-} // namespace Ame::Interfaces
+}

@@ -11,7 +11,8 @@
 
 namespace Ame::Ecs
 {
-    template<typename Ty> struct RenderableVertex
+    template<typename Ty>
+    struct RenderableVertex
     {
         Dg::IBuffer*              Buffer = nullptr;
         static constexpr uint64_t Stride = sizeof(Ty);
@@ -51,7 +52,8 @@ namespace Ame::Ecs
                    std::tie(other.Buffer, other.Offset, other.Count, other.Type);
         }
 
-        [[nodiscard]] uint32_t AbsoluteOffset() const noexcept
+        [[nodiscard]]
+        uint32_t AbsoluteOffset() const noexcept
         {
             return (Type == Dg::VT_UINT16 ? sizeof(uint16_t) : sizeof(uint32_t)) * Offset;
         }
@@ -65,7 +67,8 @@ namespace Ame::Ecs
 
         auto operator<=>(const RenderableDesc& other) const noexcept
         {
-            return std::tie(Material, Indices, Vertices) <=> std::tie(other.Material, other.Indices, other.Vertices);
+            return std::tie(Material, Indices, Vertices) <=>
+                   std::tie(other.Material, other.Indices, other.Vertices);
         }
     };
 
@@ -74,7 +77,8 @@ namespace Ame::Ecs
     public:
         using ISerializable::ISerializable;
 
-        [[nodiscard]] const RenderableDesc& GetRenderableDesc()
+        [[nodiscard]]
+        const RenderableDesc& GetRenderableDesc()
         {
             return m_RenderableDesc;
         }
@@ -85,8 +89,8 @@ namespace Ame::Ecs
 
     /// <summary>
     /// Automatically set when a renderable is added to an entity.
-    /// the component will be set as pair, where the first pair is the component type, and the second pair is the
-    /// renderable. (ComponentType, BaseRenderable)
+    /// the component will be set as pair, where the first pair is the component type, and the
+    /// second pair is the renderable. (ComponentType, BaseRenderable)
     /// </summary>
     AME_ECS_WRAP_COMPONENT_REF(IBaseRenderable);
-} // namespace Ame::Ecs
+}

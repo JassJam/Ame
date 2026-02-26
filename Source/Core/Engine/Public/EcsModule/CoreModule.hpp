@@ -16,4 +16,4 @@ namespace Ame::Ecs
     public:
         CoreEcsModule(WorldRef world);
     };
-} // namespace Ame::Ecs
+}

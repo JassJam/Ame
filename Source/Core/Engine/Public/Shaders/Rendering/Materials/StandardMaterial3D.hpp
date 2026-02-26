@@ -23,7 +23,8 @@ namespace Ame::Rhi
     private:
         static constexpr const char c_SourceCode[] = {
 #include "StandardMaterial3D_PS.static.hlsli.h"
-            , 0x00
+            ,
+            0x00
         };
 
     public:
@@ -45,7 +46,8 @@ namespace Ame::Rhi
             m_LinkedShaders = Dg::CreateMemoryShaderSourceFactory(
                 {
                     { pixelInputStruct.GetMemoryShaderSourceFileInfo(pixelInputStruct.Name) },
-                    { materialOutputStruct.GetMemoryShaderSourceFileInfo(materialOutputStruct.Name) },
+                    { materialOutputStruct.GetMemoryShaderSourceFileInfo(
+                        materialOutputStruct.Name) },
                     { samplersStruct.GetMemoryShaderSourceFileInfo(samplersStruct.Name) },
                     { materialDataStruct.GetMemoryShaderSourceFileInfo(materialDataStruct.Name) },
                 },
@@ -56,4 +58,4 @@ namespace Ame::Rhi
     private:
         Ptr<Dg::IShaderSourceInputStreamFactory> m_LinkedShaders;
     };
-} // namespace Ame::Rhi
+}

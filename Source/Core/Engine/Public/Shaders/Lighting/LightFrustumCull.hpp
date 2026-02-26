@@ -23,15 +23,18 @@ namespace Ame::Rhi
         static constexpr const char* DISPATCH_CHUNK_SIZE  = "DISPATCH_CHUNK_SIZE";
         static constexpr const char* MAX_LIGHT_CHUNK_SIZE = "MAX_LIGHT_CHUNK_SIZE";
 
-        static constexpr const char c_SourceCode[] =
+        static constexpr const char c_SourceCode[] = {
 #ifndef AME_DIST
-#include "LightFrustumCull_CS_Debug.hlsli.generated.hpp"
-#include "LightFrustumCull_CS.hlsli.generated.hpp"
+#include "LightFrustumCull_CS_Debug.static.hlsli.h"
+            ,
+#include "LightFrustumCull_CS.static.hlsli.h"
 #else
-#include "LightFrustumCull_CS_DebugNone.hlsli.generated.hpp"
-#include "LightFrustumCull_CS.hlsli.generated.hpp"
+#include "LightFrustumCull_CS_DebugNone.static.hlsli.h"
+            ,
+#include "LightFrustumCull_CS.static.hlsli.h"
 #endif
-            ;
+            , 0x00
+        };
 
     public:
         LightFrustumCull_ComputeShader(uint8_t blockSize, uint16_t maxLightChunkSize) :

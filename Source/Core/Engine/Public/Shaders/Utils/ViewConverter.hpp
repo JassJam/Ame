@@ -7,9 +7,10 @@ namespace Ame::Rhi
     class AME_ENGINE_API UtilsViewConverterShader : public EngineShader
     {
     private:
-        static constexpr const char c_SourceCode[] =
-#include "ViewConverter.hlsli.generated.hpp"
-            ;
+        static constexpr const char c_SourceCode[] = {
+#include "ViewConverter.static.hlsli.h"
+            , 0x00
+        };
 
     public:
         static constexpr const char* Name = "Utils/ViewConverter.hlsli";

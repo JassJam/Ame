@@ -7,9 +7,10 @@ namespace Ame::Rhi
     class AME_ENGINE_API StructLightShader : public EngineShader
     {
     private:
-        static constexpr const char c_SourceCode[] =
-#include "Light.hlsli.generated.hpp"
-            ;
+        static constexpr const char c_SourceCode[] = {
+#include "Light.static.hlsli.h"
+            , 0x00
+        };
 
     public:
         static constexpr const char* Name = "Structs/Light.hlsli";

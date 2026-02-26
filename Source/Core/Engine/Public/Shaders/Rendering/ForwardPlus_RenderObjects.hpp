@@ -15,16 +15,17 @@
 #include <Shaders/Structs/Outputs/ForwardPlus_PixelOutput.hpp>
 
 #include <Shaders/Structs/Lighting/LightingResult.hpp>
-#include <Shaders/Structs/Lighting/Operations.hpp>
+#include <Shaders/Structs/Lighting/LightingOperations.hpp>
 
 namespace Ame::Rhi
 {
     class AME_ENGINE_API ForwardPlus_RenderObjects_VertexShader : public EngineShader
     {
     private:
-        static constexpr const char c_SourceCode[] =
-#include "ForwardPlus_RenderObjects_VS.hlsli.generated.hpp"
-            ;
+        static constexpr const char c_SourceCode[] = {
+#include "ForwardPlus_RenderObjects_VS.static.hlsli.h"
+            , 0x00
+        };
 
     public:
         ForwardPlus_RenderObjects_VertexShader()
@@ -62,9 +63,10 @@ namespace Ame::Rhi
     class AME_ENGINE_API ForwardPlus_RenderObjects_PixelShader : public EngineShader
     {
     private:
-        static constexpr const char c_SourceCode[] =
-#include "ForwardPlus_RenderObjects_PS.hlsli.generated.hpp"
-            ;
+        static constexpr const char c_SourceCode[] = {
+#include "ForwardPlus_RenderObjects_PS.static.hlsli.h"
+            , 0x00
+        };
 
     public:
         ForwardPlus_RenderObjects_PixelShader()

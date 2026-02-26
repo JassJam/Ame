@@ -7,7 +7,7 @@
 #include "Structs/Outputs/ForwardPlus_PixelOutput.hlsli"
 
 #include "Structs/Lighting/LightingResult.hlsli"
-#include "Structs/Lighting/Operations.hlsli"
+#include "Structs/Lighting/LightingOperations.hlsli"
 
 void main(in ps_input psIn, out ps_output psOut)
 {

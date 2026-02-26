@@ -7,9 +7,10 @@ namespace Ame::Rhi
     class AME_ENGINE_API ImGuiRenderVertexShader : public EngineShader
     {
     private:
-        static constexpr const char c_SourceCode[] =
-#include "ImGuiRenderShader_VS.hlsli.generated.hpp"
-            ;
+        static constexpr const char c_SourceCode[] = {
+#include "ImGuiRenderShader_VS.static.hlsli.h"
+            , 0x00
+        };
 
     public:
         ImGuiRenderVertexShader()
@@ -21,9 +22,10 @@ namespace Ame::Rhi
     class AME_ENGINE_API ImGuiRenderPixelShader : public EngineShader
     {
     private:
-        static constexpr const char c_SourceCode[] =
-#include "ImGuiRenderShader_PS.hlsli.generated.hpp"
-            ;
+        static constexpr const char c_SourceCode[] = {
+#include "ImGuiRenderShader_PS.static.hlsli.h"
+            , 0x00
+        };
 
     public:
         ImGuiRenderPixelShader()

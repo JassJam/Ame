@@ -270,7 +270,11 @@ local function _declare_target(opts)
 
         if opts.rules then
             for _, rule in ipairs(opts.rules) do
-                add_rules(rule)
+                if type(rule) == "string" then
+                    add_rules(rule)
+                else
+                    add_rules(rule.name, rule.opts)
+                end
             end
         end
 

@@ -7,9 +7,10 @@ namespace Ame::Rhi
     class AME_ENGINE_API StructDrawIndexedIndirectCommandShader : public EngineShader
     {
     private:
-        static constexpr const char c_SourceCode[] =
-#include "DrawIndexedIndirectCommand.hlsli.generated.hpp"
-            ;
+        static constexpr const char c_SourceCode[] = {
+#include "DrawIndexedIndirectCommand.static.hlsli.h"
+            , 0x00
+        };
 
     public:
         static constexpr const char* Name = "Structs/DrawIndexedIndirectCommand.hlsli";

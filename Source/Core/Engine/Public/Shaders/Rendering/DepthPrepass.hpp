@@ -18,9 +18,10 @@ namespace Ame::Rhi
     class AME_ENGINE_API DepthPrepass_VertexShader : public EngineShader
     {
     private:
-        static constexpr const char c_SourceCode[] =
-#include "DepthPrepass_VS.hlsli.generated.hpp"
-            ;
+        static constexpr const char c_SourceCode[] = {
+#include "DepthPrepass_VS.static.hlsli.h"
+            , 0x00
+        };
 
     public:
         DepthPrepass_VertexShader()

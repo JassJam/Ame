@@ -7,9 +7,10 @@ namespace Ame::Rhi
     class AME_ENGINE_API StructTransformShader : public EngineShader
     {
     private:
-        static constexpr const char c_SourceCode[] =
-#include "Transform.hlsli.generated.hpp"
-            ;
+        static constexpr const char c_SourceCode[] = {
+#include "Transform.static.hlsli.h"
+            , 0x00
+        };
 
     public:
         static constexpr const char* Name = "Structs/Transform.hlsli";

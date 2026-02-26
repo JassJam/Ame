@@ -1,6 +1,7 @@
 ### Refactor code base
 
 - [ ] xmake format the codebase
+- [ ] revisit the code base structure
 - [ ] remove `// namespace XXX` at the end of namespace scope
 - [ ] use camelCase for all variables and functions
 - [ ] use PascalCase for all classes and namespaces

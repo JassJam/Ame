@@ -7,9 +7,10 @@ namespace Ame::Rhi
     class AME_ENGINE_API StructStdMaterialFragmentShader : public EngineShader
     {
     private:
-        static constexpr const char* c_SourceCode =
-#include "StdMaterialFragment.hlsli.generated.hpp"
-            ;
+        static constexpr const char c_SourceCode[] = {
+#include "StdMaterialFragment.static.hlsli.h"
+            , 0x00
+        };
 
     public:
         static constexpr const char* Name = "Structs/Outputs/StdMaterialFragment.hlsli";

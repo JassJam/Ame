@@ -7,9 +7,10 @@ namespace Ame::Rhi
     class AME_ENGINE_API GeometryOperationsShader : public EngineShader
     {
     private:
-        static constexpr const char c_SourceCode[] =
-#include "Operations.hlsli.generated.hpp"
-            ;
+        static constexpr const char c_SourceCode[] = {
+#include "Operations.static.hlsli.h"
+            , 0x00
+        };
 
     public:
         static constexpr const char* Name = "Structs/Geometry/Operations.hlsli";

@@ -7,9 +7,10 @@ namespace Ame::Rhi
     class AME_ENGINE_API StructForwardPlusPixelOutputShader : public EngineShader
     {
     private:
-        static constexpr const char* c_SourceCode =
-#include "ForwardPlus_PixelOutput.hlsli.generated.hpp"
-            ;
+        static constexpr const char c_SourceCode[] = {
+#include "ForwardPlus_PixelOutput.static.hlsli.h"
+            , 0x00
+        };
 
     public:
         static constexpr const char* Name = "Structs/Outputs/ForwardPlus_PixelOutput.hlsli";

@@ -1,4 +1,5 @@
 includes("Project/Options.lua")
+includes("Project/Rules.lua")
 
 --
 

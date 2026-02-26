@@ -8,11 +8,13 @@ project_utils:declare_target({
         {path = "Private",  opts = {public = false}},
     },
     headerfiles = {
+        {path = "Public/**.h",      opts = {public = true}},
         {path = "Public/**.hpp",    opts = {public = true}},
         {path = "Private/**.hpp",   opts = {public = false}},
     },
     files = {
-        {path = "Private/**.cpp"}
+        {path = "Public/**.static.hlsli", opts = {public = true, nozeroend = true}},
+        {path = "Private/**.cpp"},
     },
 
     defines = {
@@ -41,4 +43,8 @@ project_utils:declare_target({
         { name = "ame.imgui",       opts = {public = true} },
         { name = "assimp",          opts = {public = false} },
     },
+
+    rules = {
+        {name = "utils.bin2c", opts = {linewidth = 16, extensions = {".static.hlsli"}}},
+    }
 })

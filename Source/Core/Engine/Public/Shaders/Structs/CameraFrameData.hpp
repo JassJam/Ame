@@ -7,9 +7,10 @@ namespace Ame::Rhi
     class AME_ENGINE_API StructCameraFrameDataShader : public EngineShader
     {
     private:
-        static constexpr const char c_SourceCode[] =
-#include "CameraFrameData.hlsli.generated.hpp"
-            ;
+        static constexpr const char c_SourceCode[] = {
+#include "CameraFrameData.static.hlsli.h"
+            , 0x00
+        };
 
     public:
         static constexpr const char* Name = "Structs/CameraFrameData.hlsli";

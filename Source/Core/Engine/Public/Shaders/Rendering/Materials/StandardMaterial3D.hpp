@@ -21,9 +21,10 @@ namespace Ame::Rhi
     class AME_ENGINE_API StdMaterial3D_PixelShader : public EngineShader
     {
     private:
-        static constexpr const char c_SourceCode[] =
-#include "StandardMaterial3D_PS.hlsli.generated.hpp"
-            ;
+        static constexpr const char c_SourceCode[] = {
+#include "StandardMaterial3D_PS.static.hlsli.h"
+            , 0x00
+        };
 
     public:
         StdMaterial3D_PixelShader()

@@ -170,12 +170,10 @@ namespace Ame::Rhi
                 break;
             case 1:
             case 2:
-                logger->WriteMessage(
-                    { level, std::format("{} (L{}): {}", file, function, line, message) });
+                logger->WriteMessage({ level, std::format("{} (L{}): {}", file, function, line, message) });
                 break;
             case 3:
-                logger->WriteMessage(
-                    { level, std::format("{}/{} (L{}): {}", file, function, line, message) });
+                logger->WriteMessage({ level, std::format("{}/{} (L{}): {}", file, function, line, message) });
                 break;
             default:
                 std::unreachable();

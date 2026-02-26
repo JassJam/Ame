@@ -55,11 +55,11 @@ public:
     }
 
 public:
-    bool(AME_CDECL* OnPreloadFn)(Ame_IPlugin_t*, Ame_IModuleRegistry_t*) = nullptr;
-    void(AME_CDECL* OnLoadFn)(Ame_IPlugin_t*, Ame_IModuleRegistry_t*)    = nullptr;
-    void(AME_CDECL* OnInterfaceDropFn)(Ame_IPlugin_t*, Ame_IBaseObject_t*)   = nullptr;
-    void(AME_CDECL* OnUnloadFn)(Ame_IPlugin_t*)                          = nullptr;
-    void(AME_CDECL* OnPauseChangedFn)(Ame_IPlugin_t*, bool)              = nullptr;
+    bool(AME_CDECL* OnPreloadFn)(Ame_IPlugin_t*, Ame_IModuleRegistry_t*)   = nullptr;
+    void(AME_CDECL* OnLoadFn)(Ame_IPlugin_t*, Ame_IModuleRegistry_t*)      = nullptr;
+    void(AME_CDECL* OnInterfaceDropFn)(Ame_IPlugin_t*, Ame_IBaseObject_t*) = nullptr;
+    void(AME_CDECL* OnUnloadFn)(Ame_IPlugin_t*)                            = nullptr;
+    void(AME_CDECL* OnPauseChangedFn)(Ame_IPlugin_t*, bool)                = nullptr;
 };
 
 //

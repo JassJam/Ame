@@ -61,8 +61,7 @@ namespace imcxx
         /// </summary>
         template<typename _StrTy, typename _Ty, typename = std::enable_if_t<!std::is_array_v<_Ty>>>
         slider(const _StrTy& label, _Ty& v, _Ty v_min, _Ty v_max, const char* format = impl::default_c_format<_Ty>,
-               ImGuiSliderFlags flags = 0) :
-            slider(label, &v, v_min, v_max, format, flags)
+               ImGuiSliderFlags flags = 0) : slider(label, &v, v_min, v_max, format, flags)
         {
         }
 

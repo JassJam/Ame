@@ -35,8 +35,7 @@ namespace Ame::Log
 #endif
                        ) noexcept :
 
-            Level(level),
-            Message(message)
+            Level(level), Message(message)
 #ifndef AME_DIST
             ,
             Location(sourceLoc)

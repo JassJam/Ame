@@ -29,7 +29,7 @@ namespace Ame
         {
             m_Dependencies.insert(plugin);
         }
-        
+
         void RemoveDependencies(IPlugin* plugin)
         {
             m_Dependencies.erase(plugin);

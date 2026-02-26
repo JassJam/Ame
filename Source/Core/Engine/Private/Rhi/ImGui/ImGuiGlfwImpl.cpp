@@ -858,7 +858,7 @@ static bool ImGui_ImplGlfw_Init(GLFWwindow* window, bool install_callbacks, Glfw
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
         ImGui_ImplGlfw_InitPlatformInterface();
 
-        // Windows: register a WndProc hook so we can intercept some messages.
+    // Windows: register a WndProc hook so we can intercept some messages.
 #ifdef _WIN32
     bd->PrevWndProc = (WNDPROC)::GetWindowLongPtrW((HWND)main_viewport->PlatformHandleRaw, GWLP_WNDPROC);
     IM_ASSERT(bd->PrevWndProc != nullptr);
@@ -892,7 +892,7 @@ void ImGui_ImplGlfw_Shutdown()
     for (ImGuiMouseCursor cursor_n = 0; cursor_n < ImGuiMouseCursor_COUNT; cursor_n++)
         glfwDestroyCursor(bd->MouseCursors[cursor_n]);
 
-        // Windows: restore our WndProc hook
+    // Windows: restore our WndProc hook
 #ifdef _WIN32
     ImGuiViewport* main_viewport = ImGui::GetMainViewport();
     ::SetWindowLongPtrW((HWND)main_viewport->PlatformHandleRaw, GWLP_WNDPROC, (LONG_PTR)bd->PrevWndProc);

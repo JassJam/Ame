@@ -29,7 +29,7 @@ namespace Ame::Gfx
 
     inline const Rg::ResourceId c_RGLightHeads_Transparent{
         "_LightHeads_Transparent"
-    };                                                                         // RWTexture2D<uint2> | Texture2D<uint>
+    }; // RWTexture2D<uint2> | Texture2D<uint>
     inline const Rg::ResourceId c_RGLightHeads_Opaque{ "_LightHeads_Opaque" }; // RWTexture2D<uint2> | Texture2D<uint>
 
 #ifndef AME_DIST

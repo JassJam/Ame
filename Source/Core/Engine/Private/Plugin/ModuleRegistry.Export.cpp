@@ -35,7 +35,7 @@ void Ame_ModuleRegistry_DropInterface(Ame_IModuleRegistry_t* registry, const Ame
 }
 
 Ame_IBaseObject_t* Ame_ModuleRegistry_RequestInterface(Ame_IModuleRegistry_t* registry, Ame_IPlugin_t* caller,
-                                                   const Ame_UID_t* iid)
+                                                       const Ame_UID_t* iid)
 {
     auto          impl       = std::bit_cast<Ame::IModuleRegistry*>(registry);
     auto          callerImpl = std::bit_cast<Ame::IPlugin*>(caller);

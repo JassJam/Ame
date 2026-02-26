@@ -10,7 +10,7 @@
 #if defined(AME_PLATFORM_WINDOWS) && defined(AME_DIST)
 
 #define AME_MAIN_ENTRY_POINT                                                                                           \
-    int WinMainWrapper(int argc, char** argv);                                                                         \
+    int           WinMainWrapper(int argc, char** argv);                                                               \
     int __stdcall wWinMain(void*, void*, const wchar_t*, int)                                                          \
     {                                                                                                                  \
         return WinMainWrapper(__argc, __argv);                                                                         \

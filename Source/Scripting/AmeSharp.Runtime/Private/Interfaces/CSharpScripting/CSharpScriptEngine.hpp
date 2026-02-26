@@ -27,8 +27,8 @@ namespace Ame::Interfaces
 
         auto CreateLibraryContext(const Scripting::NativeString& name) -> Scripting::ILibraryContext* override;
         void TryUnloadLibraryContext(const Scripting::NativeString& name) override;
-        auto CreateLibrary(const Scripting::NativeString& contextName,
-                           const Scripting::NativeString& path) -> Scripting::ILibrary* override;
+        auto CreateLibrary(const Scripting::NativeString& contextName, const Scripting::NativeString& path)
+            -> Scripting::ILibrary* override;
 
     private:
         [[nodiscard]] Scripting::CSLibraryContext* GetOrCreateLibraryContext(const Scripting::NativeString& name);

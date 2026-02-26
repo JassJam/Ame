@@ -17,8 +17,7 @@ namespace Ame::Rhi
 {
     MaterialTechnique::MaterialTechnique(IReferenceCounters* counters, Dg::IRenderDevice* renderDevice,
                                          MaterialRenderState renderState) :
-        IObjectWithCallback(counters),
-        m_RenderDevice(renderDevice), m_RenderState(std::move(renderState))
+        IObjectWithCallback(counters), m_RenderDevice(renderDevice), m_RenderState(std::move(renderState))
     {
     }
 

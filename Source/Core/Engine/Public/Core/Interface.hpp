@@ -53,7 +53,7 @@ namespace Ame
     class IObjectWithCallback : public Dg::ObjectBase<IObject>
     {
     public:
-        using QueryCallback = IObject*(AME_CDECL*)(IObject* objectHandle, const UId* iidHandle);
+        using QueryCallback = IObject*(AME_CDECL*)(IObject * objectHandle, const UId* iidHandle);
 
         IMPLEMENT_INTERFACE_CTOR(IObjectWithCallback) : ObjectBase(counters)
         {

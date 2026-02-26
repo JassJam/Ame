@@ -66,7 +66,7 @@ namespace Ame::Scripting
 
     void CSMethod::InvokeMethod(IInstance* instance, std::span<void* const> arguments, void* returnPtr)
     {
-        auto methodInvoke = GetRuntime().GetCommonFunction<InvokeFn>(CLRRuntime::Functions::MethodBridge_Invoke);
+        auto methodInvoke   = GetRuntime().GetCommonFunction<InvokeFn>(CLRRuntime::Functions::MethodBridge_Invoke);
         auto instanceHandle = instance ? static_cast<CSInstance*>(instance)->GetHandle() : nullptr;
         methodInvoke(m_Method, instanceHandle, arguments.data(), arguments.size(), returnPtr);
     }

@@ -144,8 +144,7 @@ namespace imcxx
         template<size_t _ViewSize, typename _StrTy, typename _Ty, size_t _Size>
         input(array<_ViewSize> arr_size, const _StrTy& label, std::array<_Ty, _Size>& v, float speed = 1.f,
               _Ty v_slow_step = {}, _Ty v_fast_step = {}, const char* format = impl::default_c_format<_Ty>,
-              ImGuiSliderFlags flags = 0) :
-            input(arr_size, label, &v, speed, v_slow_step, v_fast_step, format, flags)
+              ImGuiSliderFlags flags = 0) : input(arr_size, label, &v, speed, v_slow_step, v_fast_step, format, flags)
         {
         }
 

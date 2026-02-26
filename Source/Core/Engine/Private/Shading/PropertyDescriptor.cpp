@@ -59,7 +59,8 @@ namespace Ame::Rhi
     {
         return m_Tree.get_child_optional(propertyName)
             .map(
-                [](const boost::property_tree::ptree& property) {
+                [](const boost::property_tree::ptree& property)
+                {
                     return property.get_optional<uint32_t>(AME_PROPDESC_META(AME_PROPDESC_METAOFFSET))
                         .value_or(InvalidOffset);
                 })

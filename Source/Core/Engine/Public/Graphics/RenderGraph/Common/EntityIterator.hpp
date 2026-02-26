@@ -17,8 +17,7 @@ namespace Ame::Gfx
     public:
         EntityDrawCommandListIterator(const EntityDrawCommandList& list, DrawInstanceType instancesType,
                                       uint32_t commandOffset) :
-            m_DrawCommandList(list),
-            m_CommandOffset(commandOffset), m_InstancesType(instancesType)
+            m_DrawCommandList(list), m_CommandOffset(commandOffset), m_InstancesType(instancesType)
         {
         }
 

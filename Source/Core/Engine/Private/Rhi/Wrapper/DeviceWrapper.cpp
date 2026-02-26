@@ -28,9 +28,8 @@ namespace Ame::Rhi
 
     DeviceWrapper::DeviceWrapper(Ptr<Dg::IEngineFactory> engineFactory, Ptr<Dg::IRenderDevice> renderDevice,
                                  Ptr<Dg::IDeviceContext> deviceContext, UniquePtr<WindowWrapper> windowWrapper) :
-        m_EngineFactory(std::move(engineFactory)),
-        m_RenderDevice(std::move(renderDevice)), m_ImmediateContext(std::move(deviceContext)),
-        m_WindowWrapper(std::move(windowWrapper))
+        m_EngineFactory(std::move(engineFactory)), m_RenderDevice(std::move(renderDevice)),
+        m_ImmediateContext(std::move(deviceContext)), m_WindowWrapper(std::move(windowWrapper))
     {
     }
 

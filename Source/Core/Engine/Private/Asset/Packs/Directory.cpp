@@ -17,8 +17,7 @@ namespace Ame::Asset
 {
     DirectoryAssetPackage::DirectoryAssetPackage(IReferenceCounters* counters, Storage& assetStorage,
                                                  std::filesystem::path path) :
-        IAssetPackage(counters, assetStorage),
-        m_RootPath(std::move(path))
+        IAssetPackage(counters, assetStorage), m_RootPath(std::move(path))
     {
         auto rootPathStr = m_RootPath.generic_string();
         if (rootPathStr.empty() || rootPathStr.starts_with(".."))

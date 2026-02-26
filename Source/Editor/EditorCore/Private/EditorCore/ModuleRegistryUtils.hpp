@@ -13,4 +13,4 @@ namespace Ame::Editor::ModuleUtils
         s_ModuleRegistry->RequestInterface(s_ThisPlugin, Interfaces::IID_EntityWorld, entityWorld.DblPtr<IObject>());
         return entityWorld;
     }
-}
+} // namespace Ame::Editor::ModuleUtils

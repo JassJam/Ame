@@ -25,17 +25,13 @@ namespace Ame::Rhi
         typename Ty::diligent_create_info;
         typename Ty::diligent_factory_type;
 
-        {
-            Ty::GetName()
-        } -> std::same_as<const char*>;
+        { Ty::GetName() } -> std::same_as<const char*>;
 
         {
             Ty::GetCreateInfo(std::declval<DeviceCreateDesc>(), std::declval<typename Ty::create_struct_type>())
         } -> std::same_as<typename Ty::diligent_create_info>;
 
-        {
-            Ty::LoadFactory()
-        } -> std::same_as<typename Ty::diligent_factory_type*>;
+        { Ty::LoadFactory() } -> std::same_as<typename Ty::diligent_factory_type*>;
 
         {
             Ty::CreateDeviceAndContext(std::declval<typename Ty::diligent_factory_type*>(),

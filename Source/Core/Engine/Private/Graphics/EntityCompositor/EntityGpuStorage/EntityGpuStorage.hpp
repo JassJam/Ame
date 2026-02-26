@@ -8,17 +8,11 @@ namespace Ame::Gfx
 {
     template<typename T>
     concept EntityGpuStorageTraits = requires(const Ecs::Entity& entity) {
-        {
-            T::name
-        } -> std::convertible_to<const char*>;
+        { T::name } -> std::convertible_to<const char*>;
         typename T::id_container_type;
         typename T::instance_type;
-        {
-            T::update(entity, std::declval<typename T::instance_type&>())
-        };
-        {
-            T::observer_create(std::declval<Ecs::WorldRef>())
-        };
+        { T::update(entity, std::declval<typename T::instance_type&>()) };
+        { T::observer_create(std::declval<Ecs::WorldRef>()) };
     };
 
     template<EntityGpuStorageTraits Traits> class EntityGpuStorage

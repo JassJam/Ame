@@ -26,8 +26,7 @@ namespace imcxx
         }
 
         drag_drop_source(const char* type, const void* data, size_t sz, ImGuiCond cond = 0,
-                         ImGuiDragDropFlags flags = 0) :
-            drag_drop_source(flags)
+                         ImGuiDragDropFlags flags = 0) : drag_drop_source(flags)
         {
             if (*this)
             {

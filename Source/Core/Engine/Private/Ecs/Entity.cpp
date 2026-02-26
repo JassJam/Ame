@@ -125,7 +125,6 @@ namespace Ame::Ecs
         m_Entity.get_ref<EntityTagComponent>()->Tag = std::move(name);
     }
 
-
     //
 
     void Entity::SetParent(const Entity& parent)

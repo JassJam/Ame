@@ -167,7 +167,8 @@ namespace Ame::Rg
             {
                 std::visit(VariantVisitor{ [&](Dg::TEXTURE_VIEW_TYPE type)
                                            { viewHandle.View = handle.Resource->GetDefaultView(type); },
-                                           [&](const auto& desc) {
+                                           [&](const auto& desc)
+                                           {
                                                handle.Resource->CreateView(
                                                    static_cast<const Dg::TextureViewDesc&>(desc), &viewHandle.View);
                                            } },

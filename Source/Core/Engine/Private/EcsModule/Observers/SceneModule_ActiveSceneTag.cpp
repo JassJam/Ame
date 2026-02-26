@@ -32,7 +32,7 @@ namespace Ame::Ecs
     {
         Ecs::WorldRef world  = iter.world();
         auto          target = world->target<ActiveSceneEntityPairComponent>();
-        auto          filter = world.CreateQuery().with<SceneEntityPairComponent>(target ? target : flecs::Wildcard).build();
+        auto filter = world.CreateQuery().with<SceneEntityPairComponent>(target ? target : flecs::Wildcard).build();
 
         if (iter.event() == flecs::OnAdd)
         {

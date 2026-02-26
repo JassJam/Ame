@@ -168,7 +168,7 @@ namespace Ame::ImGuiUtils
     {
         imcxx::shared_item_id id(name);
 
-        auto   imColor = GetImColor(color);
+        auto imColor = GetImColor(color);
         if (imcxx::button{ imcxx::button::color{}, "", imColor, flags,
                            ImVec2{ ImGui::GetContentRegionAvail().x, 0.f } })
         {
